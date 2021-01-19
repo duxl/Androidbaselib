@@ -2,6 +2,8 @@
 
 # Android框架，集成大多数可能会有用的功能。用于快速搭建Android项目
 
+使用示例见：https://github.com/duxl/Testbaselib
+
 
 
 ## Lib引入方式（一），复制代码
@@ -87,7 +89,7 @@ dependencies {
    替换成
 
    ```groovy
-   implementation 'com.github.duxl:baselib:v1.0_beta'
+   implementation 'com.github.duxl:baselib:v1.0.0_beta'
    ```
 
    
