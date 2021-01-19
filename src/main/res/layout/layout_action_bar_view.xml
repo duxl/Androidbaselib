@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_bar"
+        style="@style/style_action_bar">
+
+        <LinearLayout
+            android:id="@+id/ll_action_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_action_back"
+                style="@style/style_action_bar_back" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_action_close"
+                style="@style/style_action_bar_close"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_action_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/tv_action_title"
+                style="@style/style_action_bar_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_action_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_action_right"
+                style="@style/style_action_bar_right_text"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_action_right"
+                style="@style/style_action_bar_right_image"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/bottom_action_line"
+        style="@style/style_action_bar_bottom_line"
+        tools:visibility="visible" />
+</merge>

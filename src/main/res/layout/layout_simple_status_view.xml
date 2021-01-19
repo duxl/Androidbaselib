@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@id/iv_status_view"
+        style="@style/style_simple_status_view_image"
+        tools:background="#F00"
+        tools:layout_height="100dp"
+        tools:layout_width="100dp" />
+
+    <TextView
+        android:id="@id/tv_status_view"
+        style="@style/style_simple_status_view_text"
+        android:text="数据加载中" />
+
+    <Button
+        android:id="@id/btn_status_view"
+        style="@style/style_simple_status_view_button" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+
+</merge>

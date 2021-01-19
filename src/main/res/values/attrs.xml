@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ActionBarView">
+        <attr name="abv_bar_background_color" format="color" />
+        <attr name="abv_bar_background_resource" format="reference" />
+
+        <attr name="abv_back_icon" format="reference" />
+
+        <attr name="abv_close_icon" format="reference" />
+
+        <attr name="abv_title" format="string" />
+        <attr name="abv_title_size" format="dimension" />
+        <attr name="abv_title_color" format="color" />
+
+        <attr name="abv_right_text" format="string" />
+        <attr name="abv_right_text_size" format="dimension" />
+        <attr name="abv_right_text_color" format="color" />
+
+        <attr name="abv_right_icon" format="reference" />
+
+        <attr name="abv_bottom_line_color" format="color" />
+
+        <attr name="abv_back_visible" format="boolean" />
+        <attr name="abv_close_visible" format="boolean" />
+        <attr name="abv_title_visible" format="boolean" />
+        <attr name="abv_right_text_visible" format="boolean" />
+        <attr name="abv_right_icon_visible" format="boolean" />
+        <attr name="abv_bottom_line_visible" format="boolean" />
+    </declare-styleable>
+
+    <!-- 虚线 -->
+    <declare-styleable name="DividerView">
+        <!-- 虚线颜色 -->
+        <attr name="divider_line_color" format="color" />
+        <!-- 虚线宽度 -->
+        <attr name="dashThickness" format="dimension" />
+        <!-- 虚线dash宽度 -->
+        <attr name="dashLength" format="dimension" />
+        <!-- 虚线dash间隔 -->
+        <attr name="dashGap" format="dimension" />
+        <!-- 虚线朝向 -->
+        <attr name="divider_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 状态View图片样式 -->
+    <style name="style_simple_status_view_image">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- 状态View文本样式 -->
+    <style name="style_simple_status_view_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 状态View按钮样式 -->
+    <style name="style_simple_status_view_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <!-- 加载中显示内容 -->
+    <string name="style_simple_status_loading_text">玩命加载中</string>
+    <drawable name="style_simple_status_loading_img_res">@drawable/ic_action_bar_done</drawable>
+
+    <!-- 加载失败显示内容 -->
+    <string name="style_simple_status_error_text">出错啦</string>
+    <drawable name="style_simple_status_error_res">@drawable/ic_action_bar_close</drawable>
+    <string name="style_simple_status_error_button_text">再试一次</string>
+
+    <!-- 空显示内容 -->
+    <string name="style_simple_status_empty_text">空空如也</string>
+    <drawable name="style_simple_status_empty_res">@drawable/ic_action_bar_back</drawable>
+    <string name="style_simple_status_empty_button_text">重试</string>
+</resources>
