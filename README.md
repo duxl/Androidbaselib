@@ -8,9 +8,9 @@
 
 1. **新建项目**
 
-2. **复制`baselib`目录到新建项目的根目录**
+2. **在项目的根目录下创建config.gradle文件，文件里的内容见最后**
 
-3. **复制`config.gradle`到项目的根目录**
+3. **在项目的根目录下创建baselib目录，将所有代码复制到baselib目录**
 
 4. **在新建项目根目录的`build.gradle`的第一行加入** 
 
@@ -76,7 +76,7 @@ dependencies {
 
 与上面第一种复制lib引入方式相对有两点不同
 
-1. 不需要第2步复制的 **复制`baselib`目录到新建项目的根目录**
+1. 不需要第3步的 **在app同目录下新建baselib目录，将所有代码复制到baselib目录**
 
 2. 将5.3中的
 
@@ -254,4 +254,66 @@ public void setOnLoadListener(OnLoadListener listener)
 ## BaseFragment API
 
 BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
+
+
+
+## config.gradle文件内容如下
+
+```groovy
+ext {
+
+    android = [
+            compileSdkVersion: 29,
+            minSdkVersion    : 19,
+            targetSdkVersion : 29,
+            appVersionCode   : 1,
+            appVersionName   : "1.0.0"
+    ]
+
+    version = [
+            androidxVersion      : "1.3.0-alpha01",
+            recyclerview         : "1.2.0-alpha05",
+            constraintlayout     : "2.0.0-rc1",
+            butterknifeSdkVersion: "10.2.3",
+            smartrefresh         : "2.0.1",
+            rxjava               : "3.0.5",
+            rxandroid            : "3.0.0",
+            rxlifecycle          : "4.0.0",
+            retrofitSdkVersion   : "2.9.0",
+            glide                : "4.11.0",
+    ]
+
+    dependencies = [
+            "appcompat"                           : "androidx.appcompat:appcompat:${version["androidxVersion"]}",
+            "constraintlayout"                    : "androidx.constraintlayout:constraintlayout:${version["constraintlayout"]}",
+            "material"                              : "com.google.android.material:material:${version["androidxVersion"]}",
+            "recyclerview"                        : "androidx.recyclerview:recyclerview:${version["recyclerview"]}",
+            "baseviewadapter"                     : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
+            "flexbox"                             : "com.google.android:flexbox:1.0.0",
+            "butterknife"                         : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
+            "butterknife-compiler"                : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
+            // 下拉刷新
+            "smart-refreshrefresh-kernel"         : "com.scwang.smart:refresh-layout-kernel:${version["smartrefresh"]}", // 核心必须依赖
+            "smart-refreshrefresh-header-classics": "com.scwang.smart:refresh-header-classics:${version["smartrefresh"]}", // 经典刷新头
+            // rx
+            "rxjava"                              : "io.reactivex.rxjava3:rxjava:${version["rxjava"]}",
+            "rxandroid"                           : "io.reactivex.rxjava3:rxandroid:${version["rxandroid"]}",
+            "rxlifecycle"                         : "com.trello.rxlifecycle4:rxlifecycle:${version["rxlifecycle"]}",
+            "rxlifecycle-android"                 : "com.trello.rxlifecycle4:rxlifecycle-android:${version["rxlifecycle"]}",
+            "rxlifecycle-components"              : "com.trello.rxlifecycle4:rxlifecycle-components:${version["rxlifecycle"]}",
+            // Retrofit
+            "retrofit"                            : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
+            "retrofit-converter-gson"             : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava3"            : "com.squareup.retrofit2:adapter-rxjava3:${version["retrofitSdkVersion"]}",
+            "retrofit-url-manager"                : "me.jessyan:retrofit-url-manager:1.4.0",
+            // RxPermissions
+            "rxpermissions"                       : "com.github.tbruyelle:rxpermissions:0.12",
+            // 图片选择框架
+            "matisse"                             : "com.zhihu.android:matisse:0.5.3-beta3",
+            // glide
+            "glide"                               : "com.github.bumptech.glide:glide:${version["glide"]}",
+            "glide-compiler"                      : "com.github.bumptech.glide:compiler:${version["glide"]}",
+    ]
+}
+```
 
