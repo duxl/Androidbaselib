@@ -14,9 +14,10 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
- * RVHttpObserver
- * <p>
+ * <pre>
+ * RVHttpObserver，适用于RecyclerView分页加载的情况
  * create by duxl 2021/1/15
+ * </pre>
  */
 public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObserver<T> {
 
