@@ -34,7 +34,21 @@ public interface IRefreshContainer {
 
     Context getContext();
 
+    /**
+     * 真正的更布局
+     * @return
+     */
+    View getRootContentView();
+
+    /**
+     * 业务相关的布局
+     * @return
+     */
     View getContentView();
 
+    /**
+     * 刷新控件
+     * @return
+     */
     XSmartRefreshLayout getRefreshLayout();
 }

@@ -34,6 +34,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
     protected Unbinder mUnbinder;
 
+    protected View mRootContentView;
     protected View mStateBar;
     protected ActionBarView mActionBarView;
     protected XSmartRefreshLayout mXSmartRefreshLayout;
@@ -44,19 +45,19 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_base, null);
-        mStateBar = v.findViewById(R.id.v_state_bar);
+        View mRootContentView = inflater.inflate(R.layout.fragment_base, null);
+        mStateBar = mRootContentView.findViewById(R.id.v_state_bar);
         initStateBar();
         hideStateBar();
 
-        mActionBarView = v.findViewById(R.id.action_bar_view);
+        mActionBarView = mRootContentView.findViewById(R.id.action_bar_view);
         initActionBar();
         hideActionBar();
 
-        mXSmartRefreshLayout = v.findViewById(R.id.x_smart_refresh_layout);
+        mXSmartRefreshLayout = mRootContentView.findViewById(R.id.x_smart_refresh_layout);
         initSmartRefreshLayout(mXSmartRefreshLayout);
 
-        mFlContainer = v.findViewById(R.id.fl_container);
+        mFlContainer = mRootContentView.findViewById(R.id.fl_container);
         mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
         mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -65,7 +66,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
         mUnbinder = ButterKnife.bind(this, mContentView);
         initView(mContentView);
-        return v;
+        return mRootContentView;
     }
 
     protected abstract int getLayoutResId();
@@ -165,6 +166,11 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
     protected IStatusView initStatusView() {
         return new SimpleStatusView(this);
+    }
+
+    @Override
+    public View getRootContentView() {
+        return mRootContentView;
     }
 
     @Override

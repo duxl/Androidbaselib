@@ -14,6 +14,7 @@ import com.duxl.baselib.ui.status.IStatusViewContainer;
 import com.duxl.baselib.ui.status.SimpleStatusView;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
+
 /**
  * SmartRecyclerView
  * create by duxl 2020/8/16
@@ -55,6 +56,11 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
     @Override
     public IStatusView getStatusView() {
         return mStatusView;
+    }
+
+    @Override
+    public View getRootContentView() {
+        return this;
     }
 
     @Override

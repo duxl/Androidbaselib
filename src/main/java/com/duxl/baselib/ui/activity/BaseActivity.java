@@ -32,6 +32,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     protected Unbinder mUnbinder;
 
+    protected View mRootContentView;
     protected View mStateBar;
     protected ActionBarView mActionBarView;
     protected XSmartRefreshLayout mXSmartRefreshLayout;
@@ -61,6 +62,18 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
         mUnbinder = ButterKnife.bind(this, mContentView);
         initView(mContentView);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        View rootView = getLayoutInflater().inflate(R.layout.activity_base, null);
+        setContentView(rootView);
+    }
+
+    @Override
+    public void setContentView(View view) {
+        super.setContentView(view);
+        mRootContentView = view;
     }
 
     protected abstract int getLayoutResId();
@@ -105,6 +118,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     /**
      * 设置状态栏颜色
+     *
      * @param color
      */
     public void setStateBarColor(int color) {
@@ -113,6 +127,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     /**
      * 设置状态栏背景
+     *
      * @param resId
      */
     public void setStateBarResource(int resId) {
@@ -181,6 +196,11 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public View getRootContentView() {
+        return mRootContentView;
     }
 
     @Override
