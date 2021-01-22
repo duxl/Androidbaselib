@@ -265,16 +265,18 @@ BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
 ext {
 
     android = [
-            compileSdkVersion: 29,
-            minSdkVersion    : 19,
-            targetSdkVersion : 29,
+            compileSdkVersion: 30,
+            minSdkVersion    : 21,
+            targetSdkVersion : 30,
             appVersionCode   : 1,
-            appVersionName   : "1.0.0"
+            appVersionName   : "4.0.0"
     ]
 
     version = [
             androidxVersion      : "1.3.0-alpha01",
+            swiperefreshlayout   : "1.1.0",
             recyclerview         : "1.2.0-alpha05",
+            flexbox              : "1.0.0",
             constraintlayout     : "2.0.0-rc1",
             butterknifeSdkVersion: "10.2.3",
             smartrefresh         : "2.0.1",
@@ -288,8 +290,11 @@ ext {
     dependencies = [
             "appcompat"                           : "androidx.appcompat:appcompat:${version["androidxVersion"]}",
             "constraintlayout"                    : "androidx.constraintlayout:constraintlayout:${version["constraintlayout"]}",
-            "material"                              : "com.google.android.material:material:${version["androidxVersion"]}",
+            "material"                            : "com.google.android.material:material:${version["androidxVersion"]}",
+            // google自带下拉刷新组件
+            "swiperefreshlayout"                  : "androidx.swiperefreshlayout:swiperefreshlayout:${version["swiperefreshlayout"]}",
             "recyclerview"                        : "androidx.recyclerview:recyclerview:${version["recyclerview"]}",
+            "flexbox"                             : "com.google.android:flexbox${version["flexbox"]}",
             "baseviewadapter"                     : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
             "flexbox"                             : "com.google.android:flexbox:1.0.0",
             "butterknife"                         : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",

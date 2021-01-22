@@ -46,7 +46,9 @@ dependencies {
     api rootProject.ext.dependencies["appcompat"]
     api rootProject.ext.dependencies["constraintlayout"]
     api rootProject.ext.dependencies["material"]
+    api rootProject.ext.dependencies["swiperefreshlayout"]
     api rootProject.ext.dependencies["recyclerview"]
+    api rootProject.ext.dependencies["flexbox"]
     api rootProject.ext.dependencies["baseviewadapter"]
 
     api rootProject.ext.dependencies["butterknife"]

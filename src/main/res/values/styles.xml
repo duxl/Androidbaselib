@@ -2,7 +2,6 @@
 <resources>
 
     <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="android:textAllCaps">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
