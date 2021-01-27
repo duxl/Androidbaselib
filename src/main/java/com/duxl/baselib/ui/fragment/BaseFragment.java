@@ -45,7 +45,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mRootContentView = inflater.inflate(R.layout.fragment_base, null);
+        mRootContentView = inflater.inflate(R.layout.fragment_base, null);
         mStateBar = mRootContentView.findViewById(R.id.v_state_bar);
         initStateBar();
         hideStateBar();
