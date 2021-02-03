@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,13 +16,6 @@
     <com.duxl.baselib.widget.ActionBarView
         android:id="@+id/action_bar_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:abv_close_visible="true"
-        app:abv_close_icon="@drawable/ic_action_bar_close"
-        app:abv_back_icon="@drawable/ic_action_bar_back"
-        tools:abv_right_icon_visible="true"
-        tools:abv_right_text="保存"
-        tools:abv_right_text_visible="true"
-        tools:abv_title="标题" />
+        android:layout_height="wrap_content" />
 
 </merge>

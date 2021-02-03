@@ -112,10 +112,12 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     protected void initActionBar() {
-        mActionBarView.setOnClickBackListener(this::onClickActionBack);
-        mActionBarView.setOnClickCloseListener(this::onClickActionClose);
-        mActionBarView.setOnClickRightTextViewListener(this::onClickActionTvRight);
-        mActionBarView.setOnClickRightImageViewListener(this::onClickActionIvRight);
+        if(mActionBarView != null) {
+            mActionBarView.setOnClickBackListener(this::onClickActionBack);
+            mActionBarView.setOnClickCloseListener(this::onClickActionClose);
+            mActionBarView.setOnClickRightTextViewListener(this::onClickActionTvRight);
+            mActionBarView.setOnClickRightImageViewListener(this::onClickActionIvRight);
+        }
     }
 
     public ActionBarView getActionBarView() {
@@ -123,19 +125,27 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     public void hideActionBar() {
-        mActionBarView.setVisibility(View.GONE);
+        if(mActionBarView != null) {
+            mActionBarView.setVisibility(View.GONE);
+        }
     }
 
     public void showActionBar() {
-        mActionBarView.setVisibility(View.VISIBLE);
+        if(mActionBarView != null) {
+            mActionBarView.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setActionBarColor(int color) {
-        mActionBarView.getChildAt(0).setBackgroundColor(color);
+        if(mActionBarView != null) {
+            mActionBarView.getChildAt(0).setBackgroundColor(color);
+        }
     }
 
     public void setActionBarResource(int resId) {
-        mActionBarView.getChildAt(0).setBackgroundResource(resId);
+        if(mActionBarView != null) {
+            mActionBarView.getChildAt(0).setBackgroundResource(resId);
+        }
     }
 
     public void setTitle(int titleId) {
@@ -143,7 +153,9 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     public void setTitle(CharSequence title) {
-        mActionBarView.setTitle(title);
+        if(mActionBarView != null) {
+            mActionBarView.setTitle(title);
+        }
     }
 
     protected void onClickActionBack(View v) {

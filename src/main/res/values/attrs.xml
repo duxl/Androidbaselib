@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--
     <declare-styleable name="ActionBarView">
         <attr name="abv_bar_background_color" format="color" />
         <attr name="abv_bar_background_resource" format="reference" />
@@ -28,6 +29,7 @@
         <attr name="abv_right_icon_visible" format="boolean" />
         <attr name="abv_bottom_line_visible" format="boolean" />
     </declare-styleable>
+    -->
 
     <!-- 虚线 -->
     <declare-styleable name="DividerView">

@@ -51,6 +51,7 @@ public class ActionBarView extends LinearLayout {
         setGravity(Gravity.CENTER_VERTICAL);
         initView(context);
 
+        /*
         if (attrs != null) {
             TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ActionBarView, 0, 0);
 
@@ -100,6 +101,7 @@ public class ActionBarView extends LinearLayout {
                 a.recycle();
             }
         }
+         */
 
 
     }

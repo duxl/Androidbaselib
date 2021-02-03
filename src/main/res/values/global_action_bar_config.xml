@@ -40,7 +40,7 @@
     <style name="style_action_bar_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:color">@color/action_bar_title_color</item>
+        <item name="android:textColor">@color/action_bar_title_color</item>
         <item name="android:lines">1</item>
         <item name="android:maxLines">1</item>
         <item name="android:text">标题</item>
@@ -64,7 +64,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">@dimen/action_bar_right_text_size</item>
         <item name="android:visibility">gone</item>
-        <item name="android:color">@color/action_bar_right_text_color</item>
+        <item name="android:textColor">@color/action_bar_right_text_color</item>
     </style>
 
     <!-- 定义后边图标样式 -->
