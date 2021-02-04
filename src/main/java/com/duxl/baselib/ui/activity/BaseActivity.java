@@ -86,7 +86,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 View decorView = getWindow().getDecorView();
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
                 decorView.setSystemUiVisibility(option);
                 getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -96,9 +96,6 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
             int stateBarHeight = DisplayUtil.getBarHeight(getApplicationContext());
             mStateBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, stateBarHeight));
-            if (BuildConfig.DEBUG) {
-                System.out.println("duxl.debug:: stateBarHeight= " + stateBarHeight);
-            }
         }
     }
 
@@ -135,7 +132,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     protected void initActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setOnClickBackListener(this::onClickActionBack);
             mActionBarView.setOnClickCloseListener(this::onClickActionClose);
             mActionBarView.setOnClickRightTextViewListener(this::onClickActionTvRight);
@@ -148,25 +145,25 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     public void hideActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setVisibility(View.GONE);
         }
     }
 
     public void showActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setVisibility(View.VISIBLE);
         }
     }
 
     public void setActionBarColor(int color) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.getChildAt(0).setBackgroundColor(color);
         }
     }
 
     public void setActionBarResource(int resId) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.getChildAt(0).setBackgroundResource(resId);
         }
     }
@@ -178,7 +175,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     @Override
     public void setTitle(CharSequence title) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setTitle(title);
         }
     }

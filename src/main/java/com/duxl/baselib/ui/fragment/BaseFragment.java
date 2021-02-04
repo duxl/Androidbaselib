@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
@@ -79,7 +78,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 View decorView = getActivity().getWindow().getDecorView();
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
                 decorView.setSystemUiVisibility(option);
                 getActivity().getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -89,9 +88,6 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
             int stateBarHeight = DisplayUtil.getBarHeight(getActivity().getApplicationContext());
             mStateBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, stateBarHeight));
-            if (BuildConfig.DEBUG) {
-                System.out.println("duxl.debug:: stateBarHeight= " + stateBarHeight);
-            }
         }
     }
 
@@ -112,7 +108,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     protected void initActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setOnClickBackListener(this::onClickActionBack);
             mActionBarView.setOnClickCloseListener(this::onClickActionClose);
             mActionBarView.setOnClickRightTextViewListener(this::onClickActionTvRight);
@@ -125,25 +121,25 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     public void hideActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setVisibility(View.GONE);
         }
     }
 
     public void showActionBar() {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setVisibility(View.VISIBLE);
         }
     }
 
     public void setActionBarColor(int color) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.getChildAt(0).setBackgroundColor(color);
         }
     }
 
     public void setActionBarResource(int resId) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.getChildAt(0).setBackgroundResource(resId);
         }
     }
@@ -153,7 +149,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     public void setTitle(CharSequence title) {
-        if(mActionBarView != null) {
+        if (mActionBarView != null) {
             mActionBarView.setTitle(title);
         }
     }
