@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.status.IStatusView;
@@ -142,6 +143,32 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         if (mActionBarView != null) {
             mActionBarView.getChildAt(0).setBackgroundResource(resId);
         }
+    }
+
+    /**
+     * 设置ActionBar悬浮，也就是ActionBar透下去可已看到后面的内容
+     * @param isFloat
+     */
+    public void setActionBarFloat(boolean isFloat) {
+        if (mActionBarView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mXSmartRefreshLayout.getLayoutParams();
+            if (isFloat) {
+                layoutParams.topToTop = R.id.page_top;
+                layoutParams.topToBottom = -1;
+            } else {
+                layoutParams.topToTop = -1;
+                layoutParams.topToBottom = R.id.page_top;
+            }
+            mXSmartRefreshLayout.setLayoutParams(layoutParams);
+        }
+    }
+
+    public boolean isActionBarFloat() {
+        if (mActionBarView != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mXSmartRefreshLayout.getLayoutParams();
+            return layoutParams.topToTop != -1;
+        }
+        return false;
     }
 
     public void setTitle(int titleId) {

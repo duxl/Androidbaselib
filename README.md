@@ -123,6 +123,11 @@ public void setStateBarResource(int resId)
 *ActionBar与StateBar有如上相似的api，这里就不再累述*
 
 ```java
+// 设置ActionBar悬浮，也就是ActionBar透下去可已看到后面的内容
+public void setActionBarFloat(boolean isFloat)
+```
+
+```java
 // 设置标题
 public void setTitle(int titleId)
 public void setTitle(CharSequence title)
