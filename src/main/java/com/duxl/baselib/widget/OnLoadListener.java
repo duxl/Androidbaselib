@@ -10,7 +10,7 @@ public interface OnLoadListener {
 
     void onLoadMore();
 
-    void onErrorClick();
+    void onErrorClick(int errCode);
 
     void onEmptyClick();
 }

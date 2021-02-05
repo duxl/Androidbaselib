@@ -18,6 +18,7 @@ import com.scwang.smart.refresh.layout.constant.RefreshState;
  */
 public class SimpleStatusView extends LinearLayout implements IStatusView {
 
+    protected int mErrCode;
     protected ImageView mIvStatus;
     protected TextView mTvStatus;
     protected Button mBtnStatus;
@@ -122,7 +123,9 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     }
 
     @Override
-    public void showError() {
+    public void showError(int errCode) {
+        mErrCode = errCode;
+
         setImageIfNotNull(errorImgRes);
         setMessageIfNotNull(errorText);
         setBtnIfNotNull(errorBtnText);
@@ -191,7 +194,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
             if (type == 0) {
                 mRefreshContainer.getRefreshLayout().getOnLoadListener().onEmptyClick();
             } else if (type == 1) {
-                mRefreshContainer.getRefreshLayout().getOnLoadListener().onErrorClick();
+                mRefreshContainer.getRefreshLayout().getOnLoadListener().onErrorClick(mErrCode);
             }
         });
     }

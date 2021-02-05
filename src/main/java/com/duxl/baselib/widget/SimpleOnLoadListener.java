@@ -17,7 +17,7 @@ public abstract class SimpleOnLoadListener implements OnLoadListener {
     }
 
     @Override
-    public void onErrorClick() {
+    public void onErrorClick(int errCode) {
 
     }
 

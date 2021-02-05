@@ -26,7 +26,7 @@ public interface IStatusView {
 
     void showLoading();
 
-    void showError();
+    void showError(int errCode);
 
     void showEmpty();
 
