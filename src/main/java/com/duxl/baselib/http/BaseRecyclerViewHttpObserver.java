@@ -2,10 +2,8 @@ package com.duxl.baselib.http;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.duxl.baselib.ui.status.IRefreshContainer;
-import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
 import com.duxl.baselib.utils.EmptyUtils;
-import com.duxl.baselib.widget.SmartRecyclerView;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
 
 import java.util.List;
@@ -15,17 +13,19 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * <pre>
- * RVHttpObserver，适用于RecyclerView分页加载的情况
+ * BaseRecyclerViewHttpObserver，适用于RecyclerView分页加载的情况
  * create by duxl 2021/1/15
  * </pre>
+ * @param <R>
+ * @param <T>
  */
-public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObserver<T> {
+public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extends BaseHttpObserver<R> {
 
     private BaseQuickAdapter mAdapter;
     private IRefreshContainer mIRefreshContainer;
     private IStatusViewContainer mIStatusViewContainer;
 
-    public RVHttpObserver(BaseQuickAdapter adapter) {
+    public BaseRecyclerViewHttpObserver(BaseQuickAdapter adapter) {
         this(adapter, null, null);
     }
 
@@ -34,7 +34,7 @@ public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObse
      * @param refreshContainer    刷新容器
      * @param statusViewContainer 状态容器
      */
-    public RVHttpObserver(BaseQuickAdapter adapter, IRefreshContainer refreshContainer, IStatusViewContainer statusViewContainer) {
+    public BaseRecyclerViewHttpObserver(BaseQuickAdapter adapter, IRefreshContainer refreshContainer, IStatusViewContainer statusViewContainer) {
         mAdapter = adapter;
         if (mAdapter == null) {
             throw new IllegalArgumentException("The adapter parameter cannot be null");
@@ -54,12 +54,12 @@ public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObse
     }
 
     @Override
-    public void onNext(@NonNull T root) {
+    public void onNext(@NonNull R root) {
         loadComplete();
         if (root.isSuccess()) {
             try {
                 onSuccess(root);
-                List<M> list = getListData(root);
+                List<T> list = getListData(root);
                 if (list != null) {
                     if (isFirstPage()) {
                         mAdapter.setNewInstance(list);
@@ -96,7 +96,7 @@ public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObse
     }
 
     @Override
-    public void onError(int code, String msg, T root) {
+    public void onError(int code, String msg, R root) {
         super.onError(code, msg, root);
         loadComplete();
         if (mIStatusViewContainer != null) {
@@ -117,12 +117,12 @@ public abstract class RVHttpObserver<T extends BaseRoot, M> extends BaseHttpObse
     }
 
     @Override
-    public void onSuccess(T root) {
+    public void onSuccess(R root) {
     }
 
-    public abstract List<M> getListData(T root);
+    public abstract List<T> getListData(R root);
 
     public abstract boolean isFirstPage();
 
-    public abstract boolean hasMoreData(T root);
+    public abstract boolean hasMoreData(R root);
 }

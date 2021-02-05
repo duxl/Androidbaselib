@@ -89,7 +89,7 @@ dependencies {
    替换成
 
    ```groovy
-   implementation 'com.github.duxl:baselib:v1.0.0_beta'
+   implementation 'com.github.duxl:baselib:v1.0.1_beta'
    ```
 
    
@@ -223,8 +223,8 @@ public void setOnLoadListener(OnLoadListener listener)
                    .compose(new LifecycleTransformer<Root<List<String>>>(this))
                    // 如果刷新和状态view都是页面，这里可以传Activity.this作为参数，第一个参数adapter是必须的，后面两个是可选的
                    // 普通接口可以用 BaseHttpObserver
-                   //.subscribe(new RVHttpObserver<Root<List<String>>, String>(mAdapter, this, this) {
-                   .subscribe(new RVHttpObserver<Root<List<String>>, String>(mAdapter, mSmartRecyclerView, mSmartRecyclerView) {
+                   //.subscribe(new BaseRecyclerViewHttpObserver<Root<List<String>>, String>(mAdapter, this, this) {
+                   .subscribe(new BaseRecyclerViewHttpObserver<Root<List<String>>, String>(mAdapter, mSmartRecyclerView, mSmartRecyclerView) {
                        @Override
                        public List<String> getListData(Root<List<String>> root) {
                            return root.data;

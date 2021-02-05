@@ -26,8 +26,10 @@ import retrofit2.HttpException;
  * HttpObserver
  * <p>
  * create by duxl 2021/1/15
+ *
+ * @param <R>
  */
-public abstract class BaseHttpObserver<T extends BaseRoot> implements Observer<T> {
+public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R> {
 
     public BaseHttpObserver() {
     }
@@ -38,7 +40,7 @@ public abstract class BaseHttpObserver<T extends BaseRoot> implements Observer<T
     }
 
     @Override
-    public void onNext(@NonNull T root) {
+    public void onNext(@NonNull R root) {
         if (root.isSuccess()) {
             try {
                 onSuccess(root);
@@ -65,9 +67,9 @@ public abstract class BaseHttpObserver<T extends BaseRoot> implements Observer<T
 
     }
 
-    public abstract void onSuccess(T root);
+    public abstract void onSuccess(R root);
 
-    public void onError(int code, String msg, T root) {
+    public void onError(int code, String msg, R root) {
         if (isMainThread()) {
             ToastUtils.show(msg);
         }
