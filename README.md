@@ -89,7 +89,7 @@ dependencies {
    替换成
 
    ```groovy
-   implementation 'com.github.duxl:baselib:v1.0.1_beta'
+   implementation 'com.github.duxl:Androidbaselib:v1.0.0_bate'
    ```
 
    
