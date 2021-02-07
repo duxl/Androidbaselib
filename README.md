@@ -2,15 +2,15 @@
 
 # Android框架，集成大多数可能会有用的功能。用于快速搭建Android项目
 
-使用示例见：https://github.com/duxl/Testbaselib
+使用示例见：https://github.com/duxl/Androidbaselib
 
 
 
-## Lib引入方式（一），复制代码
+## 引入方式一，复制代码
 
 1. **新建项目**
 
-2. **在项目的根目录下创建config.gradle文件，文件里的内容见最后**
+2. **在项目的根目录下创建[config.gradle](https://github.com/duxl/Androidbaselib/blob/master/config.gradle)文件**
 
 3. **在项目的根目录下创建baselib目录，将所有代码复制到baselib目录**
 
@@ -74,23 +74,27 @@ dependencies {
 
 
 
-## Lib引入方式（二），gradle引入
+## 引入方式二，gradle引入（推荐）
 
-与上面第一种复制lib引入方式相对有两点不同
-
-1. 不需要第3步的 **在app同目录下新建baselib目录，将所有代码复制到baselib目录**
-
-2. 将5.3中的
+1. **添加`jitpack`仓库地址**
 
    ```groovy
-   implementation project(path: ':baselib')
+   maven { url 'https://jitpack.io' }
    ```
 
-   替换成
+2. **在app下的build.gradle添加引用**
 
    ```groovy
    implementation 'com.github.duxl:Androidbaselib:v1.0.0_bate'
    ```
+
+3. **修改app的主题样式**
+
+   ```xml
+   <style name="AppTheme" parent="BaseAppTheme">
+   ```
+
+4. **将Application继承至BaseApplication**
 
    
 
@@ -259,70 +263,4 @@ public void setOnLoadListener(OnLoadListener listener)
 
 BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
 
-
-
-## config.gradle文件内容如下
-
-```groovy
-ext {
-
-    android = [
-            compileSdkVersion: 30,
-            minSdkVersion    : 21,
-            targetSdkVersion : 30,
-            appVersionCode   : 1,
-            appVersionName   : "4.0.0"
-    ]
-
-    version = [
-            androidxVersion      : "1.3.0-alpha01",
-            swiperefreshlayout   : "1.1.0",
-            recyclerview         : "1.2.0-alpha05",
-            flexbox              : "1.0.0",
-            constraintlayout     : "2.0.0-rc1",
-            butterknifeSdkVersion: "10.2.3",
-            smartrefresh         : "2.0.1",
-            rxjava               : "3.0.5",
-            rxandroid            : "3.0.0",
-            rxlifecycle          : "4.0.0",
-            retrofitSdkVersion   : "2.9.0",
-            glide                : "4.11.0",
-    ]
-
-    dependencies = [
-            "appcompat"                           : "androidx.appcompat:appcompat:${version["androidxVersion"]}",
-            "constraintlayout"                    : "androidx.constraintlayout:constraintlayout:${version["constraintlayout"]}",
-            "material"                            : "com.google.android.material:material:${version["androidxVersion"]}",
-            // google自带下拉刷新组件
-            "swiperefreshlayout"                  : "androidx.swiperefreshlayout:swiperefreshlayout:${version["swiperefreshlayout"]}",
-            "recyclerview"                        : "androidx.recyclerview:recyclerview:${version["recyclerview"]}",
-            "flexbox"                             : "com.google.android:flexbox${version["flexbox"]}",
-            "baseviewadapter"                     : "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4",
-            "flexbox"                             : "com.google.android:flexbox:1.0.0",
-            "butterknife"                         : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
-            "butterknife-compiler"                : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
-            // 下拉刷新
-            "smart-refreshrefresh-kernel"         : "com.scwang.smart:refresh-layout-kernel:${version["smartrefresh"]}", // 核心必须依赖
-            "smart-refreshrefresh-header-classics": "com.scwang.smart:refresh-header-classics:${version["smartrefresh"]}", // 经典刷新头
-            // rx
-            "rxjava"                              : "io.reactivex.rxjava3:rxjava:${version["rxjava"]}",
-            "rxandroid"                           : "io.reactivex.rxjava3:rxandroid:${version["rxandroid"]}",
-            "rxlifecycle"                         : "com.trello.rxlifecycle4:rxlifecycle:${version["rxlifecycle"]}",
-            "rxlifecycle-android"                 : "com.trello.rxlifecycle4:rxlifecycle-android:${version["rxlifecycle"]}",
-            "rxlifecycle-components"              : "com.trello.rxlifecycle4:rxlifecycle-components:${version["rxlifecycle"]}",
-            // Retrofit
-            "retrofit"                            : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
-            "retrofit-converter-gson"             : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
-            "retrofit-adapter-rxjava3"            : "com.squareup.retrofit2:adapter-rxjava3:${version["retrofitSdkVersion"]}",
-            "retrofit-url-manager"                : "me.jessyan:retrofit-url-manager:1.4.0",
-            // RxPermissions
-            "rxpermissions"                       : "com.github.tbruyelle:rxpermissions:0.12",
-            // 图片选择框架
-            "matisse"                             : "com.zhihu.android:matisse:0.5.3-beta3",
-            // glide
-            "glide"                               : "com.github.bumptech.glide:glide:${version["glide"]}",
-            "glide-compiler"                      : "com.github.bumptech.glide:compiler:${version["glide"]}",
-    ]
-}
-```
 
