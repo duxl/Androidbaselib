@@ -143,7 +143,12 @@ public class Utils {
             return mobileNums.matches(telRegex);
     }
 
-    public static String copyAndPaste(Context context, String text) {
+    /**
+     * 复制到剪切板
+     * @param text
+     * @return
+     */
+    public static String copyAndPaste(String text) {
         ClipboardManager myClipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData myClip = ClipData.newPlainText("text", text);
         myClipboard.setPrimaryClip(myClip);
@@ -205,7 +210,7 @@ public class Utils {
     }
 
     //boolean hasInstalled = AppUtils.checkHasInstalledApp(context, "com.xunmeng.pinduoduo");
-    public static boolean checkHasInstalledApp(Context context, String pkgName) {
+    public static boolean checkHasInstalledApp(String pkgName) {
         PackageManager pm = context.getPackageManager();
         boolean app_installed;
         try {
@@ -226,7 +231,7 @@ public class Utils {
      *
      * @return 如果没有获取成功(没有对应值 ， 或者异常)，则返回值为空
      */
-    public static String getAppMetaData(Context context, String key) {
+    public static String getAppMetaData(String key) {
         if (context == null || TextUtils.isEmpty(key)) {
             return null;
         }
