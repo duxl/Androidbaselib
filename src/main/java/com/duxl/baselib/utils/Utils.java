@@ -54,10 +54,9 @@ public class Utils {
     /**
      * get App versionCode
      *
-     * @param context
      * @return
      */
-    public static int getVersionCode(Context context) {
+    public static int getVersionCode() {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         int versionCode = 0;
@@ -76,7 +75,7 @@ public class Utils {
      * @param context
      * @return
      */
-    public static String getVersionName(Context context) {
+    public static String getVersionName() {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo;
         String versionName = "";
@@ -144,12 +143,11 @@ public class Utils {
             return mobileNums.matches(telRegex);
     }
 
-    public static String CopyAndPaste(Context context, String inviteCode) {
-        ClipData myClip;
+    public static String copyAndPaste(Context context, String text) {
         ClipboardManager myClipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
-        myClip = ClipData.newPlainText("text", inviteCode);
+        ClipData myClip = ClipData.newPlainText("text", text);
         myClipboard.setPrimaryClip(myClip);
-        return inviteCode;
+        return text;
     }
 
     public static String getPrintSize(long size) {
