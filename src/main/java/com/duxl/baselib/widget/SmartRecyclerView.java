@@ -58,6 +58,15 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
         return mStatusView;
     }
 
+    public void setStatusView(IStatusView statusView) {
+        this.mStatusView = statusView;
+        // 移除旧的状态View
+        FrameLayout frameLayout = (FrameLayout) getChildAt(getChildCount() - 1);
+        frameLayout.removeViewAt(frameLayout.getChildCount() - 1);
+        frameLayout.addView(mStatusView.getView(), FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+
+    }
+
     @Override
     public View getRootContentView() {
         return this;

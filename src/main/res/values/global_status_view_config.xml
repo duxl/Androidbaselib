@@ -25,14 +25,26 @@
     <!-- 加载中显示内容 -->
     <string name="style_simple_status_loading_text">玩命加载中</string>
     <drawable name="style_simple_status_loading_img_res">@drawable/ic_action_bar_done</drawable>
+    <string name="style_simple_status_loading_button_text">取消加载</string>
+    <!-- VISIBLE=0 、INVISIBLE=4 、 GONE=8-->
+    <integer name="loadingTextVisibility">0</integer>
+    <integer name="loadingImgVisibility">0</integer>
+    <integer name="loadingBtnVisibility">8</integer>
 
     <!-- 加载失败显示内容 -->
     <string name="style_simple_status_error_text">出错啦</string>
     <drawable name="style_simple_status_error_res">@drawable/ic_action_bar_close</drawable>
     <string name="style_simple_status_error_button_text">再试一次</string>
+    <integer name="errorTextVisibility">0</integer>
+    <integer name="errorImgVisibility">0</integer>
+    <integer name="errorBtnVisibility">0</integer>
+
 
     <!-- 空显示内容 -->
     <string name="style_simple_status_empty_text">空空如也</string>
     <drawable name="style_simple_status_empty_res">@drawable/ic_action_bar_back</drawable>
     <string name="style_simple_status_empty_button_text">重试</string>
+    <integer name="emptyTextVisibility">0</integer>
+    <integer name="emptyImgVisibility">0</integer>
+    <integer name="emptyBtnVisibility">0</integer>
 </resources>

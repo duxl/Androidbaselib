@@ -13,4 +13,6 @@ public interface OnLoadListener {
     void onErrorClick(int errCode);
 
     void onEmptyClick();
+
+    void onLoadingClick();
 }

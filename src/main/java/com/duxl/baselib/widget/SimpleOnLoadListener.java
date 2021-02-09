@@ -25,4 +25,9 @@ public abstract class SimpleOnLoadListener implements OnLoadListener {
     public void onEmptyClick() {
 
     }
+
+    @Override
+    public void onLoadingClick() {
+
+    }
 }
