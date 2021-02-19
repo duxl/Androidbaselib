@@ -58,6 +58,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         this.mRefreshContainer = refreshContainer;
         this.mLayoutResId = layoutResId;
 
+        setBackground(getResources().getDrawable(R.drawable.style_simple_status_view_bg));
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER_HORIZONTAL);
         setVisibility(View.GONE);

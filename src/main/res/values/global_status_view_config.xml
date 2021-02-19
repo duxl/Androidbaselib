@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 状态View背景 -->
+    <drawable name="style_simple_status_view_bg">@color/global_background_color</drawable>
+
     <!-- 状态View图片样式 -->
     <style name="style_simple_status_view_image">
         <item name="android:layout_width">wrap_content</item>
