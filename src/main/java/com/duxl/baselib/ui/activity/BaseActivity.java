@@ -1,6 +1,7 @@
 package com.duxl.baselib.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initParams(getIntent());
         setContentView(R.layout.activity_base);
         mStateBar = findViewById(R.id.v_state_bar);
         initStateBar();
@@ -78,6 +80,9 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     protected abstract int getLayoutResId();
+
+    protected void initParams(Intent args) {
+    }
 
     protected void initView(View v) {
     }

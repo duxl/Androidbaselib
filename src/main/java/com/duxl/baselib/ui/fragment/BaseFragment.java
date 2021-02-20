@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,12 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     protected FrameLayout mFlContainer;
     protected IStatusView mStatusView;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initParams(getArguments());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +77,9 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     protected abstract int getLayoutResId();
+
+    protected void initParams(Bundle args) {
+    }
 
     protected void initView(View v) {
     }
@@ -147,6 +157,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
     /**
      * 设置ActionBar悬浮，也就是ActionBar透下去可已看到后面的内容
+     *
      * @param isFloat
      */
     public void setActionBarFloat(boolean isFloat) {
