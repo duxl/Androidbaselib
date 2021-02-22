@@ -74,23 +74,23 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         loadingText = context.getString(R.string.style_simple_status_loading_text);
         loadingImgRes = R.drawable.style_simple_status_loading_img_res;
         loadingBtnText = context.getString(R.string.style_simple_status_loading_button_text);
-        loadingTextVisibility = R.integer.loadingTextVisibility;
-        loadingImgVisibility = R.integer.loadingImgVisibility;
-        loadingBtnVisibility = R.integer.loadingBtnVisibility;
+        loadingTextVisibility = getResources().getInteger(R.integer.loadingTextVisibility);
+        loadingImgVisibility = getResources().getInteger(R.integer.loadingImgVisibility);
+        loadingBtnVisibility = getResources().getInteger(R.integer.loadingBtnVisibility);
 
         errorText = context.getString(R.string.style_simple_status_error_text);
         errorImgRes = R.drawable.style_simple_status_error_res;
         errorBtnText = context.getString(R.string.style_simple_status_error_button_text);
-        errorTextVisibility = R.integer.errorTextVisibility;
-        errorImgVisibility = R.integer.errorImgVisibility;
-        errorBtnVisibility = R.integer.errorBtnVisibility;
+        errorTextVisibility = getResources().getInteger(R.integer.errorTextVisibility);
+        errorImgVisibility = getResources().getInteger(R.integer.errorImgVisibility);
+        errorBtnVisibility = getResources().getInteger(R.integer.errorBtnVisibility);
 
         emptyText = context.getString(R.string.style_simple_status_empty_text);
         emptyImgRes = R.drawable.style_simple_status_empty_res;
         emptyBtnText = context.getString(R.string.style_simple_status_empty_button_text);
-        emptyTextVisibility = R.integer.emptyTextVisibility;
-        emptyImgVisibility = R.integer.emptyImgVisibility;
-        emptyBtnVisibility = R.integer.emptyBtnVisibility;
+        emptyTextVisibility = getResources().getInteger(R.integer.emptyTextVisibility);
+        emptyImgVisibility = getResources().getInteger(R.integer.emptyImgVisibility);
+        emptyBtnVisibility = getResources().getInteger(R.integer.emptyBtnVisibility);
     }
 
     @Override
@@ -222,8 +222,9 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
         setClickListenerIfNotNull(mBtnStatus);
 
-        getRefreshContainer().getContentView().setVisibility(View.GONE);
         loadComplete();
+        getRefreshContainer().getContentView().setVisibility(View.GONE);
+        getRefreshContainer().finishLoadMoreWithNoMoreData();
         requestImageViewLayout();
     }
 
