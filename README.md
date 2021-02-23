@@ -2,7 +2,7 @@
 
 # Android框架，集成大多数可能会有用的功能。用于快速搭建Android项目
 
-使用示例见：https://github.com/duxl/Androidbaselib
+使用示例见：[https://github.com/duxl/AndroidbaselibDemo](https://github.com/duxl/AndroidbaselibDemo)
 
 
 
