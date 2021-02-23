@@ -2,7 +2,7 @@
 
 # Android框架，集成大多数可能会有用的功能。用于快速搭建Android项目
 
-使用示例见：[https://github.com/duxl/AndroidbaselibDemo](https://github.com/duxl/AndroidbaselibDemo)
+使用示例见：[https://github.com/duxl/AndroidQuicklib](https://github.com/duxl/AndroidQuicklib)
 
 
 
@@ -10,7 +10,7 @@
 
 1. **新建项目**
 
-2. **在项目的根目录下创建[config.gradle](https://github.com/duxl/Androidbaselib/blob/master/config.gradle)文件**
+2. **在项目的根目录下创建[config.gradle](https://github.com/duxl/AndroidQuicklib/blob/master/config.gradle)文件**
 
 3. **在项目的根目录下创建baselib目录，将所有代码复制到baselib目录**
 
@@ -85,7 +85,7 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:Androidbaselib:v1.0.0_bate'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate'
    
    // annotationProcessor 在每个module中都必须配置才起作用
    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
@@ -210,7 +210,7 @@ public void setOnLoadListener(OnLoadListener listener)
 
 ### http接口请求使用步骤
 
-1. 重写Application的getGlobalHttpConfig()，配置全局的baseUrl、log处理器、网络监测处理、[code&msg](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_http_exception_reason.xml)
+1. 重写Application的getGlobalHttpConfig()，配置全局的baseUrl、log处理器、网络监测处理、[code&msg](https://github.com/duxl/Androidbaselib/blob/master/src/main/res/values/global_http_exception_reason.xml)
 
 2. 定义interface接口，用于描述接口地址和参数信息，示例如下
 
