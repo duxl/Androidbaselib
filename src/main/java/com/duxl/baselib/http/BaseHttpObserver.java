@@ -23,11 +23,19 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import retrofit2.HttpException;
 
 /**
+ * <pre>
  * HttpObserver
- * <p>
+ *
+ *
  * create by duxl 2021/1/15
+ * 根据Root定义的code、msg和isSuccess处理接口返回的数据
+ * 如果成功则会回调{@link #onSuccess(BaseRoot) onSuccess(root)方法}
+ * 如果失败，则会根据{@link HttpExceptionReasons 错误配置信息}回调{@link #onError(int, String, BaseRoot) onError(code, msg, root)方法}
+ *
+ * </pre>
  *
  * @param <R>
+ *
  */
 public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R> {
 

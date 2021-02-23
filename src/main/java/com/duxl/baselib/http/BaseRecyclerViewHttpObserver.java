@@ -13,9 +13,12 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * <pre>
- * BaseRecyclerViewHttpObserver，适用于RecyclerView分页加载的情况
+ * 除拥有{@link BaseHttpObserver BaseHttpObserver}功能以外，BaseRecyclerViewHttpObserver还扩展了
+ * RecyclerView分页加载的情况，自动根据响应数据显示内容或者错误、空等信息
  * create by duxl 2021/1/15
+ *
  * </pre>
+ *
  * @param <R>
  * @param <T>
  */

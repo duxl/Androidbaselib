@@ -1,7 +1,6 @@
 package com.duxl.baselib.http;
 
 import com.duxl.baselib.http.interceptor.NetworkChecker;
-import com.duxl.baselib.http.interceptor.NetworkInterceptor;
 import com.duxl.baselib.utils.NetCheckUtil;
 import com.duxl.baselib.utils.Utils;
 
@@ -17,6 +16,11 @@ import okhttp3.Response;
  */
 public abstract class GlobalHttpConfig {
 
+    /**
+     * baseUrl必须斜杠结尾
+     *
+     * @return
+     */
     public abstract String getBaseUrl();
 
     /**
@@ -46,9 +50,10 @@ public abstract class GlobalHttpConfig {
     }
 
     /**
-     * 网络监测
+     * 如果检测器监测到没有网，直接报异常就不再请求接口。
+     * 因为没有网络的情况下去请求接口是毫无意义的
      *
-     * @return 如果检测器监测到没有网，直接报异常
+     * @return 网络监测器
      */
     public NetworkChecker getNetworkChecker() {
         return () -> NetCheckUtil.checkNet(Utils.getContext());

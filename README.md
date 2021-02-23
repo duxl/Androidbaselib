@@ -6,7 +6,7 @@
 
 
 
-## 引入方式一，复制代码
+## 引入方式一，复制代码（用config.gradle可以让每个module引用库的版本一致）
 
 1. **新建项目**
 
@@ -74,7 +74,7 @@ dependencies {
 
 
 
-## 引入方式二，gradle引入（推荐）
+## 引入方式二，gradle引入（推荐：不用拷贝大量代码，相对简单很多）
 
 1. **添加`jitpack`仓库地址**
 
@@ -86,6 +86,10 @@ dependencies {
 
    ```groovy
    implementation 'com.github.duxl:Androidbaselib:v1.0.0_bate'
+   
+   // annotationProcessor 在每个module中都必须配置才起作用
+   annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+   annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
    ```
 
 3. **修改app的主题样式**
@@ -105,12 +109,12 @@ dependencies {
 ### 页面基础通用
 
 ``` java
-// 隐藏状态栏，默认显示
+// 隐藏状态栏，默认显示（内容填充到状态栏区域）
 public void hideStateBar()
 ```
 
 ``` java
-// 显示状态栏，默认显示
+// 显示状态栏，默认显示（内容在状态栏区域之下）
 public void showStateBar()
 ```
 
@@ -127,7 +131,7 @@ public void setStateBarResource(int resId)
 *ActionBar与StateBar有如上相似的api，这里就不再累述*
 
 ```java
-// 设置ActionBar悬浮，也就是ActionBar透下去可已看到后面的内容
+// 设置ActionBar悬浮（澄侵式ActionBar），也就是ActionBar透下去可已看到后面的内容
 public void setActionBarFloat(boolean isFloat)
 ```
 
@@ -171,6 +175,8 @@ public void setStateBarDarkMode()
 public void setStateBarLightMode()
 ```
 
+*可配置全局[ActionBar](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_action_bar_config.xml)和[StatusView](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_status_view_config.xml)的样式*
+
 ### 页面刷新相关
 
 ```java
@@ -204,7 +210,7 @@ public void setOnLoadListener(OnLoadListener listener)
 
 ### http接口请求使用步骤
 
-1. 重写Application的getGlobalHttpConfig()，配置全局的baseUrl、log处理器、网络监测处理
+1. 重写Application的getGlobalHttpConfig()，配置全局的baseUrl、log处理器、网络监测处理、[code&msg](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_http_exception_reason.xml)
 
 2. 定义interface接口，用于描述接口地址和参数信息，示例如下
 
