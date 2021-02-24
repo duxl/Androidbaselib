@@ -39,21 +39,26 @@ public class WindowSoftInputCompat {
         FrameLayout content = activity.findViewById(android.R.id.content);
         //2､获取到setContentView放进去的View
         mChildOfContent = content.getChildAt(0);
+        // 注册监听前先移除避免多次注册
+        mChildOfContent.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         //3､给Activity的xml布局设置View树监听，当布局有变化，如键盘弹出或收起时，都会回调此监听
-        mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            //4､软键盘弹起会使GlobalLayout发生变化
-            public void onGlobalLayout() {
-                if (isfirst) {
-                    contentHeight = mChildOfContent.getHeight();//兼容华为等机型
-                    isfirst = false;
-                }
-                //5､当前布局发生变化时，对Activity的xml布局进行重绘
-                possiblyResizeChildOfContent();
-            }
-        });
+        mChildOfContent.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
         //6､获取到Activity的xml布局的放置参数
         frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
     }
+
+    private ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        //4､软键盘弹起会使GlobalLayout发生变化
+        @Override
+        public void onGlobalLayout() {
+            if (isfirst) {
+                contentHeight = mChildOfContent.getHeight();//兼容华为等机型
+                isfirst = false;
+            }
+            //5､当前布局发生变化时，对Activity的xml布局进行重绘
+            possiblyResizeChildOfContent();
+        }
+    };
 
     // 获取界面可用高度，如果软键盘弹起后，Activity的xml布局可用高度需要减去键盘高度
     private void possiblyResizeChildOfContent() {
