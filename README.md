@@ -175,7 +175,7 @@ public void setStateBarDarkMode()
 public void setStateBarLightMode()
 ```
 
-*可配置全局[ActionBar](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_action_bar_config.xml)和[StatusView](https://github.com/duxl/baselib/blob/master/src/main/res/values/global_status_view_config.xml)的样式*
+*可配置全局[ActionBar](https://github.com/duxl/Androidbaselib/blob/master/src/main/res/values/global_action_bar_config.xml)和[StatusView](https://github.com/duxl/Androidbaselib/blob/master/src/main/res/values/global_status_view_config.xml)的样式*
 
 ### 页面刷新相关
 
