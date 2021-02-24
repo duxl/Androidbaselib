@@ -48,4 +48,14 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ClearEditText">
+        <!-- 清除View控件id -->
+        <attr name="clear_viewId" format="reference" />
+        <!-- 清除后输入框是否自动获取焦点，默认true -->
+        <attr name="clear_requestFocus" format="boolean" />
+        <!-- 清除View初始是否可见，默认false -->
+        <attr name="clear_initVisible" format="boolean" />
+        <!-- 清除View点击后是否可见，默认false -->
+        <attr name="clear_clickVisible" format="boolean" />
+    </declare-styleable>
 </resources>
