@@ -17,7 +17,7 @@ public class WindowSoftInputCompat {
 
     /**
      * 在Activity初始化中调用此方法，解决键盘挡住输入框的问题，
-     * activity在Manifest注册时需要设置windowSoftInputMode="adjustResize
+     * activity在Manifest注册时需要设置windowSoftInputMode="adjustResize"
      *
      * @param activity 有输入框的activity，如果是fragment传所在的activity
      */
