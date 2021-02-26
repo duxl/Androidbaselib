@@ -1,6 +1,5 @@
 package com.duxl.baselib.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
