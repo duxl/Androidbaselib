@@ -56,7 +56,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         mXSmartRefreshLayout = findViewById(R.id.x_smart_refresh_layout);
         initSmartRefreshLayout(mXSmartRefreshLayout);
 
-        mFlContainer = findViewById(R.id.fl_container);
+        mFlContainer = findViewById(R.id.fl_container_base_activity);
         mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
         mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 

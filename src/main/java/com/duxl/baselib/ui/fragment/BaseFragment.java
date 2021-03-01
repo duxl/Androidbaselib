@@ -63,7 +63,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         mXSmartRefreshLayout = mRootContentView.findViewById(R.id.x_smart_refresh_layout);
         initSmartRefreshLayout(mXSmartRefreshLayout);
 
-        mFlContainer = mRootContentView.findViewById(R.id.fl_container);
+        mFlContainer = mRootContentView.findViewById(R.id.fl_container_base_fragment);
         mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
         mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
