@@ -51,6 +51,9 @@ public class RetrofitManager {
         NetworkInterceptor networkInterceptor = new NetworkInterceptor();
         builder.addInterceptor(networkInterceptor);
 
+        // 额外网络配置信息
+        BaseApplication.getInstance().getGlobalHttpConfig().configurationOKHttp(builder);
+
         OkHttpClient build = RetrofitUrlManager.getInstance().with(builder).build();
         // 创建Retrofit
         mRetrofit = new Retrofit.Builder()

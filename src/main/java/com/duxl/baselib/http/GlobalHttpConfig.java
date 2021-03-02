@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
@@ -57,5 +58,24 @@ public abstract class GlobalHttpConfig {
      */
     public NetworkChecker getNetworkChecker() {
         return () -> NetCheckUtil.checkNet(Utils.getContext());
+    }
+
+    /**
+     * 对OKHttp配置额外信息，比如https双向认证
+     *
+     * @param builder
+     */
+    public void configurationOKHttp(OkHttpClient.Builder builder) {
+        /*
+        builder.sslSocketFactory(socketFactory);
+        //解决报错javax.net.ssl.SSLPeerUnverifiedException: Hostname 127.0.0.1 not verified
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String s, SSLSession sslSession) {
+                System.out.println("主机:" + s);
+                return true;
+            }
+        });
+         */
     }
 }

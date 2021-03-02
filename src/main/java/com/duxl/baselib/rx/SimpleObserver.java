@@ -22,7 +22,7 @@ public abstract class SimpleObserver<T> implements Observer<T> {
 
     @Override
     public void onError(@NonNull Throwable e) {
-
+        e.printStackTrace();
     }
 
     @Override
