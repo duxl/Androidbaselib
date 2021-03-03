@@ -58,7 +58,7 @@ public class LogInterceptor implements Interceptor {
         }
 
         final int id = ID_GENERATOR.incrementAndGet();
-        {
+        { // 请求日志
             final String LOG_PREFIX = "[" + id + " request]";
             RequestBody requestBody = request.body();
             boolean hasRequestBody = requestBody != null;
@@ -104,20 +104,19 @@ public class LogInterceptor implements Interceptor {
 
                 if (isPlaintext(buffer)) {
                     final String bufferString = buffer.readString(charset);
-                    logger.log(LOG_PREFIX + bufferString);
                     if (contentType != null && "json".equals(contentType.subtype())) {
                         logger.log(LOG_PREFIX + "\n" + JSONFormatter.formatJSON(bufferString));
+                    } else {
+                        logger.log(LOG_PREFIX + bufferString);
                     }
-                    logger.log(LOG_PREFIX + "--> END " + request.method()
-                            + " (" + requestBody.contentLength() + "-byte body)");
+                    logger.log(LOG_PREFIX + "--> END " + request.method() + " (" + requestBody.contentLength() + "-byte body)");
                 } else {
-                    logger.log(LOG_PREFIX + "--> END " + request.method() + " (binary "
-                            + requestBody.contentLength() + "-byte body omitted)");
+                    logger.log(LOG_PREFIX + "--> END " + request.method() + " (binary " + requestBody.contentLength() + "-byte body omitted)");
                 }
             }
         }
 
-        {
+        { // 响应日志
             final String LOG_PREFIX = "[" + id + " response]";
             long startNs = System.nanoTime();
             Response response;
@@ -165,13 +164,12 @@ public class LogInterceptor implements Interceptor {
                     return response;
                 }
 
-//                if (contentLength != 0) {
                 final String bufferString = buffer.clone().readString(charset);
-                logger.log(LOG_PREFIX + bufferString);
                 if (contentType != null) {
                     logger.log(LOG_PREFIX + "\n" + JSONFormatter.formatJSON(bufferString));
+                } else {
+                    logger.log(LOG_PREFIX + bufferString);
                 }
-//                }
 
                 logger.log(LOG_PREFIX + "<-- END HTTP (" + buffer.size() + "-byte body)");
             }

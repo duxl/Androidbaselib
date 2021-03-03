@@ -15,11 +15,11 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/iv_action_back"
                 style="@style/style_action_bar_back" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/iv_action_close"
                 style="@style/style_action_bar_close"
                 tools:visibility="visible" />
@@ -50,7 +50,7 @@
                 style="@style/style_action_bar_right_text"
                 tools:visibility="visible" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/iv_action_right"
                 style="@style/style_action_bar_right_image"
                 tools:visibility="visible" />

@@ -35,7 +35,6 @@ import retrofit2.HttpException;
  * </pre>
  *
  * @param <R>
- *
  */
 public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R> {
 

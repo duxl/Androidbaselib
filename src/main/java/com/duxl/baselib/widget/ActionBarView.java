@@ -1,7 +1,6 @@
 package com.duxl.baselib.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.AppCompatImageView;
 
 import com.duxl.baselib.R;
 
@@ -27,8 +24,8 @@ public class ActionBarView extends LinearLayout {
     protected LinearLayout mLlCenter;
     protected LinearLayout mLlRight;
 
-    protected AppCompatImageView mIvBack;
-    protected AppCompatImageView mIvClose;
+    protected ImageView mIvBack;
+    protected ImageView mIvClose;
 
     protected TextView mTvTitle;
 
@@ -141,11 +138,11 @@ public class ActionBarView extends LinearLayout {
         return mLlRight;
     }
 
-    public AppCompatImageView getIvBack() {
+    public ImageView getIvBack() {
         return mIvBack;
     }
 
-    public AppCompatImageView getIvClose() {
+    public ImageView getIvClose() {
         return mIvClose;
     }
 
