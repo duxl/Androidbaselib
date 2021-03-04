@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.duxl.baselib.R;
 
 import java.util.Collection;
@@ -75,7 +77,6 @@ public class Utils {
     /**
      * get App versionName
      *
-     * @param context
      * @return
      */
     public static String getVersionName() {
@@ -126,16 +127,48 @@ public class Utils {
         return result.toString();
     }
 
-    public static String getMobileFormat(String theMobileStr) {
-        if (theMobileStr.length() == 11) {
-            return theMobileStr.substring(0, 3) + "\t" + theMobileStr.substring(3, 7) + "\t" + theMobileStr.substring(7);
+    /**
+     * 用指定的分隔符分割手号码，前3位一组，中间4位一组，后4位一组。
+     * 例如手机号：13577778888，分隔符：-，格式化后：135-7777-8888
+     *
+     * @param mobileNum 手机号
+     * @param delimiter 分隔符
+     * @return
+     */
+    public static String mobileFormat(String mobileNum, String delimiter) {
+        if (EmptyUtils.isNotNull(mobileNum) && mobileNum.length() == 11) {
+            return mobileNum.substring(0, 3) + delimiter + mobileNum.substring(3, 7) + delimiter + mobileNum.substring(7);
 
         } else {
-            return theMobileStr;
+            return mobileNum;
         }
 
     }
 
+    /**
+     * <pre>
+     * 手机号脱敏，将手机号后中间4位用指定的密文符替换
+     * 例如手机号：13577778888，密文符：*，脱敏后：135****8888
+     * <pre/>
+     * @param mobileNum  手机号码
+     * @param ciphertext 密文符
+     * @return 成功加敏返回加敏后的字符串，否则原样返回
+     */
+    public static String mobileDesensitization(String mobileNum, String ciphertext) {
+        if (EmptyUtils.isNotNull(mobileNum) && mobileNum.length() == 11) {
+            return mobileNum.substring(0, 3) + ciphertext + ciphertext + ciphertext + ciphertext + mobileNum.substring(7);
+
+        } else {
+            return mobileNum;
+        }
+    }
+
+    /**
+     * 是否是合法的手机号码，验证规则在string.xml字符串资源里面制定，子module可以更改规则
+     *
+     * @param mobileNum
+     * @return
+     */
     public static boolean isMobileNum(String mobileNum) {
         /**
          * 判断字符串是否符合手机号码格式
@@ -153,6 +186,37 @@ public class Utils {
         } else {
             return mobileNum.matches(telRegex);
         }
+    }
+
+    /**
+     * <pre>
+     *     名字脱敏，将姓名用指定的密文符替换
+     *     如果是两个字，将第一个字加敏，例如“张三”加敏后“*三”
+     *     如果是三个或多个字，将中间的字加敏，例如“王朝马汉”加敏后“王**汉”
+     * </pre>
+     *
+     * @param name       姓名
+     * @param ciphertext 密文符
+     * @return 成功加敏返回加敏后的字符串，否则原样返回
+     */
+    public static String nameDesensitization(String name, String ciphertext) {
+        if (EmptyUtils.isNotNull(name)) {
+            try {
+                if (name.length() == 2) {
+                    return ciphertext + name.substring(1);
+                } else if (name.length() > 2) {
+                    StringBuilder sb = new StringBuilder(name.substring(0, 1));
+                    for (int i = 1; i < name.length() - 1; i++) {
+                        sb.append(ciphertext);
+                    }
+                    sb.append(name.substring(name.length() - 2, name.length() - 1));
+                    return sb.toString();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return name;
     }
 
     /**

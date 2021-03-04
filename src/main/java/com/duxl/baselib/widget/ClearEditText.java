@@ -18,7 +18,7 @@ import com.duxl.baselib.R;
  * 监听输入内容是否为空，不为空显示清除按钮，点击清除按钮清空文本内容
  * create by duxl 2021/2/24
  */
-public class ClearEditText extends AppCompatEditText implements View.OnClickListener {
+public class ClearEditText extends AppCompatEditText {
 
     private int mClearViewId = -1; // 清空View的id
     private View mClearView; // 清空View
@@ -56,15 +56,18 @@ public class ClearEditText extends AppCompatEditText implements View.OnClickList
                 if (!mClearInitVisible) {
                     mClearView.setVisibility(View.INVISIBLE);
                 }
-                mClearView.setOnClickListener(this);
+                mClearView.setOnClickListener(this::onClickView);
                 setTextChangedListener();
             }
         }
     }
 
-    @Override
-    public void onClick(View v) {
+    private void onClickView(View v) {
         if (v == mClearView) {
+            if (mOnClearClickListener != null && mOnClearClickListener.onClearClick(mClearView)) {
+                return;
+            }
+
             getText().clear();
             if (!mClearClickVisible) {
                 mClearView.setVisibility(View.INVISIBLE);
@@ -92,5 +95,26 @@ public class ClearEditText extends AppCompatEditText implements View.OnClickList
                 }
             }
         });
+    }
+
+    public interface OnClearClickListener {
+        /**
+         * clear点击事件回调
+         *
+         * @param clearView
+         * @return 如果返回true表示已处理次事件，控件不再处理（清空内容），如果返回false会清空输入框内容
+         */
+        boolean onClearClick(View clearView);
+    }
+
+    private OnClearClickListener mOnClearClickListener;
+
+    /**
+     * 设置清除View被点击事件回调
+     *
+     * @param listener
+     */
+    public void setOnClearClickListener(OnClearClickListener listener) {
+        this.mOnClearClickListener = listener;
     }
 }
