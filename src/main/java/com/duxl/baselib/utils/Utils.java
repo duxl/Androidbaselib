@@ -220,6 +220,48 @@ public class Utils {
     }
 
     /**
+     * 字符串脱敏
+     *
+     * @param str         要脱敏的字符串
+     * @param ciphertext  密文符
+     * @param startLength 开始多少位不去敏
+     * @param endLength   结束多少位不去敏
+     * @return
+     */
+    public static String desensitization(String str, String ciphertext, int startLength, int endLength) {
+        if (EmptyUtils.isNotNull(str)) {
+            try {
+                if (startLength < 0 || endLength < 0) {
+                    return str;
+                }
+
+                if (startLength + endLength > str.length()) {
+                    return str;
+                }
+
+                StringBuilder sb = new StringBuilder();
+
+                if (str.length() >= startLength) {
+                    sb.append(str.substring(0, startLength));
+                }
+
+                for (int i = 0; i < str.length() - endLength - startLength; i++) {
+                    sb.append(ciphertext);
+                }
+
+                if (str.length() - endLength > 0) {
+                    sb.append(str.substring(str.length() - endLength));
+                }
+
+                return sb.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return str;
+    }
+
+    /**
      * 复制到剪切板
      *
      * @param text
