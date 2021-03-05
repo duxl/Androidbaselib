@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.duxl.baselib.R;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -374,6 +375,25 @@ public class Utils {
     public static String getAndroidId() {
         return Settings.Secure.getString(Utils.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
+    }
+
+    /**
+     * <pre>
+     * 将数组转为集合
+     * JDK自带有类似方法{@link java.util.Arrays#asList(java.lang.Object[])}
+     * 但如果需要对jdk转换后的集合做非读取操作的话，就会抛{@link java.lang.UnsupportedOperationException}异常
+     * 表示不支持请求的操作，这时就只能自己将数据转为集合了，也就是本方法
+     * <pre/>
+     * @param items
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> asList(T[] items) {
+        List<T> list = new ArrayList<>();
+        for (T item : items) {
+            list.add(item);
+        }
+        return list;
     }
 }
 
