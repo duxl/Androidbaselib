@@ -14,7 +14,7 @@ public class NullUtils {
      * @param text
      * @return
      */
-    public static CharSequence format(CharSequence text) {
+    public static String format(String text) {
         return format(text, "");
     }
 
@@ -26,7 +26,7 @@ public class NullUtils {
      * @param defaultValue
      * @return
      */
-    public static CharSequence format(CharSequence text, String defaultValue) {
+    public static String format(String text, String defaultValue) {
         if (EmptyUtils.isEmpty(text)) {
             return defaultValue;
         }
