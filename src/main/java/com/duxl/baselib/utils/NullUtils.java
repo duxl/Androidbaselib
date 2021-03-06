@@ -9,16 +9,28 @@ public class NullUtils {
 
     /**
      * 格式化字符串：
-     * 如果字符串为null返回“”，否则返回字符串本身
+     * 如果字符串为空返回""字符串，否则返回字符串本身
      *
-     * @param str
+     * @param text
      * @return
      */
-    public static String format(String str) {
-        if (EmptyUtils.isNull(str)) {
-            return "";
+    public static CharSequence format(CharSequence text) {
+        return format(text, "");
+    }
+
+    /**
+     * 格式化字符串：
+     * 如果字符串为空返回指定默认值，否则返回字符串本身
+     *
+     * @param text
+     * @param defaultValue
+     * @return
+     */
+    public static CharSequence format(CharSequence text, String defaultValue) {
+        if (EmptyUtils.isEmpty(text)) {
+            return defaultValue;
         }
-        return str;
+        return text;
     }
 
     /**
