@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * EmptyUtils
+ * EmptyUtils，验证传入参数是否为null或者集合是否未空集合
  * create by duxl 2020/8/18
  */
 public class EmptyUtils {

@@ -30,9 +30,9 @@ public class TimeUtils {
      * @param fromTime    原时间字符串
      * @return 成功格式化返回格式化后的时间字符串，否则返回原时间字符串
      */
-    public static String format(String fromPattern, String toPattern, String fromTime) {
+    public static CharSequence format(CharSequence fromPattern, CharSequence toPattern, CharSequence fromTime) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(toPattern);
+            SimpleDateFormat sdf = new SimpleDateFormat(toPattern.toString());
             return sdf.format(parse(fromPattern, fromTime));
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,10 +47,10 @@ public class TimeUtils {
      * @param fromTime    原时间字符串
      * @return 成功解析返回Date，失败返回null
      */
-    public static Date parse(String fromPattern, String fromTime) {
+    public static Date parse(CharSequence fromPattern, CharSequence fromTime) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(fromPattern);
-            return sdf.parse(fromTime);
+            SimpleDateFormat sdf = new SimpleDateFormat(fromPattern.toString());
+            return sdf.parse(fromTime.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

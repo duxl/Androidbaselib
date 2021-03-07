@@ -1,7 +1,7 @@
 package com.duxl.baselib.utils;
 
 /**
- * Null工具栏
+ * Null工具类，format方法将传入的参数转换为非null对象
  * create by duxl 2021/3/4
  */
 public class NullUtils {
@@ -14,7 +14,7 @@ public class NullUtils {
      * @param text
      * @return
      */
-    public static String format(String text) {
+    public static CharSequence format(CharSequence text) {
         return format(text, "");
     }
 
@@ -26,7 +26,7 @@ public class NullUtils {
      * @param defaultValue
      * @return
      */
-    public static String format(String text, String defaultValue) {
+    public static CharSequence format(CharSequence text, CharSequence defaultValue) {
         if (EmptyUtils.isEmpty(text)) {
             return defaultValue;
         }
