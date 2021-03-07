@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 手机号码正则表达式 -->
+    <string name="regex_mobile_no">^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$</string>
+    <!-- 邮箱 -->
+    <string name="regex_email">^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$</string>
+    <!-- url地址 -->
+    <string name="regex_url">^[a-zA-z]+://[^\s]$</string>
+    <!-- ip地址 -->
+    <string name="regex_ip">^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$</string>
+    <!-- 身份证号码（粗验证：只验证格式，最后一位校验码不一定正确） -->
+    <string name="regex_id_card">^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$</string>
+    <!-- 纯数字 -->
+    <string name="regex_digital">^\\d*$</string>
+    <!-- 任意字母，不区分大小写 -->
+    <string name="regex_letter">^[a-z,A-Z]*$</string>
+    <!-- 全小写字母 -->
+    <string name="regex_letter_lower">^[a-z]*$</string>
+    <!-- 全大写字母 -->
+    <string name="regex_letter_upper">^[A-Z]*$</string>
+    <!-- 全汉字 -->
+    <string name="regex_chinese">^[\\u4E00-\\u9FA5]*$</string>
+</resources>
