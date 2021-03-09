@@ -90,9 +90,7 @@ public class ClearEditText extends AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    mClearView.setVisibility(View.VISIBLE);
-                }
+                mClearView.setVisibility(s.length() > 0 ? View.VISIBLE : View.INVISIBLE);
             }
         });
     }
