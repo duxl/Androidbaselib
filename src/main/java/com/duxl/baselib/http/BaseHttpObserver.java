@@ -49,11 +49,12 @@ public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R
     @Override
     public void onNext(@NonNull R root) {
         if (root.isSuccess()) {
-            try {
-                onSuccess(root);
-            } catch (Exception e) {
-                onError(e);
-            }
+            onSuccess(root);
+//            try { // 放在try-catch里面的话，业务代码的异常会被catch掉
+//                onSuccess(root);
+//            } catch (Exception e) {
+//                onError(e);
+//            }
         } else {
             onError(root.getCode(), root.getMsg(), root);
         }

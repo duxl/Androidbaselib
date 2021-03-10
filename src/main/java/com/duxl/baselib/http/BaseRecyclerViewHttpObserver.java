@@ -60,7 +60,8 @@ public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extend
     public void onNext(@NonNull R root) {
         loadComplete();
         if (root.isSuccess()) {
-            try {
+
+//            try { // 放在try-catch里面的话，业务代码的异常会被catch掉
                 onSuccess(root);
                 List<T> list = getListData(root);
                 if (list != null) {
@@ -89,9 +90,9 @@ public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extend
                         }
                     }
                 }
-            } catch (Exception e) {
-                onError(e);
-            }
+//            } catch (Exception e) {
+//                onError(e);
+//            }
 
         } else {
             onError(root.getCode(), root.getMsg(), root);

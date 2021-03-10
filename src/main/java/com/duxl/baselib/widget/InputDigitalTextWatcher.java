@@ -57,6 +57,29 @@ public abstract class InputDigitalTextWatcher implements TextWatcher {
         this.mMaxValue = max;
     }
 
+    /**
+     * 设置可输入的小数位位数
+     *
+     * @param decimalCount 小数位位数
+     */
+    public void setDecimalCount(int decimalCount) {
+        this.mDecimalCount = decimalCount;
+    }
+
+    /**
+     * 设置可输入的最小值
+     *
+     * @param minValue 可输入的最小值
+     */
+    public void setMinValue(float minValue) {
+        this.mMinValue = minValue;
+    }
+
+    /**
+     * 设置可输入的最大值
+     *
+     * @param maxValue 可输入的最大值
+     */
     public void setMaxValue(float maxValue) {
         this.mMaxValue = maxValue;
     }
