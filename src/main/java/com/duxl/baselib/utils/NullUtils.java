@@ -136,4 +136,11 @@ public class NullUtils {
         }
         return num;
     }
+
+    public static <T> T format(T value, T defaultValue) {
+        if (EmptyUtils.isNull(value)) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
