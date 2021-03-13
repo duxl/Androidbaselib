@@ -1,8 +1,12 @@
 package com.duxl.baselib.utils;
 
 /**
- * Null工具类，format方法将传入的参数转换为非null对象
+ * <pre>
+ * Null工具类，format方法将传入的参数转换为非null对象。
+ * 与{@link EmptyUtils} 的区别是，{@link EmptyUtils} 用于验证判断，NullUtils是用于转换
+ * 前者着重判断，后者着重转换
  * create by duxl 2021/3/4
+ * </pre>
  */
 public class NullUtils {
 
