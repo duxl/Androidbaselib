@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 手机号码正则表达式 -->
-    <string name="regex_mobile_no">^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$</string>
+    <string name="regex_mobile_no">^((13[0-9])|(14[5,7,9])|(15[^4])|(16[6])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$</string>
     <!-- 邮箱 -->
     <string name="regex_email">^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$</string>
     <!-- url地址 -->
