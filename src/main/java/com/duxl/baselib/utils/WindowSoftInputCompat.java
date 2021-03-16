@@ -2,6 +2,7 @@ package com.duxl.baselib.utils;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
@@ -22,7 +23,18 @@ public class WindowSoftInputCompat {
      * @param activity 有输入框的activity，如果是fragment传所在的activity
      */
     public static void assist(Activity activity) {
-        new WindowSoftInputCompat(activity);
+        assist(activity, null);
+    }
+
+    /**
+     * 在Activity初始化中调用此方法，解决键盘挡住输入框的问题，
+     * activity在Manifest注册时需要设置windowSoftInputMode="adjustResize"
+     *
+     * @param activity 有输入框的activity，如果是fragment传所在的activity
+     * @param listener 键盘高度发生变化监听
+     */
+    public static void assist(Activity activity, OnHeightChangeListener listener) {
+        new WindowSoftInputCompat(activity, listener);
     }
 
     private View mChildOfContent;
@@ -32,8 +44,10 @@ public class WindowSoftInputCompat {
     private int contentHeight;//获取setContentView本来view的高度
     private boolean isfirst = true;//只用获取一次
     private int statusBarHeight;//状态栏高度
+    private OnHeightChangeListener mOnHeightChangeListener;
 
-    private WindowSoftInputCompat(Activity activity) {
+    private WindowSoftInputCompat(Activity activity, OnHeightChangeListener listener) {
+        mOnHeightChangeListener = listener;
         statusBarHeight = DisplayUtil.getBarHeight(activity);
         //1､找到Activity的最外层布局控件，它其实是一个DecorView,它所用的控件就是FrameLayout
         FrameLayout content = activity.findViewById(android.R.id.content);
@@ -76,27 +90,28 @@ public class WindowSoftInputCompat {
                 // 6､键盘弹出了，Activity的xml布局高度应当减去键盘高度
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     valueAnimator = ValueAnimator.ofInt(frameLayoutParams.height, usableHeightSansKeyboard - heightDifference + statusBarHeight);
-                    //frameLayoutParams.height = usableHeightSansKeyboard - heightDifference + statusBarHeight;
                 } else {
                     valueAnimator = ValueAnimator.ofInt(frameLayoutParams.height, usableHeightSansKeyboard - heightDifference);
-                    //frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
                 }
                 valueAnimator.setDuration(300);
             } else {
                 valueAnimator = ValueAnimator.ofInt(frameLayoutParams.height, contentHeight);
                 valueAnimator.setDuration(100);
-                //frameLayoutParams.height = contentHeight;
             }
             //7､ 重绘Activity的xml布局
             //mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
+            valueAnimator.addUpdateListener(animation -> {
+                int targetHeight = (int) animation.getAnimatedValue();
+                if (mOnHeightChangeListener != null) {
+                    mOnHeightChangeListener.onHeightChanged(contentHeight - targetHeight);
+                }
 
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    frameLayoutParams.height = (int) animation.getAnimatedValue();
+                if (mOnHeightChangeListener == null || mOnHeightChangeListener.resizeContentHeight()) {
+                    frameLayoutParams.height = targetHeight;
                     mChildOfContent.requestLayout();
                 }
+
             });
             valueAnimator.start();
         }
@@ -107,5 +122,27 @@ public class WindowSoftInputCompat {
         mChildOfContent.getWindowVisibleDisplayFrame(r);
         // 全屏模式下：直接返回r.bottom，r.top其实是状态栏的高度
         return (r.bottom - r.top);
+    }
+
+    /**
+     * 键盘高度发生变化监听
+     */
+    public static abstract class OnHeightChangeListener {
+
+        /**
+         * 当键盘高度发生变化时，是否更改Activity的内容高度，使输入框不被键盘遮挡
+         *
+         * @return 是否更改Activity内容高度，默认true
+         */
+        public boolean resizeContentHeight() {
+            return true;
+        }
+
+        /**
+         * 键盘高度发生变化
+         *
+         * @param softHeight 软键盘当前高度
+         */
+        public abstract void onHeightChanged(int softHeight);
     }
 }
