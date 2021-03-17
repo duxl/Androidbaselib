@@ -24,6 +24,15 @@ public class DoubleClickExit implements Runnable {
     /**
      * 退出app
      *
+     * @param toDesktop true回到桌面，false为关闭当前Activity
+     */
+    public void exit(boolean toDesktop) {
+        exit(toDesktop, null);
+    }
+
+    /**
+     * 退出app
+     *
      * @param toDesktop      true回到桌面，false为关闭当前Activity
      * @param promptRunnable 提示回调函数，可以在这个回调里面自定义提示效果；默认使用Toast提示，提示文案可在string中修改
      */
