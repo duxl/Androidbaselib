@@ -23,9 +23,10 @@
         style="@style/style_simple_status_view_text"
         android:text="数据加载中" />
 
-    <Button
+    <TextView
         android:id="@id/btn_status_view"
-        style="@style/style_simple_status_view_button" />
+        style="@style/style_simple_status_view_button"
+        tools:text="按钮" />
 
     <View
         android:layout_width="match_parent"

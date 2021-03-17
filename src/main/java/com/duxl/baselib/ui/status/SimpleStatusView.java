@@ -22,7 +22,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     protected int mErrCode;
     protected ImageView mIvStatus;
     protected TextView mTvStatus;
-    protected Button mBtnStatus;
+    protected TextView mBtnStatus;
 
     private IRefreshContainer mRefreshContainer;
 
