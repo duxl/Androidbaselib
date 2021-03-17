@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">baselib</string>
+    <string name="exit_app_confirm_msg">再按退出程序</string>
 </resources>
