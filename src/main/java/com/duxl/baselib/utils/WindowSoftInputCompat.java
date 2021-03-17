@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 /**
@@ -80,6 +81,7 @@ public class WindowSoftInputCompat {
         int usableHeightNow = computeUsableHeight();
         //2､如果当前可用高度和原始值不一样
         if (usableHeightNow != usableHeightPrevious) {
+            System.out.println("duxl:设置dialog距离屏幕底部的间距-------XXXXXXXXXXXXXX");
             //3､获取Activity中xml中布局在当前界面显示的高度
             int usableHeightSansKeyboard = mChildOfContent.getRootView().getHeight();
             //4､Activity中xml布局的高度-当前可用高度
@@ -93,14 +95,12 @@ public class WindowSoftInputCompat {
                 } else {
                     valueAnimator = ValueAnimator.ofInt(frameLayoutParams.height, usableHeightSansKeyboard - heightDifference);
                 }
-                valueAnimator.setDuration(300);
             } else {
                 valueAnimator = ValueAnimator.ofInt(frameLayoutParams.height, contentHeight);
-                valueAnimator.setDuration(100);
             }
+            valueAnimator.setDuration(30);
+            valueAnimator.setInterpolator(new DecelerateInterpolator()); // 变化速率从快到慢
             //7､ 重绘Activity的xml布局
-            //mChildOfContent.requestLayout();
-            usableHeightPrevious = usableHeightNow;
             valueAnimator.addUpdateListener(animation -> {
                 int targetHeight = (int) animation.getAnimatedValue();
                 if (mOnHeightChangeListener != null) {
@@ -114,6 +114,7 @@ public class WindowSoftInputCompat {
 
             });
             valueAnimator.start();
+            usableHeightPrevious = usableHeightNow;
         }
     }
 
