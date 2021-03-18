@@ -25,4 +25,22 @@ public class ArithmeticUtils {
     public static String formatValid(BigDecimal price) {
         return new DecimalFormat("#.#######################################").format(price);
     }
+
+    /**
+     * 根据传入的数字字符串实例化BigDecimal
+     *
+     * @param num
+     * @return
+     */
+    public static BigDecimal newBigDecimal(String num) {
+        try {
+            if (EmptyUtils.isNotEmpty(num)) {
+                num = num.replaceAll(",", ""); // 将数字中的分号全部去掉
+                return new BigDecimal(num);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new BigDecimal(0);
+    }
 }
