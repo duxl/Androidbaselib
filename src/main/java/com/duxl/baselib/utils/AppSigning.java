@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.text.TextUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +23,30 @@ public class AppSigning {
     /**
      * 返回一个签名的对应类型的字符串
      *
+     * @param context
+     * @param packageName
+     * @param type
+     * @return
+     */
+    public static String getSingInfo(Context context, String packageName, String type) {
+        ArrayList<String> singInfos = getSingInfos(context, packageName, type);
+        for (String singInfo : singInfos) {
+            if (!TextUtils.equals("error!", singInfo)) {
+                return singInfo;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 返回一个签名的对应类型的字符串集合
+     *
      * @param context     上下文
      * @param packageName 包名
      * @param type        签名类型：{@link #MD5}、{@link #SHA1}、{@link #SHA256}
      * @return
      */
-    public static ArrayList<String> getSingInfo(Context context, String packageName, String type) {
+    public static ArrayList<String> getSingInfos(Context context, String packageName, String type) {
         ArrayList<String> result = new ArrayList<String>();
         try {
             Signature[] signs = getSignatures(context, packageName);
