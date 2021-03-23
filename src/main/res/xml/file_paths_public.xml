@@ -11,13 +11,7 @@
   limitations under the License.
   -->
 <paths>
-    <external-path
+    <external-files-path
         name="my_images"
         path="Pictures" />
-    <external-path
-        name="external_storage_root"
-        path="." />
-    <external-files-path
-        name="download"
-        path="/download" />
 </paths>
