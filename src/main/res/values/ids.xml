@@ -3,4 +3,7 @@
     <item name="iv_status_view" type="id" />
     <item name="tv_status_view" type="id" />
     <item name="btn_status_view" type="id" />
+
+    <item name="progress_bar" type="id" />
+    <item name="progress_msg" type="id" />
 </resources>

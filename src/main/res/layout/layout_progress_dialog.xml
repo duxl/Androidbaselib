@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/progress_dialog_bg_style">
+
+    <ProgressBar
+        android:id="@id/progress_bar"
+        style="@style/progress_dialog_bar_view_style" />
+
+    <TextView
+        android:id="@id/progress_msg"
+        style="@style/progress_dialog_msg_view_style" />
+
+</LinearLayout>
