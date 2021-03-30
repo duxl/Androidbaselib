@@ -23,7 +23,7 @@ public class InterceptSwipeRefreshLayout extends SwipeRefreshLayout {
 
     public InterceptSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mInterceptHelper = new InterceptEventHelper(context, false);
+        mInterceptHelper = new InterceptEventHelper(context, true);
     }
 
     @Override

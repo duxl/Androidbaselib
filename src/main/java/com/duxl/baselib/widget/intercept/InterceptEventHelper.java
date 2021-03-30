@@ -43,11 +43,13 @@ public class InterceptEventHelper {
         int action = ev.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                //System.out.println("duxl:interceptTouchEvent#down.mTouchSlop=" + mTouchSlop);
                 mIsXMove = false;
                 startX = ev.getX();
                 startY = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
+                //System.out.println("duxl:interceptTouchEvent#move.mIsXMove=" + mIsXMove);
                 // 如果横向移动则不拦截，直接return false；
                 if (mIsXMove) {
                     return false;
@@ -56,14 +58,17 @@ public class InterceptEventHelper {
                 float endY = ev.getY();
                 float distanceX = Math.abs(endX - startX);
                 float distanceY = Math.abs(endY - startY);
+                //System.out.println("duxl:interceptTouchEvent#move.startX=" + startX + ", endX=" + endX + ", distanceX=" + distanceX + ", startY=" + startY + ", endY=" + endY + ", distanceY=" + distanceY);
                 // 如果dx>xy，则认定为左右滑动，将事件交给子view处理，return false
                 if (distanceX > mTouchSlop && distanceX > distanceY) {
+                    System.out.println("duxl:interceptTouchEvent#move.条件成立");
                     mIsXMove = true;
                     return false;
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                //System.out.println("duxl:interceptTouchEvent#up");
                 mIsXMove = false;
                 break;
         }

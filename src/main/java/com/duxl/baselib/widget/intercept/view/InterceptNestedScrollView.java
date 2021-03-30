@@ -24,7 +24,7 @@ public class InterceptNestedScrollView extends NestedScrollView {
 
     public InterceptNestedScrollView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mInterceptHelper = new InterceptEventHelper(context, false);
+        mInterceptHelper = new InterceptEventHelper(context, true);
     }
 
     @Override
