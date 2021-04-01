@@ -46,8 +46,10 @@ public class ToastUtils {
             toast.addCallback(new Toast.Callback() {
                 @Override
                 public void onToastHidden() {
-                    toast.removeCallback(this);
-                    toast = null;
+                    if(EmptyUtils.isNotNull(toast)) {
+                        toast.removeCallback(this);
+                        toast = null;
+                    }
                 }
             });
         }
