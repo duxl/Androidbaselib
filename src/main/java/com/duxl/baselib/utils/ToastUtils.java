@@ -1,6 +1,7 @@
 package com.duxl.baselib.utils;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -41,6 +42,15 @@ public class ToastUtils {
 
         toast = Toast.makeText(context, text, duration);
         toast.setGravity(Gravity.CENTER, 0, DisplayUtil.getScreenHeight(context) / 4);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            toast.addCallback(new Toast.Callback() {
+                @Override
+                public void onToastHidden() {
+                    toast.removeCallback(this);
+                    toast = null;
+                }
+            });
+        }
         toast.show();
     }
 
