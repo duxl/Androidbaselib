@@ -176,6 +176,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     /**
      * 设置ActionBar悬浮，也就是ActionBar透下去可已看到后面的内容
+     *
      * @param isFloat
      */
     public void setActionBarFloat(boolean isFloat) {
@@ -260,10 +261,18 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        mRootContentView = null;
+        mStateBar = null;
+        mActionBarView = null;
+        mXSmartRefreshLayout = null;
+        mContentView = null;
+        mFlContainer = null;
+        mStatusView = null;
+
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
+        super.onDestroy();
     }
 
     /**

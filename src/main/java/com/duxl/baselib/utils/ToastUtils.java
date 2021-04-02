@@ -7,6 +7,13 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.duxl.baselib.BuildConfig;
+import com.duxl.baselib.rx.SimpleObserver;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 
 /**
@@ -17,6 +24,7 @@ public class ToastUtils {
 
     private static Context context = Utils.getContext();
     private static Toast toast;
+    private static Disposable mDisposable;
 
     public static void show(int resId) {
         show(context.getResources().getText(resId), Toast.LENGTH_SHORT);
@@ -40,18 +48,40 @@ public class ToastUtils {
             toast = null;
         }
 
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+            mDisposable = null;
+        }
+
         toast = Toast.makeText(context, text, duration);
         toast.setGravity(Gravity.CENTER, 0, DisplayUtil.getScreenHeight(context) / 4);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             toast.addCallback(new Toast.Callback() {
                 @Override
                 public void onToastHidden() {
-                    if(EmptyUtils.isNotNull(toast)) {
+                    if (EmptyUtils.isNotNull(toast)) {
                         toast.removeCallback(this);
                         toast = null;
                     }
                 }
             });
+        } else {
+            Observable
+                    .timer(3, TimeUnit.SECONDS)
+                    .subscribe(new SimpleObserver<Long>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                            mDisposable = d;
+                        }
+
+                        @Override
+                        public void onNext(@NonNull Long aLong) {
+                            if (EmptyUtils.isNotNull(toast)) {
+                                toast = null;
+                            }
+                            mDisposable = null;
+                        }
+                    });
         }
         toast.show();
     }

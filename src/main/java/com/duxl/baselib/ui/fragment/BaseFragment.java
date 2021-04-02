@@ -233,10 +233,18 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        mRootContentView = null;
+        mStateBar = null;
+        mActionBarView = null;
+        mXSmartRefreshLayout = null;
+        mContentView = null;
+        mFlContainer = null;
+        mStatusView = null;
+
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
+        super.onDestroyView();
     }
 }
