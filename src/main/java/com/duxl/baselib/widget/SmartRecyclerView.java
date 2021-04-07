@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.duxl.baselib.R;
 import com.duxl.baselib.ui.status.IRefreshContainer;
 import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
@@ -38,6 +39,7 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
         setRefreshFooter(new ClassicsFooter(context));
 
         FrameLayout frameLayout = new FrameLayout(context);
+        frameLayout.setId(R.id.status_view_container);
 
         mRecyclerView = new RecyclerView(context);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -61,8 +63,9 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
     public void setStatusView(IStatusView statusView) {
         this.mStatusView = statusView;
         // 移除旧的状态View
-        FrameLayout frameLayout = (FrameLayout) getChildAt(getChildCount() - 1);
-        frameLayout.removeViewAt(frameLayout.getChildCount() - 1);
+
+        FrameLayout frameLayout = findViewById(R.id.status_view_container);
+        frameLayout.removeAllViews();
         frameLayout.addView(mStatusView.getView(), FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
     }

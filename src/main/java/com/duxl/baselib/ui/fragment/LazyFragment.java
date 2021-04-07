@@ -1,9 +1,19 @@
 package com.duxl.baselib.ui.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.duxl.baselib.R;
+
+import butterknife.ButterKnife;
 
 /**
  * 支持懒加载的Fragment
@@ -14,6 +24,21 @@ public abstract class LazyFragment extends BaseFragment {
     private boolean isVisible; // 是否可见
     private boolean isFirstVisible = true; // 是否第一次
     private boolean isAttach;
+
+    private ViewStub mViewStub;
+    private boolean mHasInflated; // 是否已经加载了真实的布局文件
+    private boolean mInflatedImmediately; // 是否立即加载布局文件
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mRootContentView = inflater.inflate(R.layout.fragment_lazy, container, false);
+        mViewStub = mRootContentView.findViewById(R.id.view_stub);
+        if (mInflatedImmediately) {
+            innerInflateLayout();
+        }
+        return mRootContentView;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -70,9 +95,64 @@ public abstract class LazyFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 加载布局文件，调用了此方法的Fragment被创建后布局文件会被立即加载
+     *
+     * @return
+     */
+    public LazyFragment inflateLayout() {
+        mInflatedImmediately = true;
+        innerInflateLayout();
+        return this;
+    }
+
+    /**
+     * 加载布局文件
+     */
+    protected void innerInflateLayout() {
+        if (mViewStub != null && !mHasInflated) {
+            //mViewStub.setVisibility(View.VISIBLE);
+            mViewStub.inflate();
+            // Fragment的背景色是基于Activity的，所以这里设置为透明
+            mRootContentView.findViewById(R.id.cl_root_content).setBackgroundColor(0x00000000);
+
+            mStateBar = mRootContentView.findViewById(R.id.v_state_bar);
+            initStateBar();
+            hideStateBar();
+
+            mActionBarView = mRootContentView.findViewById(R.id.action_bar_view);
+            initActionBar();
+            hideActionBar();
+
+            mXSmartRefreshLayout = mRootContentView.findViewById(R.id.x_smart_refresh_layout);
+            initSmartRefreshLayout(mXSmartRefreshLayout);
+
+            mFlContainer = mRootContentView.findViewById(R.id.fl_container_base);
+            mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
+
+            mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            mStatusView = initStatusView();
+            mFlContainer.addView(mStatusView.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            mUnbinder = ButterKnife.bind(this, mContentView);
+            initView(mContentView);
+
+            mHasInflated = true;
+        }
+    }
+
+    /**
+     * 可见状态改变处理函数
+     *
+     * @param visible
+     */
     protected void lazyHiddenChanged(boolean visible) {
         if (isVisible != visible) {
             isVisible = visible;
+            if (isVisible && isFirstVisible) {
+                innerInflateLayout();
+            }
             onLazyHiddenChanged(isVisible, isFirstVisible);
             isFirstVisible = false;
         }
@@ -85,4 +165,11 @@ public abstract class LazyFragment extends BaseFragment {
      * @param isFirstVisible 第一次可见的时候为true，其它为false
      */
     protected abstract void onLazyHiddenChanged(boolean isVisible, boolean isFirstVisible);
+
+    /**
+     * 布局文件
+     *
+     * @return
+     */
+    protected abstract int getLayoutResId();
 }

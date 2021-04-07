@@ -6,4 +6,6 @@
 
     <item name="progress_bar" type="id" />
     <item name="progress_msg" type="id" />
+
+    <item name="status_view_container" type="id" />
 </resources>

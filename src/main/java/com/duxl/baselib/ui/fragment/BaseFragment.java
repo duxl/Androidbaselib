@@ -51,7 +51,8 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootContentView = inflater.inflate(R.layout.fragment_base, null);
+        mRootContentView = inflater.inflate(R.layout.layout_page, container, false);
+        mRootContentView.setBackgroundColor(0x00000000); // Fragment的背景色是基于Activity的，所以这里设置为透明
         mStateBar = mRootContentView.findViewById(R.id.v_state_bar);
         initStateBar();
         hideStateBar();
@@ -63,7 +64,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         mXSmartRefreshLayout = mRootContentView.findViewById(R.id.x_smart_refresh_layout);
         initSmartRefreshLayout(mXSmartRefreshLayout);
 
-        mFlContainer = mRootContentView.findViewById(R.id.fl_container_base_fragment);
+        mFlContainer = mRootContentView.findViewById(R.id.fl_container_base);
         mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
         mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 

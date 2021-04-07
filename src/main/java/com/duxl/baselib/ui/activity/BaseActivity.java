@@ -46,7 +46,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initParams(getIntent());
-        setContentView(R.layout.activity_base);
+        setContentView(R.layout.layout_page);
         mStateBar = findViewById(R.id.v_state_bar);
         initStateBar();
 
@@ -56,7 +56,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         mXSmartRefreshLayout = findViewById(R.id.x_smart_refresh_layout);
         initSmartRefreshLayout(mXSmartRefreshLayout);
 
-        mFlContainer = findViewById(R.id.fl_container_base_activity);
+        mFlContainer = findViewById(R.id.fl_container_base);
         mContentView = getLayoutInflater().inflate(getLayoutResId(), null);
         mFlContainer.addView(mContentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
