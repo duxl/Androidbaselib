@@ -270,3 +270,77 @@ public void setOnLoadListener(OnLoadListener listener)
 BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
 
 
+
+## 工具类
+
+- **AlbumUtils**
+
+  *片选择和视频选择*
+
+- **AppSigning**
+
+  *获取app的签名信息*
+
+- **ArithmeticUtils**
+
+   *算数相关工具类*
+
+- **DesensitizationUtils**
+
+  脱敏工具类：例如手机号中间4个加星号，姓名加星号
+
+- **DisplayUtil**
+
+  *显示相关工具类：获取屏幕高宽；dp、sp与px的转换等*
+
+- **DoubleClickExit**
+
+  *双击退出屏幕*
+
+- **EmptyUtils**
+
+  *EmptyUtils，验证传入参数是否为null或者集合是否未空集合，数组是否为空数组。与NullUtils 的区别是，NullUtils 是用于转换，EmptyUtils用于验证判断。   前者着重转换，后者着重判断*
+
+- **MultiTaskMarkUtil**
+
+  *多任务标记工具类，可用于多个异步操作是否都执行完毕的判断举例：多个异步接口调用前显示dialog加载匡，所有接口都调用完毕后取消dialog这个工具类就可以用来记录这些接口是否都调用完毕，哪些已经调用完毕了*
+
+- **NetCheckUtil**
+
+  *网络监测相关：获取网络状态、是否连接网络等*
+
+- **NullUtils**
+
+  *Null工具类，format方法将传入的参数转换为非null对象。与EmptyUtils 的区别是，EmptyUtils 用于验证判断，NullUtils是用于转换前者着重判断，后者着重转换*
+
+- **RegexUtils**
+
+  *正则表达式工具类，提供了正则表达式验证方法和一些常用的正则规则*
+
+- **SpanUtils**
+
+  *字体加粗、斜体、变色等*
+
+- **SPUtils**
+
+  *SharedPreferences数据存储封装*
+
+- **TimeUtils**
+
+  *时间日期工具类*
+
+- **ToastUtils**
+
+  *Toast吐丝提示工具*
+
+- **Utils**
+
+  *其它工具*
+
+- **ViewClickDelayUtil**
+
+  *延迟控件的点击响应，避免快速连续点击*
+
+- **WindowSoftInputCompat**
+
+  *Android全屏／沉浸式状态栏下，键盘挡住输入框解决办法*
