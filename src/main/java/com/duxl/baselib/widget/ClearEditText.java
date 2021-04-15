@@ -25,6 +25,7 @@ public class ClearEditText extends AppCompatEditText {
     private boolean mClearRequestFocus; // 清空输入框后是否获取焦点
     private boolean mClearInitVisible; // 清空View初始是否可见，默认false
     private boolean mClearClickVisible; // 清空View点击后是否可见，默认false
+    private boolean mClearEnable; // 是否启用清空功能
 
     public ClearEditText(@NonNull Context context) {
         this(context, null);
@@ -43,6 +44,7 @@ public class ClearEditText extends AppCompatEditText {
             mClearRequestFocus = typedArray.getBoolean(R.styleable.ClearEditText_clear_requestFocus, true);
             mClearInitVisible = typedArray.getBoolean(R.styleable.ClearEditText_clear_initVisible, false);
             mClearClickVisible = typedArray.getBoolean(R.styleable.ClearEditText_clear_clickVisible, false);
+            mClearEnable = typedArray.getBoolean(R.styleable.ClearEditText_clear_clickVisible, true);
             typedArray.recycle();
         }
     }
@@ -64,6 +66,10 @@ public class ClearEditText extends AppCompatEditText {
 
     private void onClickView(View v) {
         if (v == mClearView) {
+            if (!mClearEnable) {
+                return;
+            }
+
             if (mOnClearClickListener != null && mOnClearClickListener.onClearClick(mClearView)) {
                 return;
             }
@@ -90,6 +96,9 @@ public class ClearEditText extends AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (!mClearEnable) {
+                    return;
+                }
                 mClearView.setVisibility(s.length() > 0 ? View.VISIBLE : View.INVISIBLE);
             }
         });
@@ -114,5 +123,77 @@ public class ClearEditText extends AppCompatEditText {
      */
     public void setOnClearClickListener(OnClearClickListener listener) {
         this.mOnClearClickListener = listener;
+    }
+
+    /**
+     * 是否启用清空功能
+     *
+     * @return 返回是否启用清空功能
+     */
+    public boolean isClearEnable() {
+        return mClearEnable;
+    }
+
+    /**
+     * 设置是否启用清空功能
+     *
+     * @param clearEnable 是否启用清空功能
+     */
+    public void setClearEnable(boolean clearEnable) {
+        this.mClearEnable = clearEnable;
+    }
+
+    /**
+     * 获取清空输入框后是否获取焦点
+     *
+     * @return 返回清空输入框后是否获取焦点
+     */
+    public boolean isClearRequestFocus() {
+        return mClearRequestFocus;
+    }
+
+    /**
+     * 设置清空输入框后是否获取焦点
+     *
+     * @param requestFocus 清空输入框后是否获取焦点
+     */
+    public void setClearRequestFocus(boolean requestFocus) {
+        this.mClearRequestFocus = requestFocus;
+    }
+
+    /**
+     * 获取清空View初始是否可见，默认false
+     *
+     * @return 返回清空View初始是否可见，默认false
+     */
+    public boolean isClearInitVisible() {
+        return mClearInitVisible;
+    }
+
+    /**
+     * 设置清空View初始是否可见，默认false
+     *
+     * @param visible 清空View初始是否可见
+     */
+    public void setClearInitVisible(boolean visible) {
+        this.mClearInitVisible = visible;
+    }
+
+    /**
+     * 获取清空View点击后是否可见，默认false
+     *
+     * @return 返回清空View点击后是否可见，默认false
+     */
+    public boolean isClearClickVisible() {
+        return mClearClickVisible;
+    }
+
+    /**
+     * 设置清空View点击后是否可见，默认false
+     *
+     * @param visible 清空View点击后是否可见
+     */
+    public void setClearClickVisible(boolean visible) {
+        this.mClearClickVisible = visible;
     }
 }

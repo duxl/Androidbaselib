@@ -57,5 +57,7 @@
         <attr name="clear_initVisible" format="boolean" />
         <!-- 清除View点击后是否可见，默认false -->
         <attr name="clear_clickVisible" format="boolean" />
+        <!-- 是否启用清空功能，默认true -->
+        <attr name="clear_enable" format="boolean" />
     </declare-styleable>
 </resources>
