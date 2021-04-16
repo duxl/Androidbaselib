@@ -55,8 +55,10 @@ public class ClearEditText extends AppCompatEditText {
         if (mClearViewId != -1 && mClearView == null) {
             mClearView = ((ViewGroup) getParent()).findViewById(mClearViewId);
             if (mClearView != null) {
-                if (!mClearInitVisible && getText().length() == 0) {
-                    mClearView.setVisibility(View.INVISIBLE);
+                if (mClearEnable) {
+                    if (!mClearInitVisible && getText().length() == 0) {
+                        mClearView.setVisibility(View.INVISIBLE);
+                    }
                 }
                 mClearView.setOnClickListener(this::onClickView);
                 setTextChangedListener();
