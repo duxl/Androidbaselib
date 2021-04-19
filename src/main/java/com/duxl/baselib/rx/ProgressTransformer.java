@@ -20,6 +20,7 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
 
     protected ProgressDialog mProgressDialog;
     private WeakReference<Context> mContextReference;
+    private boolean mAutoDismiss = true;
 
     public ProgressTransformer(Context context) {
         this(context, false, true);
@@ -46,6 +47,15 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
         }
     }
 
+    /**
+     * 设置对话框是否自动消失
+     *
+     * @param dismiss 是否自动消失，默认true
+     */
+    public void setAutoDismiss(boolean dismiss) {
+        this.mAutoDismiss = dismiss;
+    }
+
     protected ProgressDialog getProgressDialog() {
         if (EmptyUtils.isNotNull(mContextReference.get())) {
             return new ProgressDialog(mContextReference.get());
@@ -58,17 +68,21 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
         return upstream
                 .doOnSubscribe(disposable -> {
                 })
+                .doOnNext(t -> {
+                    dismiss();
+                })
                 .doOnTerminate(() -> {
-                    if (EmptyUtils.isNotNull(mProgressDialog)) {
-                        mProgressDialog.dismiss();
-                        mProgressDialog = null;
-                    }
+                    dismiss();
                 })
                 .doOnDispose(() -> {
-                    if (EmptyUtils.isNotNull(mProgressDialog)) {
-                        mProgressDialog.dismiss();
-                        mProgressDialog = null;
-                    }
+                    dismiss();
                 });
+    }
+
+    public void dismiss() {
+        if (mAutoDismiss && EmptyUtils.isNotNull(mProgressDialog)) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 }
