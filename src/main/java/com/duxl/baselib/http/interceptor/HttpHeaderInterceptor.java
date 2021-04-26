@@ -32,7 +32,11 @@ public class HttpHeaderInterceptor implements Interceptor {
         Request.Builder requestBuilder = oldRequest.newBuilder();
         requestBuilder.method(oldRequest.method(), oldRequest.body());
         for (Map.Entry<String, String> entry : BaseApplication.getInstance().getGlobalHttpConfig().getHeaders().entrySet()) {
-            requestBuilder.addHeader(entry.getKey(), entry.getValue());
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (EmptyUtils.isNotEmpty(key) && EmptyUtils.isNotNull(value)) {
+                requestBuilder.addHeader(key, value);
+            }
         }
         Request newRequest = requestBuilder.build();
         return chain.proceed(newRequest);
