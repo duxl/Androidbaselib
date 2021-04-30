@@ -34,7 +34,7 @@ public class ArithmeticUtils {
      *
      * @param num          原始数字
      * @param scale        原始小数位位数，scale <= 0 表示没有小数位
-     * @param newScale     需要保留的小数位位数，newScale <=0 表示保留原始小数位
+     * @param newScale     需要保留的小数位位数，newScale < 0 表示保留原始小数位
      * @param groupSize    整数部分逗号分割位数，当 groupSize >=0 时起效
      * @param roundingMode 保留小数位的模式：
      *                     舍 {@link java.math.RoundingMode#DOWN}、
