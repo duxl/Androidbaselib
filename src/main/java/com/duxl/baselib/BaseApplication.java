@@ -3,6 +3,7 @@ package com.duxl.baselib;
 import android.app.Application;
 
 import com.duxl.baselib.http.GlobalHttpConfig;
+import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
 
 import java.util.HashMap;
@@ -20,6 +21,11 @@ public class BaseApplication extends Application {
         super.onCreate();
         mInstance = this;
         Utils.init(this);
+
+        ActivityLifecycleCallbacks lifecycleCallbacks = getActivityLifecycleCallbacks();
+        if (EmptyUtils.isNotNull(lifecycleCallbacks)) {
+            registerActivityLifecycleCallbacks(lifecycleCallbacks);
+        }
     }
 
     public static BaseApplication getInstance() {
@@ -33,5 +39,14 @@ public class BaseApplication extends Application {
      */
     public GlobalHttpConfig getGlobalHttpConfig() {
         return null;
+    }
+
+    /**
+     * Activity生命周期回调
+     *
+     * @return
+     */
+    public BaseActivityLifecycleCallbacks getActivityLifecycleCallbacks() {
+        return new BaseActivityLifecycleCallbacks();
     }
 }

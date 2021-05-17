@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">baselib</string>
     <string name="exit_app_confirm_msg">再按退出程序</string>
+    <string name="install_apk_failed">安装失败</string>
 </resources>
