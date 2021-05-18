@@ -85,7 +85,7 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate3.3'
    
    // annotationProcessor 在每个module中都必须配置才起作用
    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
@@ -277,6 +277,14 @@ BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
 
   *片选择和视频选择*
 
+- **APKManager**
+
+  *安装apk，版本升级*
+
+- **AppManager**
+
+  *统一管理activity生命周期 以及其他操作等*
+
 - **AppSigning**
 
   *获取app的签名信息*
@@ -284,6 +292,10 @@ BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
 - **ArithmeticUtils**
 
    *算数相关工具类*
+
+- **BinaryUtils**
+
+   *二进制位运算工具*
 
 - **DesensitizationUtils**
 
