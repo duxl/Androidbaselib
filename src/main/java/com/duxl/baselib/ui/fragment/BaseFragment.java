@@ -244,7 +244,10 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         mStatusView = null;
 
         if (mUnbinder != null) {
-            mUnbinder.unbind();
+            try {
+                mUnbinder.unbind();
+            } catch (Exception e) {
+            }
         }
         super.onDestroyView();
     }

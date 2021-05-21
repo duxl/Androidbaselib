@@ -16,7 +16,19 @@ import com.duxl.baselib.R;
 import butterknife.ButterKnife;
 
 /**
- * 支持懒加载的Fragment
+ * <pre>
+ *     支持懒加载的Fragment
+ *
+ *     特点：
+ *     1、Fragment第一次出现在前台时才回调{@link #initView(View)}
+ *     2、Fragment可见状态变化时，回调{@link #onLazyHiddenChanged(boolean, boolean)}
+ *     3、可调用 {@link #inflateLayout()} 方法触发立即加载布局文件，从而触发{@link #initView(View)}方法，
+ *      {@link #inflateLayout()}方法在ViewPager中预加载下一个页面特别有用
+ *     4、使用ViewPager的PagerAdapter时，构造函数需传入behavior参数才能达到懒加载在Android低版本兼容
+ *     例如 new FragmentPagerAdapter(manager, BEHAVIOR_SET_USER_VISIBLE_HINT)
+ *     5、将 {@link androidx.viewpager.widget.ViewPager#setOffscreenPageLimit(int) ViewPager#setOffscreenPageLimit(int)}
+ *     设置到最大值效果更佳
+ * </pre>
  * create by duxl 2021/1/29
  */
 public abstract class LazyFragment extends BaseFragment {
@@ -85,7 +97,9 @@ public abstract class LazyFragment extends BaseFragment {
         this.isVisibleToUser = isVisibleToUser;
         if (isAttach) {
             lazyHiddenChanged(isVisibleToUser);
-            // ViewPager中Fragment嵌套的子Fragment不会调用setUserVisibleHint方法
+            // ViewPager中Fragment嵌套的子Fragment不会调用setUserVisibleHint方法（注意：Android低版本有可
+            // 能会调setUserVisibleHint，为了达到统一效果，构造PagerAdapter的时候一定要传
+            // FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT 这个参数）
             // 这里手动调用子Fragment的setUserVisibleHint方法
             if (getChildFragmentManager().getFragments() != null) {
                 for (Fragment childFragment : getChildFragmentManager().getFragments()) {
