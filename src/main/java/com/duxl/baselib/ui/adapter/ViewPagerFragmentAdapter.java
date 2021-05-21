@@ -23,7 +23,11 @@ public class ViewPagerFragmentAdapter<T extends Fragment> extends FragmentPagerA
     }
 
     public ViewPagerFragmentAdapter(FragmentManager fm, List<T> fragments) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        this(fm, fragments, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    public ViewPagerFragmentAdapter(FragmentManager fm, List<T> fragments, int behavior) {
+        super(fm, behavior);
         this.mFragments = fragments;
     }
 
