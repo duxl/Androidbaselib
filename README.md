@@ -85,7 +85,7 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate3.3.2'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate3.3.3'
    
    // annotationProcessor 在每个module中都必须配置才起作用
    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
@@ -268,6 +268,16 @@ public void setOnLoadListener(OnLoadListener listener)
 ## BaseFragment API
 
 BaseActivity 的 Api 在 BaseFragment中都有对应的，这里不再累述
+
+
+
+## LazyFragment
+
+LazyFragment继承至BaseFragment，扩充了懒加载的支持
+
+`inflateLayout()` 加载布局文件，调用了此方法的Fragment会失去懒加载的功能，跟普通BaseFragment一样
+
+`onLazyHiddenChanged(isVisible, isFirstVisible)` fragment可见状态改变的时候回调
 
 
 
