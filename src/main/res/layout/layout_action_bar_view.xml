@@ -11,9 +11,7 @@
 
         <LinearLayout
             android:id="@+id/ll_action_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            style="@style/style_action_bar_left">
 
             <ImageView
                 android:id="@+id/iv_action_back"
@@ -28,9 +26,7 @@
 
         <LinearLayout
             android:id="@+id/ll_action_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            style="@style/style_action_bar_center">
 
             <TextView
                 android:id="@+id/tv_action_title"
@@ -39,11 +35,7 @@
 
         <LinearLayout
             android:id="@+id/ll_action_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical">
+            style="@style/style_action_bar_right">
 
             <TextView
                 android:id="@+id/tv_action_right"

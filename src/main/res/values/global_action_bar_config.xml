@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--======================== 定义ActionBar样式 ========================-->
     <!-- 定义ActionBar样式 -->
     <color name="action_bar_bg_color">#FFFFFF</color>
 
@@ -7,6 +8,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/action_bar_bg_color</item>
+    </style>
+
+
+    <!--======================== 左边样式定义 ========================-->
+    <!-- 左边样式定义 -->
+    <style name="style_action_bar_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- 返回按钮样式定义 -->
@@ -29,9 +39,18 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">10dp</item>
-        <item name="android:src">@drawable/action_bar_back</item>
+        <item name="android:src">@drawable/action_bar_close</item>
         <item name="android:visibility">gone</item>
         <item name="android:scaleType">centerInside</item>
+    </style>
+
+
+    <!--======================== 中间样式定义 ========================-->
+    <!-- 中间样式定义 -->
+    <style name="style_action_bar_center">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
     </style>
 
     <!-- 标题样式定义 -->
@@ -48,6 +67,17 @@
         <item name="android:text">标题</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">@dimen/action_bar_title_size</item>
+    </style>
+
+
+    <!--======================== 右边样式定义 ========================-->
+    <!-- 右边样式定义 -->
+    <style name="style_action_bar_right">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- 右边TextView样式定义 -->
@@ -81,6 +111,8 @@
         <item name="android:scaleType">centerInside</item>
     </style>
 
+
+    <!--======================== 顶部分割线样式 ========================-->
     <!-- 定义顶部分割线样式 -->
     <bool name="action_bar_bottom_line_visible">false</bool>
     <color name="action_bar_bottom_line_color">#DDDDDD</color>
