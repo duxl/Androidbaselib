@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="iv_status_view" type="id" />
-    <item name="tv_status_view" type="id" />
-    <item name="btn_status_view" type="id" />
 
     <item name="progress_bar" type="id" />
     <item name="progress_msg" type="id" />
 
     <item name="status_view_container" type="id" />
+
+    <!-- action bar view  -->
+    <item name="rl_bar" type="id" />
+    <item name="ll_action_left" type="id" />
+    <item name="iv_action_back" type="id" />
+    <item name="iv_action_close" type="id" />
+    <item name="ll_action_center" type="id" />
+    <item name="tv_action_title" type="id" />
+    <item name="ll_action_right" type="id" />
+    <item name="tv_action_right" type="id" />
+    <item name="iv_action_right" type="id" />
+    <item name="bottom_action_line" type="id" />
+
+    <!-- status view -->
+    <item name="iv_status_view" type="id" />
+    <item name="tv_status_view" type="id" />
+    <item name="btn_status_view" type="id" />
 </resources>

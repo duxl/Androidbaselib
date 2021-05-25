@@ -46,7 +46,7 @@ public class ActionBarView extends LinearLayout {
         super(context, attrs, defStyleAttr);
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER_VERTICAL);
-        initView(context);
+        setLayout(R.layout.layout_action_bar_view);
 
         /*
         if (attrs != null) {
@@ -103,8 +103,9 @@ public class ActionBarView extends LinearLayout {
 
     }
 
-    protected void initView(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.layout_action_bar_view, this, true);
+    public void setLayout(int layoutResId) {
+        removeAllViews();
+        LayoutInflater.from(getContext()).inflate(layoutResId, this, true);
         mRlBar = findViewById(R.id.rl_bar);
 
         mLlLeft = findViewById(R.id.ll_action_left);
