@@ -197,11 +197,33 @@ public class ActionBarView extends LinearLayout {
         }
     }
 
+    /**
+     * 设置标题
+     *
+     * @param title 标题
+     */
     public void setTitle(CharSequence title) {
-        setTitle(title, View.VISIBLE);
+        setTitle(title, true);
     }
 
-    public void setTitle(CharSequence title, int visibility) {
+    /**
+     * 设置标题
+     *
+     * @param title         标题
+     * @param titleToCenter 标题居中
+     */
+    public void setTitle(CharSequence title, boolean titleToCenter) {
+        setTitle(title, View.VISIBLE, titleToCenter);
+    }
+
+    /**
+     * 设置标题
+     *
+     * @param title         标题
+     * @param visibility    是否显示标题
+     * @param titleToCenter 是否标题居中
+     */
+    public void setTitle(CharSequence title, int visibility, boolean titleToCenter) {
         if (getTvTitle() != null) {
             resetTitleToCenter(() -> {
                 getTvTitle().setText(title);
@@ -247,26 +269,38 @@ public class ActionBarView extends LinearLayout {
     }
 
     /**
-     * 设置标题居中，当标题左右图标显示状态改变时，调用此方法
+     * 设置标题居中，当标题左右图标显示状态改变时，调用此方法可使标题居中显示（ps：原本标题就是居中显示）
      */
     public void resetTitleToCenter() {
         resetTitleToCenter(null);
     }
 
     /**
-     * 设置标题居中，当标题左右图标显示状态改变时，调用此方法
+     * 设置标题居中，当标题左右图标显示状态改变时，调用此方法可使标题居中显示（ps：原本标题就是居中显示）
+     *
+     * @param runnable 设置完居中后的回调
      */
     public void resetTitleToCenter(Runnable runnable) {
-        if (getTvTitle() != null) {
+        if (getTvTitle() != null && getLlCenter() != null) {
             getTvTitle().post(() -> {
-                int startWidth = getLlLeft().getWidth();
-                int endWidth = getLlRight().getWidth();
+                int startWidth = 0;
+                if (getLlLeft() != null) {
+                    startWidth = getLlLeft().getWidth();
+                }
+                int endWidth = 0;
+                if (getLlRight() != null) {
+                    endWidth = getLlRight().getWidth();
+                }
                 int maxWidth = Math.max(startWidth, endWidth);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLlCenter().getLayoutParams();
-                params.setMargins(maxWidth, 0, maxWidth, 0);
-                getTvTitle().requestLayout();
-                if (runnable != null) {
-                    runnable.run();
+                try {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLlCenter().getLayoutParams();
+                    params.setMargins(maxWidth, 0, maxWidth, 0);
+                    getTvTitle().requestLayout();
+                    if (runnable != null) {
+                        runnable.run();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }
