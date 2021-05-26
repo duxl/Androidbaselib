@@ -225,10 +225,15 @@ public class ActionBarView extends LinearLayout {
      */
     public void setTitle(CharSequence title, int visibility, boolean titleToCenter) {
         if (getTvTitle() != null) {
-            resetTitleToCenter(() -> {
+            if (titleToCenter) {
+                resetTitleToCenter(() -> {
+                    getTvTitle().setText(title);
+                    getTvTitle().setVisibility(visibility);
+                });
+            } else {
                 getTvTitle().setText(title);
-                getTvTitle().setVisibility(VISIBLE);
-            });
+                getTvTitle().setVisibility(visibility);
+            }
         }
     }
 
