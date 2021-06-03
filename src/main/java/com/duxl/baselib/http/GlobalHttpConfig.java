@@ -1,5 +1,6 @@
 package com.duxl.baselib.http;
 
+import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.http.interceptor.NetworkChecker;
 import com.duxl.baselib.utils.NetCheckUtil;
 import com.duxl.baselib.utils.Utils;
@@ -16,6 +17,15 @@ import okhttp3.Response;
  * create by duxl 2020/8/18
  */
 public abstract class GlobalHttpConfig {
+
+    /**
+     * 是否开发模式，开发模式会打印日志信息
+     *
+     * @return
+     */
+    public boolean isDEBUG() {
+        return BuildConfig.DEBUG;
+    }
 
     /**
      * baseUrl必须斜杠结尾

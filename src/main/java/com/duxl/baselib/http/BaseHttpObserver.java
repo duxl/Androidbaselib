@@ -2,6 +2,7 @@ package com.duxl.baselib.http;
 
 import android.os.Looper;
 
+import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.http.interceptor.NoNetworkException;
 import com.duxl.baselib.utils.ToastUtils;
@@ -63,7 +64,7 @@ public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R
 
     @Override
     public void onError(@NonNull Throwable e) {
-        if (BuildConfig.DEBUG) {
+        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
             e.printStackTrace();
         }
         HttpExceptionReason exceptionReason = getReasonByException(e);

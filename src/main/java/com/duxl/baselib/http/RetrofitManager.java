@@ -43,7 +43,7 @@ public class RetrofitManager {
 
 //        HttpCacheInterceptor httpCacheInterceptor = new HttpCacheInterceptor();
 //        builder.addInterceptor(httpCacheInterceptor);
-        if (BuildConfig.DEBUG) {
+        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
             builder.addInterceptor(new LogInterceptor());
         }
 

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.rx.SimpleObserver;
 
@@ -123,7 +124,7 @@ public class ToastUtils {
 
 
     public static void showLongWhenDebug(CharSequence text) {
-        if (BuildConfig.DEBUG) {
+        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
             show(text, Toast.LENGTH_LONG);
         }
     }
