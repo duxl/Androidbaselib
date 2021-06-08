@@ -11,23 +11,15 @@ import com.duxl.baselib.utils.Utils;
  * create by duxl 2020/8/15
  */
 public class BaseApplication extends Application {
-
-    private static BaseApplication mInstance;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        mInstance = this;
         Utils.setApp(this);
 
         ActivityLifecycleCallbacks lifecycleCallbacks = getActivityLifecycleCallbacks();
         if (EmptyUtils.isNotNull(lifecycleCallbacks)) {
             registerActivityLifecycleCallbacks(lifecycleCallbacks);
         }
-    }
-
-    public static BaseApplication getInstance() {
-        return mInstance;
     }
 
     /**

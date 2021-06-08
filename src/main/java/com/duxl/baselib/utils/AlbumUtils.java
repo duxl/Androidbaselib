@@ -124,7 +124,7 @@ public class AlbumUtils {
             creator.addFilter(getFilter());
         }
         creator.capture(isCapture())
-                .captureStrategy(new CaptureStrategy(false, BaseApplication.getInstance().getPackageName() + ".fileprovider"))
+                .captureStrategy(new CaptureStrategy(false, Utils.getApp().getPackageName() + ".fileprovider"))
                 //是否只显示选择的类型的缩略图，就不会把所有图片视频都放在一起，而是需要什么展示什么
                 .showSingleMediaType(true)
                 //有序选择图片 123456...

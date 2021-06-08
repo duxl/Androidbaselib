@@ -1,9 +1,9 @@
 package com.duxl.baselib.http.interceptor;
 
 
-import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.http.interceptor.formatter.JSONFormatter;
 import com.duxl.baselib.utils.EmptyUtils;
+import com.duxl.baselib.utils.Utils;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -49,8 +49,8 @@ public class LogInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (EmptyUtils.isNotNull(BaseApplication.getInstance().getGlobalHttpConfig())) {
-            Response response = BaseApplication.getInstance().getGlobalHttpConfig().intercept(chain);
+        if (EmptyUtils.isNotNull(Utils.getApp().getGlobalHttpConfig())) {
+            Response response = Utils.getApp().getGlobalHttpConfig().intercept(chain);
             if (EmptyUtils.isNotNull(response)) {
                 return response;
             }

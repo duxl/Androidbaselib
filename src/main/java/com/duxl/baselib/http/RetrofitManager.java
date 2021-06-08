@@ -6,6 +6,7 @@ import com.duxl.baselib.http.interceptor.HttpHeaderInterceptor;
 import com.duxl.baselib.http.interceptor.LogInterceptor;
 import com.duxl.baselib.http.interceptor.NetworkInterceptor;
 import com.duxl.baselib.utils.EmptyUtils;
+import com.duxl.baselib.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,8 +27,8 @@ public class RetrofitManager {
     private Retrofit mRetrofit;
 
     private RetrofitManager() {
-        if (EmptyUtils.isNull(BaseApplication.getInstance().getGlobalHttpConfig())
-                || EmptyUtils.isEmpty(BaseApplication.getInstance().getGlobalHttpConfig().getBaseUrl())) {
+        if (EmptyUtils.isNull(Utils.getApp().getGlobalHttpConfig())
+                || EmptyUtils.isEmpty(Utils.getApp().getGlobalHttpConfig().getBaseUrl())) {
             throw new IllegalArgumentException("需要将你的Appliaction继承至BaseApplication，并重写getGlobalHttpConfig和实现getBaseUrl方法，getBaseUrl不能为空");
         }
 
@@ -43,7 +44,7 @@ public class RetrofitManager {
 
 //        HttpCacheInterceptor httpCacheInterceptor = new HttpCacheInterceptor();
 //        builder.addInterceptor(httpCacheInterceptor);
-        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
+        if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
             builder.addInterceptor(new LogInterceptor());
         }
 
@@ -52,7 +53,7 @@ public class RetrofitManager {
         builder.addInterceptor(networkInterceptor);
 
         // 额外网络配置信息
-        BaseApplication.getInstance().getGlobalHttpConfig().configurationOKHttp(builder);
+        Utils.getApp().getGlobalHttpConfig().configurationOKHttp(builder);
 
         OkHttpClient build = RetrofitUrlManager.getInstance().with(builder).build();
         // 创建Retrofit
@@ -60,7 +61,7 @@ public class RetrofitManager {
                 .client(build)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BaseApplication.getInstance().getGlobalHttpConfig().getBaseUrl())
+                .baseUrl(Utils.getApp().getGlobalHttpConfig().getBaseUrl())
                 .build();
     }
 

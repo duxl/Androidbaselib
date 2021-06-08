@@ -40,6 +40,9 @@ public class Utils {
      * @param app 上下文
      */
     public static <T extends BaseApplication> void setApp(T app) {
+        if (Utils.mAppReference != null) {
+            Utils.mAppReference.clear();
+        }
         Utils.mAppReference = new SoftReference<>(app);
     }
 

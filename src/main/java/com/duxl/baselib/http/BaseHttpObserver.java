@@ -6,6 +6,7 @@ import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.http.interceptor.NoNetworkException;
 import com.duxl.baselib.utils.ToastUtils;
+import com.duxl.baselib.utils.Utils;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
@@ -64,7 +65,7 @@ public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R
 
     @Override
     public void onError(@NonNull Throwable e) {
-        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
+        if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
             e.printStackTrace();
         }
         HttpExceptionReason exceptionReason = getReasonByException(e);

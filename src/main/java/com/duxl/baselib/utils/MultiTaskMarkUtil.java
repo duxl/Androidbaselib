@@ -4,9 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.IntRange;
 
-import com.duxl.baselib.BaseApplication;
-import com.duxl.baselib.BuildConfig;
-
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.ObservableTransformer;
@@ -62,13 +59,13 @@ public class MultiTaskMarkUtil {
     }
 
     private synchronized void isLoadComplete() {
-        if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
+        if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
             printCompleteTask();
         }
         if (mCompleteFlag == ((1 << mTaskCount) - 1)) { // 所有接口解决加载完毕
             if (mOnAllCompleteListener != null) {
                 mOnAllCompleteListener.onAllComplete();
-                if (BaseApplication.getInstance().getGlobalHttpConfig().isDEBUG()) {
+                if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
                     Log.i(TAG, "已完成Tasks: ----- All -----");
                 }
             }
