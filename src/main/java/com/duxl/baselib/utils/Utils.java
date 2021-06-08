@@ -10,12 +10,10 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
+import com.duxl.baselib.BaseApplication;
 
-import com.duxl.baselib.R;
-
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -30,29 +28,29 @@ import static android.content.Context.CLIPBOARD_SERVICE;
  */
 public class Utils {
 
-    private static Context context;
+    private static SoftReference<BaseApplication> mAppReference;
 
     private Utils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 
     /**
-     * 初始化工具类
+     * 设置Application对象
      *
-     * @param context 上下文
+     * @param app 上下文
      */
-    public static void init(Context context) {
-        Utils.context = context;
+    public static <T extends BaseApplication> void setApp(T app) {
+        Utils.mAppReference = new SoftReference<>(app);
     }
 
     /**
-     * 获取ApplicationContext
+     * 获取Application
      *
-     * @return ApplicationContext
+     * @return Application
      */
-    public static Context getContext() {
-        if (context != null) {
-            return context;
+    public static BaseApplication getApp() {
+        if (mAppReference != null) {
+            return mAppReference.get();
         }
         throw new NullPointerException("u should init first");
     }
@@ -63,11 +61,14 @@ public class Utils {
      * @return
      */
     public static int getVersionCode() {
-        PackageManager packageManager = context.getPackageManager();
+        if (getApp() == null) {
+            return 0;
+        }
+        PackageManager packageManager = getApp().getPackageManager();
         PackageInfo packageInfo;
         int versionCode = 0;
         try {
-            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            packageInfo = packageManager.getPackageInfo(getApp().getPackageName(), 0);
             versionCode = packageInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -81,11 +82,14 @@ public class Utils {
      * @return
      */
     public static String getVersionName() {
-        PackageManager packageManager = context.getPackageManager();
+        if (getApp() == null) {
+            return "";
+        }
+        PackageManager packageManager = getApp().getPackageManager();
         PackageInfo packageInfo;
         String versionName = "";
         try {
-            packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            packageInfo = packageManager.getPackageInfo(getApp().getPackageName(), 0);
             versionName = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -100,7 +104,10 @@ public class Utils {
      * @return
      */
     public static String copyToClipboard(String text) {
-        ClipboardManager myClipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        if (getApp() == null) {
+            return null;
+        }
+        ClipboardManager myClipboard = (ClipboardManager) getApp().getSystemService(CLIPBOARD_SERVICE);
         ClipData myClip = ClipData.newPlainText("text", text);
         myClipboard.setPrimaryClip(myClip);
         return text;
@@ -115,7 +122,7 @@ public class Utils {
     public static boolean isServiceRunning(String className) {
         boolean isRunning = false;
         ActivityManager activityManager = (ActivityManager)
-                getContext().getSystemService(Context.ACTIVITY_SERVICE);
+                getApp().getSystemService(Context.ACTIVITY_SERVICE);
         //此处只在前30个中查找，大家根据需要调整
         List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);
         if (!(serviceList.size() > 0)) {
@@ -132,7 +139,10 @@ public class Utils {
 
     //boolean hasInstalled = AppUtils.checkHasInstalledApp(context, "com.xunmeng.pinduoduo");
     public static boolean checkHasInstalledApp(String pkgName) {
-        PackageManager pm = context.getPackageManager();
+        if (getApp() == null) {
+            return false;
+        }
+        PackageManager pm = getApp().getPackageManager();
         boolean app_installed;
         try {
             pm.getPackageInfo(pkgName, PackageManager.GET_GIDS);
@@ -153,14 +163,14 @@ public class Utils {
      * @return 如果没有获取成功(没有对应值 ， 或者异常)，则返回值为空
      */
     public static String getAppMetaData(String key) {
-        if (context == null || TextUtils.isEmpty(key)) {
+        if (getApp() == null || TextUtils.isEmpty(key)) {
             return null;
         }
         String channelNumber = null;
         try {
-            PackageManager packageManager = context.getPackageManager();
+            PackageManager packageManager = getApp().getPackageManager();
             if (packageManager != null) {
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getApp().getPackageName(), PackageManager.GET_META_DATA);
                 if (applicationInfo != null) {
                     if (applicationInfo.metaData != null) {
                         channelNumber = applicationInfo.metaData.getString(key);
@@ -174,7 +184,7 @@ public class Utils {
     }
 
     public static String getAndroidId() {
-        return Settings.Secure.getString(Utils.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        return Settings.Secure.getString(Utils.getApp().getContentResolver(), Settings.Secure.ANDROID_ID);
 
     }
 
@@ -241,6 +251,7 @@ public class Utils {
 
     /**
      * 获取数据大小
+     *
      * @param size
      * @return
      */

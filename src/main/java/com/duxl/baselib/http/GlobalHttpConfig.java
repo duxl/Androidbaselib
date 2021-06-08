@@ -67,7 +67,7 @@ public abstract class GlobalHttpConfig {
      * @return 网络监测器
      */
     public NetworkChecker getNetworkChecker() {
-        return () -> NetCheckUtil.checkNet(Utils.getContext());
+        return () -> NetCheckUtil.checkNet(Utils.getApp());
     }
 
     /**

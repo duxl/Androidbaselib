@@ -214,7 +214,7 @@ public class NetCheckUtil {
      */
     public static String getIPAddress() {
         try {
-            NetworkInfo info = ((ConnectivityManager) Utils.getContext()
+            NetworkInfo info = ((ConnectivityManager) Utils.getApp()
                     .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
             if (info != null && info.isConnected()) {
                 if (info.getType() == ConnectivityManager.TYPE_MOBILE) {    // 当前使用2G/3G/4G网络
@@ -233,7 +233,7 @@ public class NetCheckUtil {
                     }
 
                 } else if (info.getType() == ConnectivityManager.TYPE_WIFI) {    // 当前使用无线网络
-                    WifiManager wifiManager = (WifiManager) Utils.getContext().getSystemService(Context.WIFI_SERVICE);
+                    WifiManager wifiManager = (WifiManager) Utils.getApp().getSystemService(Context.WIFI_SERVICE);
                     WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                     String ipAddress = intIP2StringIP(wifiInfo.getIpAddress());    // 得到IPV4地址
                     return ipAddress;

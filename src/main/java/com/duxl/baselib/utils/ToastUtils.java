@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.duxl.baselib.BaseApplication;
-import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.rx.SimpleObserver;
 
 import java.util.concurrent.TimeUnit;
@@ -23,7 +22,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ToastUtils {
 
-    private static Context context = Utils.getContext();
+    private static Context context = Utils.getApp();
     private static Toast toast;
     private static Disposable mDisposable;
 

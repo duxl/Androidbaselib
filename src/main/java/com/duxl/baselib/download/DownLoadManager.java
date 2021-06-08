@@ -18,7 +18,7 @@ public class DownLoadManager {
     /**
      * app内部下载目录（使用内部私有目录，不存在权限问题）
      */
-    public static File EXTERNAL_FILE_DIR = Utils.getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+    public static File EXTERNAL_FILE_DIR = Utils.getApp().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
 
 
     private static DownLoadManager downLoadManager;
@@ -36,7 +36,7 @@ public class DownLoadManager {
 
     private static void initFileDownloader() {
         if (FileDownloadHelper.getAppContext() == null) {
-            FileDownloader.setup(Utils.getContext());
+            FileDownloader.setup(Utils.getApp());
         }
     }
 

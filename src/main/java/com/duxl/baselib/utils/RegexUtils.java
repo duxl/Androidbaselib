@@ -20,25 +20,25 @@ public class RegexUtils {
      */
     public interface RegexConstants {
         /***  手机号码 */
-        String MOBILE_NUM = Utils.getContext().getString(R.string.regex_mobile_no);
+        String MOBILE_NUM = Utils.getApp().getString(R.string.regex_mobile_no);
         /*** 邮箱 */
-        String EMAIL = Utils.getContext().getString(R.string.regex_email);
+        String EMAIL = Utils.getApp().getString(R.string.regex_email);
         /*** url地址 */
-        String URL = Utils.getContext().getString(R.string.regex_url);
+        String URL = Utils.getApp().getString(R.string.regex_url);
         /*** ip地址 */
-        String IP = Utils.getContext().getString(R.string.regex_ip);
+        String IP = Utils.getApp().getString(R.string.regex_ip);
         /*** 身份证号码（粗验证：只验证格式，最后一位校验码不一定正确） */
-        String ID_CARD = Utils.getContext().getString(R.string.regex_id_card);
+        String ID_CARD = Utils.getApp().getString(R.string.regex_id_card);
         /*** 纯数字 */
-        String DIGITAL = Utils.getContext().getString(R.string.regex_digital);
+        String DIGITAL = Utils.getApp().getString(R.string.regex_digital);
         /*** 任意字母，不区分大小写 */
-        String LETTER = Utils.getContext().getString(R.string.regex_letter);
+        String LETTER = Utils.getApp().getString(R.string.regex_letter);
         /*** 全小写字母 */
-        String LETTER_LOWER = Utils.getContext().getString(R.string.regex_letter_lower);
+        String LETTER_LOWER = Utils.getApp().getString(R.string.regex_letter_lower);
         /*** 全大写字母 */
-        String LETTER_UPPER = Utils.getContext().getString(R.string.regex_letter_upper);
+        String LETTER_UPPER = Utils.getApp().getString(R.string.regex_letter_upper);
         /*** 全汉字 */
-        String CHINESE = Utils.getContext().getString(R.string.regex_chinese);
+        String CHINESE = Utils.getApp().getString(R.string.regex_chinese);
     }
 
     /**

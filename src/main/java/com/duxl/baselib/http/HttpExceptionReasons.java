@@ -16,12 +16,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason PARSE_ERROR = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_parse_error_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_parse_error_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_parse_error_msg);
+            return Utils.getApp().getString(R.string.http_exception_parse_error_msg);
         }
     };
 
@@ -32,12 +32,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason BAD_NETWORK = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_bad_network_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_bad_network_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_bad_network_msg);
+            return Utils.getApp().getString(R.string.http_exception_bad_network_msg);
         }
     };
 
@@ -47,12 +47,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason CONNECT_ERROR = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_connect_error_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_connect_error_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_connect_error_msg);
+            return Utils.getApp().getString(R.string.http_exception_connect_error_msg);
         }
     };
 
@@ -62,12 +62,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason CONNECT_TIMEOUT = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_connect_timeout_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_connect_timeout_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_connect_timeout_msg);
+            return Utils.getApp().getString(R.string.http_exception_connect_timeout_msg);
         }
     };
 
@@ -77,12 +77,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason CONNECT_NO = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_connect_no_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_connect_no_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_connect_no_msg);
+            return Utils.getApp().getString(R.string.http_exception_connect_no_msg);
         }
     };
 
@@ -92,12 +92,12 @@ public interface HttpExceptionReasons {
     HttpExceptionReason UNKNOWN_ERROR = new HttpExceptionReason() {
         @Override
         public int getCode() {
-            return Utils.getContext().getResources().getInteger(R.integer.http_exception_unknown_error_code);
+            return Utils.getApp().getResources().getInteger(R.integer.http_exception_unknown_error_code);
         }
 
         @Override
         public String getMsg() {
-            return Utils.getContext().getString(R.string.http_exception_unknown_error_msg);
+            return Utils.getApp().getString(R.string.http_exception_unknown_error_msg);
         }
     };
 }
