@@ -54,9 +54,6 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         mRootContentView = inflater.inflate(R.layout.layout_page, container, false);
         mRootContentView.setBackgroundColor(0x00000000); // Fragment的背景色是基于Activity的，所以这里设置为透明
         mStateBar = mRootContentView.findViewById(R.id.v_state_bar);
-        initStateBar();
-        hideStateBar();
-
         mActionBarView = mRootContentView.findViewById(R.id.action_bar_view);
         initActionBar();
         hideActionBar();
@@ -87,6 +84,7 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     protected void initStateBar() {
         //如果Android版本大于4.4，说明状态栏就可以被透明，我们自己的布局就可以放到状态栏之下
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            /* // 布局内容是否放到状态栏之下取决于Fragment依附的Activity，这里不需要设置，注释掉多余的代码
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 View decorView = getActivity().getWindow().getDecorView();
                 int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -96,7 +94,9 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
             } else {
                 getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             }
+             */
 
+            // 设置状态栏高度
             int stateBarHeight = DisplayUtil.getBarHeight(getActivity().getApplicationContext());
             mStateBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, stateBarHeight));
         }
