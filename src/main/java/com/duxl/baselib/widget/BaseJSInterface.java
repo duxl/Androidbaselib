@@ -38,14 +38,14 @@ public abstract class BaseJSInterface {
      *
      * @return
      */
-    protected abstract BaseActivity getWebActivity();
+    protected abstract <T extends BaseActivity> T getWebActivity();
 
     /**
      * WebView的容器Fragment
      *
      * @return
      */
-    protected abstract BaseFragment getWebFragment();
+    protected abstract <T extends BaseFragment> T getWebFragment();
 
     /**
      * 落网图片加载
