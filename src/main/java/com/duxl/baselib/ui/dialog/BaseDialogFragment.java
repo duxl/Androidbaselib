@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.dialog;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
 
     private static final float DEFAULT_DIM = 0.5f;
     private Unbinder mUnbinder;
+    private OnDismissListener mOnDismissListener;
+
 
     @LayoutRes
     public abstract int getResId();
@@ -69,6 +72,9 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public void onDestroyView() {
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(this);
+        }
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
@@ -121,4 +127,11 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment {
         }
     }
 
+    public interface OnDismissListener {
+        void onDismiss(BaseDialogFragment dialogFragment);
+    }
+
+    public void setOnDismissListener(OnDismissListener listener) {
+        this.mOnDismissListener = listener;
+    }
 }
