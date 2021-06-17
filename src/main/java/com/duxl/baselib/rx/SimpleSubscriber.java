@@ -1,9 +1,10 @@
-package com.duxl.baselib.widget;
+package com.duxl.baselib.rx;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 /**
+ * SimpleSubscriber
  * create by duxl 2021/6/17
  */
 public class SimpleSubscriber<T> implements Subscriber<T> {
