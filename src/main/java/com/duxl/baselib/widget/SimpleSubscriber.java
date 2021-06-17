@@ -6,7 +6,7 @@ import org.reactivestreams.Subscription;
 /**
  * create by duxl 2021/6/17
  */
-public class SimpleSubscriber<T> extends Subscriber<T> {
+public class SimpleSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onSubscribe(Subscription s) {
