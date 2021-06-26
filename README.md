@@ -85,7 +85,7 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate5.3.0'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate5.3.1'
    
    // annotationProcessor 在每个module中都必须配置才起作用
    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'

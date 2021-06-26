@@ -41,6 +41,40 @@ public class TimeUtils {
     }
 
     /**
+     * 格式化时间
+     *
+     * @param toPattern 格式化后的格式
+     * @param fromTime  原时间
+     * @return 成功格式化返回格式化后的时间字符串，否则返回原时间字符串
+     */
+    public static CharSequence format(CharSequence toPattern, long fromTime) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(toPattern.toString());
+            return sdf.format(new Date(fromTime));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(fromTime);
+    }
+
+    /**
+     * 格式化时间
+     *
+     * @param toPattern 格式化后的格式
+     * @param fromTime  原时间
+     * @return 成功格式化返回格式化后的时间字符串，否则返回原时间字符串
+     */
+    public static CharSequence format(CharSequence toPattern, Date fromTime) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(toPattern.toString());
+            return sdf.format(fromTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(fromTime.getTime());
+    }
+
+    /**
      * 解析时间
      *
      * @param fromPattern 原时间格式

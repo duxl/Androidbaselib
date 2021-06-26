@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.adapter;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -50,6 +51,10 @@ public class ViewPagerFragmentAdapter<T extends Fragment> extends FragmentPagerA
         return mFragments.get(position);
     }
 
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 
     /**
      * 返回需要展示的fangment数量
