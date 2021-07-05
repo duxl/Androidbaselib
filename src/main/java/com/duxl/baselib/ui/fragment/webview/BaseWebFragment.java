@@ -50,6 +50,7 @@ public class BaseWebFragment extends LazyFragment {
 
         initArgs();
         initWebView(mWebView);
+        setJavascriptInterface(mWebView);
 
         if (!EmptyUtils.isEmpty(mTitle)) {
             setTitle(mTitle);
@@ -102,7 +103,18 @@ public class BaseWebFragment extends LazyFragment {
      *
      * @param webView
      */
-    protected void initWebView(WebView webView) {
+    protected WebSettings initWebView(WebView webView) {
+        WebSettings webSettings = BaseWebFragment.initCommonSettings(webView);
+        webSettings.setUserAgentString(getUserAgentString(webSettings));
+        return webSettings;
+    }
+
+    /**
+     * webView通用基本设置
+     *
+     * @param webView
+     */
+    public static WebSettings initCommonSettings(WebView webView) {
         WebSettings webSettings = webView.getSettings();
         webSettings.setUseWideViewPort(true);
         webSettings.setJavaScriptEnabled(true);
@@ -132,14 +144,12 @@ public class BaseWebFragment extends LazyFragment {
 //        webSettings.setDatabasePath(cacheDirPath);
 //        webSettings.setAppCachePath(cacheDirPath);
 //        webSettings.setAppCacheEnabled(false);
-        webSettings.setUserAgentString(getUserAgentString(webSettings));
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webSettings.setBlockNetworkImage(false);
-
-        setJavascriptInterface(mWebView);
+        return webSettings;
     }
 
     /**

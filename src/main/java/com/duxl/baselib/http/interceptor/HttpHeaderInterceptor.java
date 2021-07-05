@@ -1,7 +1,6 @@
 package com.duxl.baselib.http.interceptor;
 
 
-import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
 
@@ -25,14 +24,14 @@ public class HttpHeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         if (Utils.getApp().getGlobalHttpConfig() == null
-                || EmptyUtils.isEmpty(Utils.getApp().getGlobalHttpConfig().getHeaders())) {
+                || EmptyUtils.isEmpty(Utils.getApp().getGlobalHttpConfig().getHeaders(chain))) {
             return chain.proceed(chain.request());
         }
 
         Request oldRequest = chain.request();
         Request.Builder requestBuilder = oldRequest.newBuilder();
         requestBuilder.method(oldRequest.method(), oldRequest.body());
-        for (Map.Entry<String, String> entry : Utils.getApp().getGlobalHttpConfig().getHeaders().entrySet()) {
+        for (Map.Entry<String, String> entry : Utils.getApp().getGlobalHttpConfig().getHeaders(chain).entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             if (EmptyUtils.isNotEmpty(key) && EmptyUtils.isNotNull(value)) {

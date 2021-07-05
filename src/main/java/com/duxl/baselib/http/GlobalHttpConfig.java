@@ -39,7 +39,7 @@ public abstract class GlobalHttpConfig {
      *
      * @return
      */
-    public HashMap<String, String> getHeaders() {
+    public HashMap<String, String> getHeaders(Interceptor.Chain chain) {
         return null;
     }
 
