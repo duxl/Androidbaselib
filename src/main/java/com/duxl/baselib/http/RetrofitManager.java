@@ -1,7 +1,5 @@
 package com.duxl.baselib.http;
 
-import com.duxl.baselib.BaseApplication;
-import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.http.interceptor.HttpHeaderInterceptor;
 import com.duxl.baselib.http.interceptor.LogInterceptor;
 import com.duxl.baselib.http.interceptor.NetworkInterceptor;

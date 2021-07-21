@@ -2,6 +2,7 @@ package com.duxl.baselib;
 
 import android.app.Application;
 
+import com.duxl.baselib.download.DownLoadManager;
 import com.duxl.baselib.http.GlobalHttpConfig;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
@@ -15,6 +16,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Utils.setApp(this);
+        DownLoadManager.getInstance().
 
         ActivityLifecycleCallbacks lifecycleCallbacks = getActivityLifecycleCallbacks();
         if (EmptyUtils.isNotNull(lifecycleCallbacks)) {

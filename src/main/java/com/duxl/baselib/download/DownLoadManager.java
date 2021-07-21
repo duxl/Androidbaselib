@@ -2,12 +2,16 @@ package com.duxl.baselib.download;
 
 import android.os.Environment;
 
+import com.duxl.baselib.BaseApplication;
 import com.duxl.baselib.utils.Utils;
 import com.liulishuo.filedownloader.FileDownloadLargeFileListener;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.util.FileDownloadHelper;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 
 /**
@@ -37,6 +41,20 @@ public class DownLoadManager {
     private static void initFileDownloader() {
         if (FileDownloadHelper.getAppContext() == null) {
             FileDownloader.setup(Utils.getApp());
+
+            // 更换下载默认实现，改为OKHttp方式下载
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                    .readTimeout(5 * 60, TimeUnit.SECONDS)
+                    .writeTimeout(5 * 60, TimeUnit.SECONDS)
+                    .connectTimeout(30, TimeUnit.SECONDS);
+
+            // 添加 SSL 认证
+            Utils.getApp().getGlobalHttpConfig().configurationOKHttp(builder);
+
+            FileDownloader
+                    .setupOnApplicationOnCreate(Utils.getApp())
+                    .connectionCreator(new OkHttp3Connection.Creator(builder)) // 自实现 OkHttp3Connection
+                    .commit();
         }
     }
 
