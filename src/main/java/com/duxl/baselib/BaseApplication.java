@@ -16,7 +16,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Utils.setApp(this);
-        DownLoadManager.getInstance().
+        DownLoadManager.getInstance();
 
         ActivityLifecycleCallbacks lifecycleCallbacks = getActivityLifecycleCallbacks();
         if (EmptyUtils.isNotNull(lifecycleCallbacks)) {
