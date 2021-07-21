@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.activity.BaseActivity;
-import com.duxl.baselib.ui.fragment.BaseFragment;
 import com.duxl.baselib.ui.fragment.LazyFragment;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
@@ -44,7 +43,8 @@ public class BaseWebFragment extends LazyFragment {
         setOnLoadListener(new SimpleOnLoadListener() {
             @Override
             public void onRefresh() {
-                mWebView.loadUrl("javascript:onAppWebRefresh()");
+                //mWebView.loadUrl("javascript:onAppWebRefresh()");
+                mWebView.evaluateJavascript("javascript:onAppWebRefresh()", null);
             }
         });
 
@@ -67,6 +67,19 @@ public class BaseWebFragment extends LazyFragment {
 
     }
 
+    public WebView getWebView() {
+        return mWebView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mWebView != null) {
+            mWebView.removeAllViews();
+            mWebView.destroy();
+        }
+        super.onDestroyView();
+    }
+
     @Override
     protected boolean getDisableContentWhenRefresh() {
         return false;
@@ -83,13 +96,24 @@ public class BaseWebFragment extends LazyFragment {
     }
 
     @Override
+    protected void onClickActionBack(View v) {
+        mWebView.evaluateJavascript("javascript:onAppWebBackClick()", result -> {
+            if (!"true".equals(result)) {
+                super.onClickActionBack(v);
+            }
+        });
+    }
+
+    @Override
     protected void onClickActionIvRight(View v) {
-        mWebView.loadUrl("javascript:onAppWebRightImageClick()");
+        //mWebView.loadUrl("javascript:onAppWebRightImageClick()");
+        mWebView.evaluateJavascript("javascript:onAppWebRightImageClick()", null);
     }
 
     @Override
     protected void onClickActionTvRight(View v) {
-        mWebView.loadUrl("javascript:onAppWebRightTextClick()");
+        //mWebView.loadUrl("javascript:onAppWebRightTextClick()");
+        mWebView.evaluateJavascript("javascript:onAppWebRightTextClick()", null);
     }
 
     protected void initArgs() {
@@ -160,7 +184,7 @@ public class BaseWebFragment extends LazyFragment {
      */
     protected String getUserAgentString(WebSettings webSettings) {
         String userAgent = webSettings.getUserAgentString();
-        userAgent += MessageFormat.format(" AppAndroid_{0}_{1}", Utils.getVersionCode(), Utils.getVersionName());
+        userAgent += MessageFormat.format(" AppAndroid/{0}/{1}", Utils.getVersionCode(), Utils.getVersionName());
         return userAgent;
     }
 
@@ -177,7 +201,7 @@ public class BaseWebFragment extends LazyFragment {
             }
 
             @Override
-            protected BaseFragment getWebFragment() {
+            protected BaseWebFragment getWebFragment() {
                 return BaseWebFragment.this;
             }
 
@@ -194,7 +218,12 @@ public class BaseWebFragment extends LazyFragment {
      * @return
      */
     protected WebChromeClient getWebChromeClient() {
-        return new BaseWebChromeClient(this, mProgressBar);
+        return new BaseWebChromeClient(this, mProgressBar) {
+            @Override
+            protected boolean useH5Title() {
+                return EmptyUtils.isEmpty(mTitle);
+            }
+        };
     }
 
     /**
@@ -203,6 +232,6 @@ public class BaseWebFragment extends LazyFragment {
      * @return
      */
     protected WebViewClient getWebViewClient() {
-        return new BaseWebViewClient(mProgressBar);
+        return new BaseWebViewClient(this, mProgressBar);
     }
 }

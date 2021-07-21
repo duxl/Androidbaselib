@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.activity.BaseActivity;
-import com.duxl.baselib.ui.fragment.BaseFragment;
+import com.duxl.baselib.ui.fragment.webview.BaseWebFragment;
 import com.duxl.baselib.utils.DisplayUtil;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.ToastUtils;
@@ -45,7 +45,7 @@ public abstract class BaseJSInterface {
      *
      * @return
      */
-    protected abstract <T extends BaseFragment> T getWebFragment();
+    protected abstract <T extends BaseWebFragment> T getWebFragment();
 
     /**
      * 落网图片加载
@@ -77,6 +77,22 @@ public abstract class BaseJSInterface {
     @JavascriptInterface
     public void closeBrowser() {
         runOnUiThread(() -> getWebActivity().finish());
+    }
+
+    /**
+     * 返回历史记录，如果没有历史记录，关闭当前浏览器窗口
+     */
+    @JavascriptInterface
+    public void goBack() {
+        runOnUiThread(() -> {
+            if (EmptyUtils.isNotNull(getWebFragment().getWebView())) {
+                if (getWebFragment().getWebView().canGoBack()) {
+                    getWebFragment().getWebView().goBack();
+                    return;
+                }
+            }
+            getWebActivity().finish();
+        });
     }
 
     /**
