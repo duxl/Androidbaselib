@@ -111,7 +111,7 @@ public abstract class BaseJSInterface {
      * @return
      */
     @JavascriptInterface
-    public int getStatusBarHeight() {
+    public int getStateBarHeight() {
         return DisplayUtil.getBarHeight(getWebActivity());
     }
 
@@ -121,12 +121,28 @@ public abstract class BaseJSInterface {
      * @param dark 是否是深色
      */
     @JavascriptInterface
-    public void setStatusBarMode(boolean dark) {
+    public void setStateBarMode(boolean dark) {
         runOnUiThread(() -> {
             if (dark) {
                 getWebActivity().setStateBarDarkMode();
             } else {
                 getWebActivity().setStateBarLightMode();
+            }
+        });
+    }
+
+    /**
+     * 设置状态栏显示与隐藏
+     *
+     * @param visible 是否显示状态栏：true显示、false隐藏
+     */
+    @JavascriptInterface
+    public void setStateBarVisible(boolean visible) {
+        runOnUiThread(() -> {
+            if (visible) {
+                getWebFragment().showStateBar();
+            } else {
+                getWebFragment().hideStateBar();
             }
         });
     }
