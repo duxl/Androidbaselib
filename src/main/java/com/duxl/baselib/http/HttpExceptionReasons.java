@@ -21,7 +21,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_parse_error_msg);
+            return Utils.getString(R.string.http_exception_parse_error_msg);
         }
     };
 
@@ -37,7 +37,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_bad_network_msg);
+            return Utils.getString(R.string.http_exception_bad_network_msg);
         }
     };
 
@@ -52,7 +52,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_connect_error_msg);
+            return Utils.getString(R.string.http_exception_connect_error_msg);
         }
     };
 
@@ -67,7 +67,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_connect_timeout_msg);
+            return Utils.getString(R.string.http_exception_connect_timeout_msg);
         }
     };
 
@@ -82,7 +82,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_connect_no_msg);
+            return Utils.getString(R.string.http_exception_connect_no_msg);
         }
     };
 
@@ -97,7 +97,7 @@ public interface HttpExceptionReasons {
 
         @Override
         public String getMsg() {
-            return Utils.getApp().getString(R.string.http_exception_unknown_error_msg);
+            return Utils.getString(R.string.http_exception_unknown_error_msg);
         }
     };
 }
