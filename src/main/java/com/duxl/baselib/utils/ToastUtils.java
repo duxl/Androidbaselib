@@ -1,6 +1,5 @@
 package com.duxl.baselib.utils;
 
-import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -21,16 +20,15 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ToastUtils {
 
-    private static Context context = Utils.getApp();
     private static Toast toast;
     private static Disposable mDisposable;
 
     public static void show(int resId) {
-        show(context.getResources().getText(resId), Toast.LENGTH_SHORT);
+        show(Utils.getString(resId), Toast.LENGTH_SHORT);
     }
 
     public static void show(int resId, int duration) {
-        show(context.getResources().getText(resId), duration);
+        show(Utils.getString(resId), duration);
     }
 
     public static void show(CharSequence text) {
@@ -52,8 +50,8 @@ public class ToastUtils {
             mDisposable = null;
         }
 
-        toast = Toast.makeText(context, text, duration);
-        toast.setGravity(Gravity.CENTER, 0, DisplayUtil.getScreenHeight(context) / 4);
+        toast = Toast.makeText(Utils.getActContextOrApp(), text, duration);
+        toast.setGravity(Gravity.CENTER, 0, DisplayUtil.getScreenHeight(Utils.getActContextOrApp()) / 4);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             toast.addCallback(new Toast.Callback() {
                 @Override
@@ -62,6 +60,7 @@ public class ToastUtils {
                         toast.removeCallback(this);
                         toast = null;
                     }
+                    mDisposable = null;
                 }
             });
         } else {
@@ -75,9 +74,7 @@ public class ToastUtils {
 
                         @Override
                         public void onNext(@NonNull Long aLong) {
-                            if (EmptyUtils.isNotNull(toast)) {
-                                toast = null;
-                            }
+                            toast = null;
                             mDisposable = null;
                         }
                     });
@@ -93,13 +90,13 @@ public class ToastUtils {
             toast.cancel();
             toast = null;
         }
-        toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(Utils.getActContextOrApp(), text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
     public static void show(int resId, Object... args) {
-        show(String.format(context.getResources().getString(resId), args),
+        show(String.format(Utils.getString(resId), args),
                 Toast.LENGTH_SHORT);
     }
 
@@ -108,7 +105,7 @@ public class ToastUtils {
     }
 
     public static void show(int resId, int duration, Object... args) {
-        show(String.format(context.getResources().getString(resId), args),
+        show(String.format(Utils.getString(resId), args),
                 duration);
     }
 

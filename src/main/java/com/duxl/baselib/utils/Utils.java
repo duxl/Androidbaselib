@@ -1,5 +1,6 @@
 package com.duxl.baselib.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -56,6 +57,17 @@ public class Utils {
             return mAppReference.get();
         }
         throw new NullPointerException("u should init first");
+    }
+
+    /**
+     * @return 优先返回Activity堆栈中最顶层Activity的Context
+     */
+    public static Context getActContextOrApp() {
+        Activity topActivity = AppManager.getAppManager().getTopActivity();
+        if (EmptyUtils.isNotNull(topActivity)) {
+            return topActivity;
+        }
+        return getApp();
     }
 
     /**
@@ -285,6 +297,27 @@ public class Utils {
             return String.valueOf((size / 100)) + "."
                     + String.valueOf((size % 100)) + "GB";
         }
+    }
+
+    /**
+     * 获取字符串资源，优先使用Activity的Context获取，Application获取字符串实现不了国际化
+     *
+     * @param resId
+     * @return
+     */
+    public static String getString(int resId) {
+        return getActContextOrApp().getString(resId);
+    }
+
+    /**
+     * 获取字符串资源，优先使用Activity的Context获取，Application获取字符串实现不了国际化
+     *
+     * @param resId
+     * @param formatArgs
+     * @return
+     */
+    public static String getString(int resId, Object... formatArgs) {
+        return getActContextOrApp().getString(resId, formatArgs);
     }
 }
 
