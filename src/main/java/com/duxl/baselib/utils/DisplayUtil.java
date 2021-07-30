@@ -77,7 +77,7 @@ public class DisplayUtil {
         Class<?> c = null;
         Object obj = null;
         Field field = null;
-        int x = 0, sbar = 38;// 默认为38，貌似大部分是这样的
+        int x = 0, sbar = dip2px(context, 38);// 默认为38，貌似大部分是这样的
 
         try {
             c = Class.forName("com.android.internal.R$dimen");
