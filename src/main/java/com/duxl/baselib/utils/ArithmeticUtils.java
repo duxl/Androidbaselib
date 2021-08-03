@@ -24,7 +24,10 @@ public class ArithmeticUtils {
      * @return
      */
     public static String formatValid(BigDecimal price) {
-        return new DecimalFormat("#.#######################################").format(price);
+        return price
+                .stripTrailingZeros()
+                .toPlainString();
+        //return new DecimalFormat("#.#######################################").format(price);
     }
 
     /**
