@@ -89,8 +89,16 @@ public class ToastUtils {
         show(text, duration, 0);
     }
 
+    public static void showCenter(int resId, int duration) {
+        show(Utils.getString(resId), duration, 0);
+    }
+
     public static void showCenter(CharSequence text) {
         showCenter(text, Toast.LENGTH_SHORT);
+    }
+
+    public static void showCenter(int resId) {
+        showCenter(Utils.getString(resId), Toast.LENGTH_SHORT);
     }
 
     public static void show(int resId, Object... args) {
