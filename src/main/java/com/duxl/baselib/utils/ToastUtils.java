@@ -36,10 +36,10 @@ public class ToastUtils {
     }
 
     public static void show(CharSequence text, int duration) {
-        show(text, DisplayUtil.getScreenHeight(Utils.getActContextOrApp()) / 4);
+        show(text, duration, DisplayUtil.getScreenHeight(Utils.getActContextOrApp()) / 4);
     }
 
-    private static void show(CharSequence text, int duration, int yOffset) {
+    public static void show(CharSequence text, int duration, int yOffset) {
         if (TextUtils.isEmpty(String.valueOf(text))) {
             return;
         }
