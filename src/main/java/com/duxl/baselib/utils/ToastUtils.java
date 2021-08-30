@@ -35,8 +35,11 @@ public class ToastUtils {
         show(text, Toast.LENGTH_SHORT);
     }
 
-
     public static void show(CharSequence text, int duration) {
+        show(text, DisplayUtil.getScreenHeight(Utils.getActContextOrApp()) / 4);
+    }
+
+    private static void show(CharSequence text, int duration, int yOffset) {
         if (TextUtils.isEmpty(String.valueOf(text))) {
             return;
         }
@@ -51,7 +54,7 @@ public class ToastUtils {
         }
 
         toast = Toast.makeText(Utils.getActContextOrApp(), text, duration);
-        toast.setGravity(Gravity.CENTER, 0, DisplayUtil.getScreenHeight(Utils.getActContextOrApp()) / 4);
+        toast.setGravity(Gravity.CENTER, 0, yOffset);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             toast.addCallback(new Toast.Callback() {
                 @Override
@@ -82,22 +85,16 @@ public class ToastUtils {
         toast.show();
     }
 
+    public static void showCenter(CharSequence text, int duration) {
+        show(text, duration, 0);
+    }
+
     public static void showCenter(CharSequence text) {
-        if (TextUtils.isEmpty(String.valueOf(text))) {
-            return;
-        }
-        if (toast != null) {
-            toast.cancel();
-            toast = null;
-        }
-        toast = Toast.makeText(Utils.getActContextOrApp(), text, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        showCenter(text, Toast.LENGTH_SHORT);
     }
 
     public static void show(int resId, Object... args) {
-        show(String.format(Utils.getString(resId), args),
-                Toast.LENGTH_SHORT);
+        show(String.format(Utils.getString(resId), args), Toast.LENGTH_SHORT);
     }
 
     public static void show(String format, Object... args) {
@@ -105,8 +102,7 @@ public class ToastUtils {
     }
 
     public static void show(int resId, int duration, Object... args) {
-        show(String.format(Utils.getString(resId), args),
-                duration);
+        show(String.format(Utils.getString(resId), args), duration);
     }
 
     public static void show(String format, int duration, Object... args) {
