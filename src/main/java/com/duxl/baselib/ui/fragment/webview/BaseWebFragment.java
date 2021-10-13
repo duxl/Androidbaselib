@@ -87,7 +87,9 @@ public class BaseWebFragment extends LazyFragment {
 
     @Override
     protected void onLazyHiddenChanged(boolean isVisible, boolean isFirstVisible) {
-
+        String js = "javascript:onAppWebHiddenChanged(%isVisible)"
+                .replace("%isVisible", String.valueOf(isVisible));
+        mWebView.evaluateJavascript(js, null);
     }
 
     @Override
