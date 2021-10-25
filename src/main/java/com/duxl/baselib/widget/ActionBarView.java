@@ -104,7 +104,25 @@ public class ActionBarView extends LinearLayout {
     }
 
     public void setLayout(int layoutResId) {
+        // 移除全局配置的ActionBar
         removeAllViews();
+        mRlBar = null;
+
+        mLlLeft = null;
+        mLlCenter = null;
+        mLlRight = null;
+
+        mIvBack = null;
+        mIvClose = null;
+
+        mTvTitle = null;
+
+        mTvRight = null;
+        mIvRight = null;
+
+        mBottomLine = null;
+
+        // 重新加载指定的layout布局文件
         LayoutInflater.from(getContext()).inflate(layoutResId, this, true);
         mRlBar = findViewById(R.id.rl_bar);
 
