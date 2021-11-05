@@ -1,5 +1,7 @@
 package com.duxl.baselib.ui.fragment.webview;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -9,12 +11,15 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
+
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.activity.BaseActivity;
 import com.duxl.baselib.ui.fragment.LazyFragment;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
 import com.duxl.baselib.widget.BaseJSInterface;
+import com.duxl.baselib.widget.DataRunnable;
 import com.duxl.baselib.widget.SimpleOnLoadListener;
 
 import java.text.MessageFormat;
@@ -235,5 +240,21 @@ public class BaseWebFragment extends LazyFragment {
      */
     protected WebViewClient getWebViewClient() {
         return new BaseWebViewClient(this, mProgressBar);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (data.hasExtra("h5ResultData")) {
+                String h5ResultData = data.getStringExtra("h5ResultData");
+                String js = "javascript:onAppWebResult(%requestCode, '%data')"
+                        .replace("%requestCode", String.valueOf(requestCode))
+                        .replace("%data", h5ResultData);
+                mWebView.evaluateJavascript(js, value -> {
+                    System.out.println("onActivityResult: " + h5ResultData);
+                });
+            }
+        }
     }
 }

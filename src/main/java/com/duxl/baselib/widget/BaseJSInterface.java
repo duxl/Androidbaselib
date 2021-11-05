@@ -1,5 +1,6 @@
 package com.duxl.baselib.widget;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
@@ -67,8 +68,37 @@ public abstract class BaseJSInterface {
             Intent intent = new Intent(getWebActivity(), getWebActivity().getClass());
             intent.putExtra("title", title);
             intent.putExtra("url", url);
-            getWebActivity().startActivity(intent);
+            getWebFragment().startActivity(intent);
         });
+    }
+
+    /**
+     * 打开新的浏览器窗口
+     *
+     * @param title       新窗口显示的标题，如果标题为空，将显示网页的标题
+     * @param url         要打开链接地址
+     * @param requestCode 请求code
+     */
+    @JavascriptInterface
+    public void openNewBrowser(String title, String url, int requestCode) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(getWebActivity(), getWebActivity().getClass());
+            intent.putExtra("title", title);
+            intent.putExtra("url", url);
+            getWebFragment().startActivityForResult(intent, requestCode);
+        });
+    }
+
+    /**
+     * 设置返回数据：上一级Web页面打开新窗口如果传了requestCode，当前Web页面可以调用此方法设置返回数据后closeBrowser当前页面
+     *
+     * @param data
+     */
+    @JavascriptInterface
+    public void setResultData(String data) {
+        Intent result = new Intent();
+        result.putExtra("h5ResultData", data);
+        getWebActivity().setResult(Activity.RESULT_OK, result);
     }
 
     /**

@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import androidx.core.net.UriCompat;
 
 import com.duxl.baselib.ui.activity.BaseActivity;
+import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
 import com.duxl.baselib.widget.BaseJSInterface;
 
@@ -37,7 +38,17 @@ public class BaseWebViewClient<T extends BaseWebFragment> extends WebViewClient 
                 Intent intent = new Intent(mWebFragment.getContext(), mWebFragment.getActivity().getClass());
                 intent.putExtra("title", uri.getQueryParameter("appTitle"));
                 intent.putExtra("url", url);
-                mWebFragment.startActivity(intent);
+
+                String requestCode = uri.getQueryParameter("requestCode");
+                if (EmptyUtils.isEmpty(requestCode)) {
+                    mWebFragment.startActivity(intent);
+                } else {
+                    try {
+                        mWebFragment.startActivityForResult(intent, Integer.parseInt(requestCode));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             });
 
         } else {
