@@ -24,10 +24,15 @@ public class ArithmeticUtils {
      * @return
      */
     public static String formatValid(BigDecimal price) {
+        /*
+        有关 new BigDecimal("1.2300").stripTrailingZeros() 返回1.23(正确)
+        但是 new BigDecimal("0.0000").stripTrailingZeros() 返回0.0000(奇怪)
+        似乎是 bug .但是它已在 Java 8 中修复
         return price
                 .stripTrailingZeros()
                 .toPlainString();
-        //return new DecimalFormat("#.#######################################").format(price);
+         */
+        return new DecimalFormat("#.#######################################").format(price);
     }
 
     /**
