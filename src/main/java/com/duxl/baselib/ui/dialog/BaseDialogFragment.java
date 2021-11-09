@@ -115,6 +115,11 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
         return TAG;
     }
 
+    public BaseDialogFragment setCancelable2(boolean cancelable) {
+        super.setCancelable(cancelable);
+        return this;
+    }
+
     public void showDialog(FragmentManager manager) {
         show(manager, getFragmentTag());
     }
