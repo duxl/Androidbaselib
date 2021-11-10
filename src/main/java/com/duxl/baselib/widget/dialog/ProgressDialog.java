@@ -20,6 +20,9 @@ public class ProgressDialog implements IProgressDialog {
     private boolean mCancelTouchOutside;
     private boolean mCancelable;
 
+    private long mProgressDialogShowTime; // 加载框开始显示时间
+    private long mProgressDialogMinDur = 500; // 加载框至少显示时长（设置适当的时长，避免加载框一闪就消失）
+
     public ProgressDialog(Context context) {
         mDialog = new Dialog(context, R.style.progress_dialog_style);
         mContentView = getContentView(context);
@@ -50,21 +53,36 @@ public class ProgressDialog implements IProgressDialog {
             if (!mDialog.isShowing()) {
                 mDialog.show();
             }
+
+            mProgressDialogShowTime = System.currentTimeMillis();
         }
     }
 
     @Override
     public void dismiss() {
+        long durTime = System.currentTimeMillis() - mProgressDialogShowTime;
+        if (durTime < mProgressDialogMinDur) {
+            mContentView.postDelayed(() -> dismiss(), mProgressDialogMinDur - durTime);
+            return;
+        }
         if (EmptyUtils.isNotNull(mDialog)) {
             if (mDialog.isShowing()) {
                 mDialog.dismiss();
             }
             mDialog = null;
         }
+
     }
 
-    public void setCancelTouchOutside(boolean cancel) {
+    /**
+     * 设置点击加载框外是否消失
+     *
+     * @param cancel
+     * @return
+     */
+    public ProgressDialog setCancelTouchOutside(boolean cancel) {
         this.mCancelTouchOutside = cancel;
+        return this;
     }
 
     @Override
@@ -72,12 +90,39 @@ public class ProgressDialog implements IProgressDialog {
         return mCancelTouchOutside;
     }
 
-    public void setCancelable(boolean cancel) {
+    /**
+     * 设置弹框是否可取消（指的是用户点击手机的返回键）
+     *
+     * @param cancel
+     * @return
+     */
+    public ProgressDialog setCancelable(boolean cancel) {
         this.mCancelable = cancel;
+        return this;
     }
 
     @Override
     public boolean cancelable() {
         return mCancelable;
+    }
+
+    /**
+     * 设置dialog显示的至少时长（设置适当的时长，避免加载框一闪就消失）
+     *
+     * @param duration 时长，单位毫秒
+     * @return
+     */
+    public ProgressDialog setShowMinDuration(long duration) {
+        this.mProgressDialogMinDur = duration;
+        return this;
+    }
+
+    /**
+     * 获取dialog显示的至少时长
+     *
+     * @return 时间，单位毫秒
+     */
+    public long getShowMinDuration() {
+        return mProgressDialogMinDur;
     }
 }

@@ -3,6 +3,8 @@ package com.duxl.baselib.widget;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import com.duxl.baselib.ui.fragment.webview.BaseWebFragment;
 import com.duxl.baselib.utils.DisplayUtil;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.ToastUtils;
+import com.duxl.baselib.widget.dialog.ProgressDialog;
 
 /**
  * <pre>
@@ -33,6 +36,9 @@ import com.duxl.baselib.utils.ToastUtils;
  * create by duxl 2021/5/18
  */
 public abstract class BaseJSInterface {
+
+    private ProgressDialog mProgressDialog;
+    private Handler mHandler;
 
     /**
      * WebView的容器Activity
@@ -133,6 +139,50 @@ public abstract class BaseJSInterface {
     @JavascriptInterface
     public void showToast(String msg) {
         runOnUiThread(() -> ToastUtils.show(msg));
+    }
+
+
+    /**
+     * 显示进度框
+     *
+     * @param msg 进度消息
+     */
+    @JavascriptInterface
+    public void showProgressDialog(String msg) {
+        showProgressDialog(msg, false, false);
+    }
+
+    /**
+     * 显示进度框
+     *
+     * @param msg                进度消息
+     * @param cancelTouchOutside 点击加载框外是否取消弹框
+     * @param cancelable         点击手机的返回键是否可取消弹框
+     */
+    @JavascriptInterface
+    public void showProgressDialog(String msg, boolean cancelTouchOutside, boolean cancelable) {
+        postHandler(() -> {
+            if (EmptyUtils.isNull(mProgressDialog)) {
+                mProgressDialog = new ProgressDialog(getWebFragment().getContext());
+            }
+            mProgressDialog.setCancelTouchOutside(cancelTouchOutside);
+            mProgressDialog.setCancelable(cancelable);
+            mProgressDialog.show(msg);
+        }, 0);
+    }
+
+    /**
+     * 取消显示（隐藏）进度框
+     */
+    @JavascriptInterface
+    public void hideProgressDialog() {
+        postHandler(() -> {
+            // 这里避免mProgressDialog还没有new出来，所以得延迟一点时间再执行
+            if (EmptyUtils.isNotNull(mProgressDialog)) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
+            }
+        }, 50);
     }
 
     /**
@@ -323,4 +373,10 @@ public abstract class BaseJSInterface {
         }
     }
 
+    protected void postHandler(Runnable runnable, long delayMillis) {
+        if (EmptyUtils.isNull(mHandler)) {
+            mHandler = new Handler(Looper.getMainLooper());
+        }
+        mHandler.postDelayed(runnable, delayMillis);
+    }
 }
