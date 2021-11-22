@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.fragment.webview;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -33,23 +34,34 @@ public class BaseWebViewClient<T extends BaseWebFragment> extends WebViewClient 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Uri uri = Uri.parse(url);
-        if (mWebFragment != null && "newBrowser".equals(uri.getQueryParameter("appTarget"))) {
-            mWebFragment.getActivity().runOnUiThread(() -> {
-                Intent intent = new Intent(mWebFragment.getContext(), mWebFragment.getActivity().getClass());
-                intent.putExtra("title", uri.getQueryParameter("appTitle"));
-                intent.putExtra("url", url);
+        if (mWebFragment != null) {
+            if ("newBrowser".equals(uri.getQueryParameter("appTarget"))) { // app内打开新窗口
+                mWebFragment.getActivity().runOnUiThread(() -> {
+                    Intent intent = new Intent(mWebFragment.getContext(), mWebFragment.getActivity().getClass());
+                    intent.putExtra("title", uri.getQueryParameter("appTitle"));
+                    intent.putExtra("url", url);
 
-                String requestCode = uri.getQueryParameter("requestCode");
-                if (EmptyUtils.isEmpty(requestCode)) {
-                    mWebFragment.startActivity(intent);
-                } else {
+                    String requestCode = uri.getQueryParameter("requestCode");
+
                     try {
-                        mWebFragment.startActivityForResult(intent, Integer.parseInt(requestCode));
+                        if (EmptyUtils.isEmpty(requestCode)) {
+                            mWebFragment.startActivity(intent);
+                        } else {
+                            mWebFragment.startActivityForResult(intent, Integer.parseInt(requestCode));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                });
+            } else if ("outerBrowser".equals(uri.getQueryParameter("appTarget"))) { // 外部浏览器打开新窗口
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    mWebFragment.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+            }
 
         } else {
             view.loadUrl(url);

@@ -1,8 +1,10 @@
 package com.duxl.baselib.widget;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -61,6 +63,25 @@ public abstract class BaseJSInterface {
      * @param url
      */
     protected abstract void loadImage(ImageView view, String url);
+
+    /**
+     * 打开外部浏览器窗口
+     *
+     * @param url 要打开链接地址
+     */
+    @JavascriptInterface
+    public void openOuterBrowser(String url) {
+        runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                getWebFragment().startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     /**
      * 打开新的浏览器窗口
