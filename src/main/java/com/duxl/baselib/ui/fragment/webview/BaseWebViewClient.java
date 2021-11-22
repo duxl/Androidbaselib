@@ -61,10 +61,9 @@ public class BaseWebViewClient<T extends BaseWebFragment> extends WebViewClient 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                view.loadUrl(url);
             }
-
-        } else {
-            view.loadUrl(url);
         }
         return true;
     }
