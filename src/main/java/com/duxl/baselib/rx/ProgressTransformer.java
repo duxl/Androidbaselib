@@ -37,14 +37,29 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
             mProgressDialog.setCancelTouchOutside(cancelTouchOutside);
             mProgressDialog.setCancelable(cancel);
             mProgressDialog.show(msg);
-
         }
     }
 
-    public void setMsg(CharSequence msg) {
+    /**
+     * 设置dialog显示的至少时长（设置适当的时长，避免加载框一闪就消失）<br/>
+     * 注意：如果dialog因为延迟还未消失就finish页面，android11上有可能会闪退，
+     * finish页面需要自行确保已经调用{@link #dismiss()}已经关闭dialog
+     *
+     * @param duration 时长，单位毫秒
+     * @return
+     */
+    public ProgressTransformer setShowMinDuration(long duration) {
+        if (EmptyUtils.isNotNull(mProgressDialog)) {
+            mProgressDialog.setShowMinDuration(duration);
+        }
+        return this;
+    }
+
+    public ProgressTransformer setMsg(CharSequence msg) {
         if (EmptyUtils.isNotNull(mProgressDialog)) {
             mProgressDialog.setMessage(msg);
         }
+        return this;
     }
 
     /**
@@ -52,8 +67,9 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
      *
      * @param dismiss 是否自动消失，默认true
      */
-    public void setAutoDismiss(boolean dismiss) {
+    public ProgressTransformer setAutoDismiss(boolean dismiss) {
         this.mAutoDismiss = dismiss;
+        return this;
     }
 
     protected ProgressDialog getProgressDialog() {
@@ -69,20 +85,31 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
                 .doOnSubscribe(disposable -> {
                 })
                 .doOnNext(t -> {
-                    dismiss();
+                    dismissDelay();
                 })
                 .doOnTerminate(() -> {
-                    dismiss();
+                    dismissDelay();
                 })
                 .doOnDispose(() -> {
-                    dismiss();
+                    dismissDelay();
                 });
     }
 
+    /**
+     * 隐藏dialog
+     */
     public void dismiss() {
-        if (mAutoDismiss && EmptyUtils.isNotNull(mProgressDialog)) {
+        if (EmptyUtils.isNotNull(mProgressDialog)) {
             mProgressDialog.dismiss();
-            mProgressDialog = null;
+        }
+    }
+
+    /**
+     * 延迟隐藏dialog
+     */
+    public void dismissDelay() {
+        if (mAutoDismiss && EmptyUtils.isNotNull(mProgressDialog)) {
+            mProgressDialog.dismissDelay();
         }
     }
 }

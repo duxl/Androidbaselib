@@ -60,18 +60,24 @@ public class ProgressDialog implements IProgressDialog {
 
     @Override
     public void dismiss() {
-        long durTime = System.currentTimeMillis() - mProgressDialogShowTime;
-        if (durTime < mProgressDialogMinDur) {
-            mContentView.postDelayed(() -> dismiss(), mProgressDialogMinDur - durTime);
-            return;
-        }
         if (EmptyUtils.isNotNull(mDialog)) {
             if (mDialog.isShowing()) {
                 mDialog.dismiss();
             }
             mDialog = null;
         }
+    }
 
+    /**
+     * 延迟隐藏dialog，延迟时间跟{@link #setShowMinDuration(long)}有关
+     */
+    public void dismissDelay() {
+        long durTime = System.currentTimeMillis() - mProgressDialogShowTime;
+        if (durTime < mProgressDialogMinDur) {
+            mContentView.postDelayed(() -> dismiss(), mProgressDialogMinDur - durTime);
+            return;
+        }
+        dismiss();
     }
 
     /**
