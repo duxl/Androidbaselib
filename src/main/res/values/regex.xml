@@ -7,9 +7,9 @@
     <!-- url地址 -->
     <string name="regex_url">^[a-zA-z]+://[^\s]$</string>
     <!-- ip地址 -->
-    <string name="regex_ip">^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$</string>
+    <string name="regex_ip">^((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)$</string>
     <!-- 身份证号码（粗验证：只验证格式，最后一位校验码不一定正确） -->
-    <string name="regex_id_card">^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$</string>
+    <string name="regex_id_card">^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9Xx])$</string>
     <!-- 纯数字 -->
     <string name="regex_digital">^\\d*$</string>
     <!-- 任意字母，不区分大小写 -->
