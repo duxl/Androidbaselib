@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -78,7 +79,12 @@ public class BaseWebFragment extends LazyFragment {
 
     @Override
     public void onDestroyView() {
+        // 当页面销毁时需要先将容器中的webview移除掉，再调用webview的removeAllViews和destroy方法才能真正销毁整个webview而不会导致内存泄露问题
+        // webView会在后台自动开起线程，如果没有彻底销毁webview，后台线程就会一直运行
         if (mWebView != null) {
+            if (mContentView instanceof FrameLayout) {
+                ((FrameLayout) mContentView).removeView(mWebView);
+            }
             mWebView.removeAllViews();
             mWebView.destroy();
         }
