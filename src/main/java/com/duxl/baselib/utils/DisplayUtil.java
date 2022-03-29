@@ -74,22 +74,32 @@ public class DisplayUtil {
      * @return
      */
     public static int getBarHeight(Context context) {
-        Class<?> c = null;
-        Object obj = null;
-        Field field = null;
-        int x = 0, sbar = dip2px(context, 38);// 默认为38，貌似大部分是这样的
+        int barHeight = getBarHeight2(context);
+        if (barHeight > 0) {
+            return barHeight;
+        }
 
+        barHeight = dip2px(context, 38);// 默认为38，貌似大部分是这样的
         try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            sbar = context.getResources().getDimensionPixelSize(x);
-
+            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Object obj = c.newInstance();
+            Field field = c.getField("status_bar_height");
+            int x = Integer.parseInt(field.get(obj).toString());
+            barHeight = context.getResources().getDimensionPixelSize(x);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        return sbar;
+        return barHeight;
+    }
+
+    private static int getBarHeight2(Context context) {
+        int result = -1;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+
     }
 
     /**
