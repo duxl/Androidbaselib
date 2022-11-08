@@ -102,6 +102,24 @@ dependencies {
 
    
 
+##### 如果使用 AndroidX 先在 gradle.properties 中添加，两行都不能少噢~
+
+```
+android.useAndroidX=true
+android.enableJetifier=true
+```
+
+##### 新建高版本的项目，运行gradle可能会报找下面的错误，可以尝试添加`jcenter()`仓库解决
+
+```groovy
+> Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
+   > Could not find com.scwang.smart:refresh-layout-kernel:2.0.1.
+     Searched in the following locations:
+       - https://dl.google.com/dl/android/maven2/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
+       - https://repo.maven.apache.org/maven2/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
+       - https://jitpack.io/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
+```
+
 
 
 ## BaseActivity API
