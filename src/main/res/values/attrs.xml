@@ -70,4 +70,8 @@
         <attr name="mHorizontalPadding" format="dimension" />
         <attr name="clipBorderWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="MaskImageView">
+        <attr name="maskSrc" format="reference" />
+    </declare-styleable>
 </resources>
