@@ -100,7 +100,9 @@ dependencies {
 
 4. **将Application继承至BaseApplication**
 
-   
+
+
+ps：最新IDE创建的项目还需引入 `jcenter()` 仓库，并在gradle.properties中添加 `android.enableJetifier=true`
 
 
 
