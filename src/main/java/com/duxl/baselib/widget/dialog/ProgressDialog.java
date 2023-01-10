@@ -15,10 +15,10 @@ import com.duxl.baselib.utils.EmptyUtils;
  */
 public class ProgressDialog implements IProgressDialog {
 
-    private Dialog mDialog;
-    private View mContentView;
-    private boolean mCancelTouchOutside;
-    private boolean mCancelable;
+    protected Dialog mDialog;
+    protected View mContentView;
+    protected boolean mCancelTouchOutside;
+    protected boolean mCancelable;
 
     private long mProgressDialogShowTime; // 加载框开始显示时间
     private long mProgressDialogMinDur = 500; // 加载框至少显示时长（设置适当的时长，避免加载框一闪就消失）
