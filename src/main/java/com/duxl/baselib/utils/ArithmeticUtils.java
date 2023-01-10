@@ -51,12 +51,39 @@ public class ArithmeticUtils {
      * @return
      */
     public static String convertNum(long num, int scale, int newScale, int groupSize, RoundingMode roundingMode) {
+        return convertNum(num, scale, newScale, groupSize, true, roundingMode);
+    }
+
+    /**
+     * 数字转换：
+     * 例如将人民币153分转换成1.5元，153分到元四舍五入的方式保留一位小数的调用方式如下：
+     * convertNum(153, 2, 1, RoundingMode.DOWN)
+     *
+     * @param num          原始数字
+     * @param scale        原始小数位位数，scale <= 0 表示没有小数位
+     * @param newScale     需要保留的小数位位数，newScale < 0 表示保留原始小数位
+     * @param groupSize    整数部分逗号分割位数，当 groupSize >=0 时起效
+     * @param minDigits    是否最低小数位，true小数位末尾是0也会保留，false会舍去末尾的0
+     *                     例：
+     *                     如果为true，当newScale=2时，1.000返回1.00
+     *                     如果为false，当newScale=2时，1.000返回1
+     * @param roundingMode 保留小数位的模式：
+     *                     舍 {@link java.math.RoundingMode#DOWN}、
+     *                     入 {@link java.math.RoundingMode#UP}、
+     *                     四舍五入 {@link java.math.RoundingMode#HALF_UP}、
+     * @return
+     */
+    public static String convertNum(long num, int scale, int newScale, int groupSize, boolean minDigits, RoundingMode roundingMode) {
         scale = scale < 0 ? 0 : scale;
         newScale = newScale < 0 ? scale : newScale;
 
         BigDecimal bigDecimal = BigDecimal.valueOf(num, scale).setScale(newScale, roundingMode);
         DecimalFormat fmtEight = new DecimalFormat(",0.#");
-        fmtEight.setMinimumFractionDigits(newScale);
+        if(minDigits) {
+            fmtEight.setMinimumFractionDigits(newScale);
+        } else {
+            fmtEight.setMaximumFractionDigits(newScale);
+        }
         if (groupSize >= 0) {
             fmtEight.setGroupingSize(groupSize);
         }
