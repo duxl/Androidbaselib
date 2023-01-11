@@ -38,7 +38,7 @@ public class ArithmeticUtils {
     /**
      * 数字转换：
      * 例如将人民币153分转换成1.5元，153分到元四舍五入的方式保留一位小数的调用方式如下：
-     * convertNum(153, 2, 1, RoundingMode.DOWN)
+     * convertNum(153, 2, 1, RoundingMode.HALF_UP)
      *
      * @param num          原始数字
      * @param scale        原始小数位位数，scale <= 0 表示没有小数位
@@ -57,7 +57,7 @@ public class ArithmeticUtils {
     /**
      * 数字转换：
      * 例如将人民币153分转换成1.5元，153分到元四舍五入的方式保留一位小数的调用方式如下：
-     * convertNum(153, 2, 1, RoundingMode.DOWN)
+     * convertNum(153, 2, 1, RoundingMode.HALF_UP)
      *
      * @param num          原始数字
      * @param scale        原始小数位位数，scale <= 0 表示没有小数位
