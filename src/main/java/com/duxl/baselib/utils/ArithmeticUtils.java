@@ -64,6 +64,7 @@ public class ArithmeticUtils {
      * @param newScale     需要保留的小数位位数，newScale < 0 表示保留原始小数位
      * @param groupSize    整数部分逗号分割位数，当 groupSize >=0 时起效
      * @param minDigits    小数位末尾的0是否保留，true小数位末尾是0也会保留，false会舍去末尾的0
+     *                     当newScale < 0 时，minDigits始终为true
      *                     例：
      *                     如果为true，当newScale=2时，1.000返回1.00
      *                     如果为false，当newScale=2时，1.000返回1
@@ -82,10 +83,11 @@ public class ArithmeticUtils {
     /**
      * 数字转换：
      *
-     * @param bigDecimal   数字
-     * @param newScale     需要保留的小数位位数，newScale < 0 不保留小数位
+     * @param bigDecimal   原始数字
+     * @param newScale     需要保留的小数位位数，newScale < 0 表示保留原始小数位
      * @param groupSize    整数部分逗号分割位数，当 groupSize >=0 时起效
      * @param minDigits    小数位末尾的0是否保留，true小数位末尾是0也会保留，false会舍去末尾的0
+     *                     当newScale < 0 时，minDigits始终为true
      *                     例：
      *                     如果为true，当newScale=2时，1.000返回1.00
      *                     如果为false，当newScale=2时，1.000返回1
@@ -96,7 +98,10 @@ public class ArithmeticUtils {
      * @return
      */
     public static String convertNum(BigDecimal bigDecimal, int newScale, int groupSize, boolean minDigits, RoundingMode roundingMode) {
-        newScale = newScale < 0 ? 0 : newScale;
+        if (newScale < 0) {
+            newScale = bigDecimal.scale();
+            minDigits = true;
+        }
         bigDecimal.setScale(newScale, roundingMode);
         DecimalFormat fmtEight = new DecimalFormat(",0.#");
         if (minDigits) {
