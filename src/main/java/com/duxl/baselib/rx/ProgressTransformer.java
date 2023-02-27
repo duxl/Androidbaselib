@@ -27,7 +27,7 @@ public class ProgressTransformer<T> implements ObservableTransformer<T, T> {
     }
 
     public ProgressTransformer(Context context, boolean cancelTouchOutside, boolean cancel) {
-        this(context, context.getString(R.string.brvah_loading), cancelTouchOutside, cancel);
+        this(context, context.getString(R.string.data_loading), cancelTouchOutside, cancel);
     }
 
     public ProgressTransformer(Context context, CharSequence msg, boolean cancelTouchOutside, boolean cancel) {
