@@ -1,5 +1,7 @@
 package com.duxl.baselib.utils;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * 脱敏工具类
  * create by duxl 2021/3/8
@@ -66,6 +68,20 @@ public class DesensitizationUtils {
      * @return
      */
     public static CharSequence format(CharSequence text, CharSequence cipherText, int startLength, int endLength) {
+        return format(text, cipherText, -1, startLength, endLength);
+    }
+
+    /**
+     * 字符串脱敏
+     *
+     * @param text         要脱敏的字符串
+     * @param cipherText   密文符
+     * @param cipherLength 密文符长度：<=0时替换了后多少位就显示多少个密文符，>0显示固定长度的密文符号
+     * @param startLength  开始多少位不脱敏
+     * @param endLength    结束多少位不脱敏
+     * @return
+     */
+    public static CharSequence format(CharSequence text, CharSequence cipherText, int cipherLength, int startLength, int endLength) {
         if (EmptyUtils.isNotNull(text)) {
             try {
                 if (startLength < 0 || endLength < 0) {
@@ -82,8 +98,14 @@ public class DesensitizationUtils {
                     sb.append(text.subSequence(0, startLength));
                 }
 
-                for (int i = 0; i < text.length() - endLength - startLength; i++) {
-                    sb.append(cipherText);
+                if (cipherLength <= 0) {
+                    for (int i = 0; i < text.length() - endLength - startLength; i++) {
+                        sb.append(cipherText);
+                    }
+                } else {
+                    for (int i = 0; i < cipherLength; i++) {
+                        sb.append(cipherText);
+                    }
                 }
 
                 if (text.length() - endLength > 0) {
