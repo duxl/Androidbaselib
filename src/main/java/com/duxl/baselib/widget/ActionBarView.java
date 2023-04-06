@@ -142,7 +142,41 @@ public class ActionBarView extends LinearLayout {
     }
 
     public void setLayout(int layoutResId) {
-        setView(LayoutInflater.from(getContext()).inflate(layoutResId, null, false));
+        // 移除全局配置的ActionBar
+        removeAllViews();
+        mRlBar = null;
+
+        mLlLeft = null;
+        mLlCenter = null;
+        mLlRight = null;
+
+        mIvBack = null;
+        mIvClose = null;
+
+        mTvTitle = null;
+
+        mTvRight = null;
+        mIvRight = null;
+
+        mBottomLine = null;
+
+        LayoutInflater.from(getContext()).inflate(layoutResId, this, true);
+
+        mRlBar = findViewById(R.id.rl_bar);
+
+        mLlLeft = findViewById(R.id.ll_action_left);
+        mLlCenter = findViewById(R.id.ll_action_center);
+        mLlRight = findViewById(R.id.ll_action_right);
+
+        mIvBack = findViewById(R.id.iv_action_back);
+        mIvClose = findViewById(R.id.iv_action_close);
+
+        mTvTitle = findViewById(R.id.tv_action_title);
+
+        mTvRight = findViewById(R.id.tv_action_right);
+        mIvRight = findViewById(R.id.iv_action_right);
+
+        mBottomLine = findViewById(R.id.bottom_action_line);
     }
 
     public RelativeLayout getRlBar() {
