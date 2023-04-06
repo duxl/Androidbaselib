@@ -138,11 +138,11 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     protected void initActionBar() {
-        if (mActionBarView != null) {
-            mActionBarView.setOnClickBackListener(this::onClickActionBack);
-            mActionBarView.setOnClickCloseListener(this::onClickActionClose);
-            mActionBarView.setOnClickRightTextViewListener(this::onClickActionTvRight);
-            mActionBarView.setOnClickRightImageViewListener(this::onClickActionIvRight);
+        if (getActionBarView() != null) {
+            getActionBarView().setOnClickBackListener(this::onClickActionBack);
+            getActionBarView().setOnClickCloseListener(this::onClickActionClose);
+            getActionBarView().setOnClickRightTextViewListener(this::onClickActionTvRight);
+            getActionBarView().setOnClickRightImageViewListener(this::onClickActionIvRight);
         }
     }
 
@@ -151,26 +151,26 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     public void hideActionBar() {
-        if (mActionBarView != null) {
-            mActionBarView.setVisibility(View.GONE);
+        if (getActionBarView() != null) {
+            getActionBarView().setVisibility(View.GONE);
         }
     }
 
     public void showActionBar() {
-        if (mActionBarView != null) {
-            mActionBarView.setVisibility(View.VISIBLE);
+        if (getActionBarView() != null) {
+            getActionBarView().setVisibility(View.VISIBLE);
         }
     }
 
     public void setActionBarColor(int color) {
-        if (mActionBarView != null) {
-            mActionBarView.getChildAt(0).setBackgroundColor(color);
+        if (getActionBarView() != null) {
+            getActionBarView().getChildAt(0).setBackgroundColor(color);
         }
     }
 
     public void setActionBarResource(int resId) {
-        if (mActionBarView != null) {
-            mActionBarView.getChildAt(0).setBackgroundResource(resId);
+        if (getActionBarView() != null) {
+            getActionBarView().getChildAt(0).setBackgroundResource(resId);
         }
     }
 
@@ -180,7 +180,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
      * @param isFloat
      */
     public void setActionBarFloat(boolean isFloat) {
-        if (mActionBarView != null) {
+        if (getActionBarView() != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mXSmartRefreshLayout.getLayoutParams();
             if (isFloat) {
                 layoutParams.topToTop = R.id.page_top;
@@ -194,7 +194,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     public boolean isActionBarFloat() {
-        if (mActionBarView != null) {
+        if (getActionBarView() != null) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) mXSmartRefreshLayout.getLayoutParams();
             return layoutParams.topToTop != -1;
         }
@@ -208,8 +208,8 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     @Override
     public void setTitle(CharSequence title) {
-        if (mActionBarView != null) {
-            mActionBarView.setTitle(title);
+        if (getActionBarView() != null) {
+            getActionBarView().setTitle(title);
         }
     }
 
