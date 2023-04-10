@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.lang.reflect.Field;
 
+import javax.security.auth.Destroyable;
+
 /**
  * dp、sp 转换为 px 的工具类
  *
@@ -232,5 +234,25 @@ public class DisplayUtil {
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         context.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    /**
+     * 强制显示软键盘
+     * @param context
+     * @param view
+     */
+    public static void showSoftInputForced(Activity context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
+
+    /**
+     * 强制隐藏软键盘
+     * @param context
+     * @param view
+     */
+    public static void hideSoftInputForced(Activity context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
