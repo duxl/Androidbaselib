@@ -215,13 +215,13 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
 
     protected void onClickActionBack(View v) {
         if (v.getId() == R.id.iv_action_back) {
-            finish();
+            onBackPressed();
         }
     }
 
     protected void onClickActionClose(View v) {
         if (v.getId() == R.id.iv_action_close) {
-            finish();
+            onBackPressed();
         }
     }
 
