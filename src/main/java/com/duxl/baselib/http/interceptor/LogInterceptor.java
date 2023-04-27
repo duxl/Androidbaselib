@@ -37,7 +37,7 @@ public class LogInterceptor implements Interceptor {
         this(new Logger() {
             @Override
             public void log(String message) {
-                Platform.get().log(Platform.WARN, message, null);
+                Platform.get().log(message, Platform.WARN, null);
             }
         });
     }
