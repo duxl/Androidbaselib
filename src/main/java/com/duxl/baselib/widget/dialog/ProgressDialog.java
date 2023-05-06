@@ -21,7 +21,7 @@ public class ProgressDialog implements IProgressDialog {
     protected boolean mCancelable;
 
     private long mProgressDialogShowTime; // 加载框开始显示时间
-    private long mProgressDialogMinDur = 500; // 加载框至少显示时长（设置适当的时长，避免加载框一闪就消失）
+    private long mProgressDialogMinDur = 0; // 加载框至少显示时长（设置适当的时长，避免加载框一闪就消失）
 
     public ProgressDialog(Context context) {
         mDialog = new Dialog(context, R.style.progress_dialog_style);
