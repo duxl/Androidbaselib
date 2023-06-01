@@ -27,7 +27,7 @@ public class AnimUtils {
      * @param listener  动画listener
      */
     public static void startAnimation(View v, int animResId, Animation.AnimationListener listener) {
-        Animation animation = AnimationUtils.loadAnimation(Utils.getActContextOrApp(), animResId);
+        Animation animation = AnimationUtils.loadAnimation(v.getContext(), animResId);
         if (listener != null) {
             animation.setAnimationListener(listener);
         }
