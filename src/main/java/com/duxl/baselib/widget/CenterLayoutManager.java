@@ -18,23 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
  * </pre>
  */
 public class CenterLayoutManager extends LinearLayoutManager {
-    private int lastPosition = 0;
     private RecyclerView mRecyclerView;
+    private CenterSmoothScroller mSmoothScroller;
 
     public CenterLayoutManager(RecyclerView recyclerView, int orientation, boolean reverseLayout) {
         super(recyclerView.getContext(), orientation, reverseLayout);
         mRecyclerView = recyclerView;
+        mSmoothScroller = new CenterSmoothScroller(mRecyclerView.getContext(), 100, 0);
+        mSmoothScroller.setTargetPosition(0);
     }
 
-    @Override
-    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-    }
-
-    public void smoothScrollToPositionCenter(int position, long speedPer) {
-        CenterSmoothScroller smoothScroller = new CenterSmoothScroller(mRecyclerView.getContext(), speedPer, lastPosition - position);
-        smoothScroller.setTargetPosition(position);
-        startSmoothScroll(smoothScroller);
-        this.lastPosition = position;
+    public void smoothScrollToPositionCenter(int position, float speedPer) {
+        mSmoothScroller.deltaPosition = mSmoothScroller.getTargetPosition() - position;
+        mSmoothScroller.speedPer = speedPer;
+        mSmoothScroller.setTargetPosition(position);
+        startSmoothScroll(mSmoothScroller);
     }
 
     public void smoothScrollToPositionCenter(int position) {
@@ -43,13 +41,18 @@ public class CenterLayoutManager extends LinearLayoutManager {
 
     public static class CenterSmoothScroller extends LinearSmoothScroller {
 
-        private long speedPer;
+        private float speedPer;
         private int deltaPosition;
 
         public CenterSmoothScroller(Context context, long speedPer, int deltaPosition) {
             super(context);
             this.speedPer = speedPer;
             this.deltaPosition = deltaPosition;
+        }
+
+        @Override
+        public void setTargetPosition(int targetPosition) {
+            super.setTargetPosition(targetPosition);
         }
 
         @Override
@@ -62,8 +65,7 @@ public class CenterLayoutManager extends LinearLayoutManager {
             if (deltaPosition == 0) {
                 return super.calculateSpeedPerPixel(displayMetrics);
             }
-            float newDuration = speedPer / 1f / (Math.abs(deltaPosition));//重新计算相近两个位置的滚动间隔
-            return newDuration / displayMetrics.densityDpi;
+            return speedPer / (Math.abs(deltaPosition)) / displayMetrics.densityDpi;
         }
 
         @Override
