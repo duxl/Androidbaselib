@@ -133,4 +133,14 @@ public class TimeUtils {
         }
         return null;
     }
+
+    /**
+     * 获取当前UTC时间戳(毫秒级)
+     *
+     * @return
+     */
+    public static long getCurrentUTCTimeMillis() {
+        // 当前时区的时间戳减去时区偏移量就是UTC时间
+        return System.currentTimeMillis() - TimeZone.getDefault().getRawOffset();
+    }
 }
