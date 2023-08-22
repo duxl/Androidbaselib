@@ -96,5 +96,7 @@
         <attr name="jtv_placeWidthText" format="string|reference" />
         <!-- 最后一个字符是否不对齐，例“姓名：”末尾的冒号与“名”紧挨着，不需要分散 -->
         <attr name="jtv_disableLastChar" format="boolean" />
+        <!-- 启用两端分散对齐，默认禁用 -->
+        <attr name="jtv_enableJustify" format="boolean" />
     </declare-styleable>
 </resources>

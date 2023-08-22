@@ -38,6 +38,26 @@ public class JustifyTextView extends AppCompatTextView {
      */
     protected boolean disableLastChar;
 
+    /**
+     * 是否启用两端分散布局
+     */
+    protected boolean enableJustify;
+
+    public void setPlaceWidthText(String text) {
+        this.placeWidthText = text;
+        invalidate();
+    }
+
+    public void setDisableLastChar(boolean disable) {
+        this.disableLastChar = disable;
+        invalidate();
+    }
+
+    public void setEnableJustify(boolean enable) {
+        this.enableJustify = enable;
+        invalidate();
+    }
+
     public JustifyTextView(@NonNull Context context) {
         this(context, null);
     }
@@ -52,6 +72,7 @@ public class JustifyTextView extends AppCompatTextView {
         if (typedArray != null) {
             placeWidthText = typedArray.getString(R.styleable.JustifyTextView_jtv_placeWidthText);
             disableLastChar = typedArray.getBoolean(R.styleable.JustifyTextView_jtv_disableLastChar, false);
+            enableJustify = typedArray.getBoolean(R.styleable.JustifyTextView_jtv_enableJustify, false);
             typedArray.recycle();
         }
         setGravity(getGravity() | Gravity.CENTER_HORIZONTAL);
@@ -59,7 +80,7 @@ public class JustifyTextView extends AppCompatTextView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (!TextUtils.isEmpty(placeWidthText)) {
+        if (!TextUtils.isEmpty(placeWidthText) && enableJustify) {
             int width = (int) StaticLayout.getDesiredWidth(placeWidthText, getPaint());
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
 
@@ -70,7 +91,7 @@ public class JustifyTextView extends AppCompatTextView {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onDraw(Canvas canvas) {
-        if (!justifyDraw(canvas, this, disableLastChar)) {
+        if (!enableJustify || !justifyDraw(canvas, this, disableLastChar)) {
             super.onDraw(canvas);
         }
     }
