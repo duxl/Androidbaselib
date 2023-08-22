@@ -2,6 +2,8 @@ package com.duxl.baselib.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -327,5 +329,19 @@ public class DisplayUtil {
         int size = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         v.measure(size, size);
         v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+    }
+
+    /**
+     * 截图，将view转成bitmap
+     *
+     * @param v
+     * @return
+     */
+    public static Bitmap cutView(View v) {
+        measureView(v);
+        Bitmap bitmap = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
+        return bitmap;
     }
 }
