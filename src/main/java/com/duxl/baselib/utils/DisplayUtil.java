@@ -2,11 +2,14 @@ package com.duxl.baselib.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.FloatRange;
 
 import java.lang.reflect.Field;
 
@@ -15,7 +18,7 @@ import javax.security.auth.Destroyable;
 /**
  * dp、sp 转换为 px 的工具类
  *
- * @author fxsky 2012.11.12
+ * @author duxl 2012.11.12
  */
 public class DisplayUtil {
 
@@ -199,29 +202,67 @@ public class DisplayUtil {
     }
 
     /**
-     * 获取控件的X坐标
+     * 获取控件在屏幕的X坐标
      *
      * @param v
      * @return
      */
-    public static int getViewLocationX(View v) {
-        int[] location = new int[2];
-        v.getLocationOnScreen(location);
-        int x = location[0];
-        return x;
+    public static int getViewOnScreenLocationX(View v) {
+        return getViewOnScreenLocation(v)[0];
     }
 
     /**
-     * 获取控件的Y坐标
+     * 获取控件在屏幕的Y坐标
      *
      * @param v
      * @return
      */
-    public static int getViewLocationY(View v) {
+    public static int getViewOnScreenLocationY(View v) {
+        return getViewOnScreenLocation(v)[1];
+    }
+
+    /**
+     * 获取控件在屏幕中的位置
+     *
+     * @param v
+     * @return
+     */
+    public static int[] getViewOnScreenLocation(View v) {
         int[] location = new int[2];
         v.getLocationOnScreen(location);
-        int y = location[1];
-        return y;
+        return location;
+    }
+
+    /**
+     * 获取控件在父窗体中的X坐标
+     *
+     * @param v
+     * @return
+     */
+    public static int getViewInWindowLocationX(View v) {
+        return getViewInWindowLocation(v)[0];
+    }
+
+    /**
+     * 获取控件在父窗体中的Y坐标
+     *
+     * @param v
+     * @return
+     */
+    public static int getViewInWindowLocationY(View v) {
+        return getViewInWindowLocation(v)[1];
+    }
+
+    /**
+     * 获取控件在父窗体中的位置
+     *
+     * @param v
+     * @return
+     */
+    public static int[] getViewInWindowLocation(View v) {
+        int[] location = new int[2];
+        v.getLocationInWindow(location);
+        return location;
     }
 
     /**
@@ -238,6 +279,7 @@ public class DisplayUtil {
 
     /**
      * 强制显示软键盘
+     *
      * @param context
      * @param view
      */
@@ -248,11 +290,42 @@ public class DisplayUtil {
 
     /**
      * 强制隐藏软键盘
+     *
      * @param context
      * @param view
      */
     public static void hideSoftInputForced(Activity context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * 更改颜色透明度
+     *
+     * @param originalColor 需要更改的颜色
+     * @param alpha         更改的透明度
+     * @return
+     */
+    public static int changeAlpha(int originalColor,
+                                  @FloatRange(from = 0.0, to = 1.0) float alpha) {
+        return Color.argb(
+                (int) (255 * alpha),
+                Color.red(originalColor),
+                Color.green(originalColor),
+                Color.blue(originalColor)
+        );
+    }
+
+    /**
+     * 测量view，一般通过LayoutInflater.inflate()加载的布局，
+     * 在没有绘制到屏幕上是拿不到view的高宽的，调用此方法测量view
+     * 后即可获取高宽
+     *
+     * @param v
+     */
+    public static void measureView(View v) {
+        int size = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        v.measure(size, size);
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
     }
 }

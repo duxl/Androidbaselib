@@ -19,6 +19,8 @@ import java.util.List;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
+import androidx.annotation.FloatRange;
+
 /**
  * <pre>
  *     author: Blankj
@@ -201,6 +203,68 @@ public class Utils {
     public static String getAndroidId() {
         return Settings.Secure.getString(Utils.getApp().getContentResolver(), Settings.Secure.ANDROID_ID);
 
+    }
+
+
+    /**
+     * <pre>
+     * 将元素插入到sortedDiff集合，该集合是sortedAll的子集，且两个集合都是相同的排序，
+     * 例如：
+     * sortedAll集合=  [b, x, y, m, a]
+     * sortedDiff集合= [b, m, a]
+     * 需要插入的e元素=  y
+     * 最后返回集合=    [b, y, m, a]
+     * 即将y插入到元素b的后面，元素m的前面
+     * </pre>
+     *
+     * @param sortedAll  已排序的所有元素
+     * @param sortedDiff 已排序的部分元素
+     * @param e          需要插入的元素，改元素必须是sortedAll中存在，并sortedDiff不存在
+     * @param <E>        返回插入到sortedDiff的位置，返回-1标识给的元素e不在sortedAll中
+     */
+    public static <E> int addItemToDiffList(List<E> sortedAll, List<E> sortedDiff, E e) {
+        for (int i = 1; i < sortedDiff.size(); i++) {
+            // 1、取出diff集合中的元素所在all集合中的位置
+            int findBeforeIndex = sortedAll.indexOf(sortedDiff.get(i));
+            // 2、循环判断第一步取出的位置前面的all集合元素是否包含e元素
+            for (int j = 0; j < findBeforeIndex; j++) {
+                if (sortedAll.get(j) == e) {
+                    sortedDiff.add(i - 1, e);
+                    return i - 1;
+                }
+            }
+        }
+
+        if (sortedAll.contains(e)) {
+            sortedDiff.add(e);
+            return sortedDiff.size() - 1;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
+     *
+     * @param from  数值开始值
+     * @param to    数值结束值
+     * @param scale 开始到结束的比例
+     * @return
+     */
+    public static int getRangeValue(int from, int to, @FloatRange(from = 0.0, to = 1.0) float scale) {
+        return (int) getRangeValue(Float.valueOf(from), Float.valueOf(from), scale);
+    }
+
+    /**
+     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
+     *
+     * @param from  数值开始值
+     * @param to    数值结束值
+     * @param scale 开始到结束的比例
+     * @return
+     */
+    public static float getRangeValue(float from, float to, @FloatRange(from = 0.0, to = 1.0) float scale) {
+        return from + (to - from) * scale;
     }
 
     /**

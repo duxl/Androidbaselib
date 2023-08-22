@@ -74,4 +74,19 @@
     <declare-styleable name="MaskImageView">
         <attr name="maskSrc" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="FirstLineMarginFlowLayout">
+        <!-- 首行左间距 -->
+        <attr name="flm_margin_left" format="dimension|reference" />
+        <!-- 首行右间距 -->
+        <attr name="flm_margin_right" format="dimension|reference" />
+        <!-- 首行左view，设置了leftView后，marginLeft覆盖为leftView的宽度 -->
+        <attr name="flm_left_view" format="reference" />
+        <!-- 首行右view，设置了rightView后，marginRight覆盖为rightView的宽度 -->
+        <attr name="flm_right_view" format="reference" />
+        <!-- 每个子view的水平间隔，不包含leftView和rightView -->
+        <attr name="flm_item_horizontal_space" format="dimension|reference" />
+        <!-- 每个子view的垂直间隔，不包含第一行的底部和最后一行的底部 -->
+        <attr name="flm_item_vertical_space" format="dimension|reference" />
+    </declare-styleable>
 </resources>
