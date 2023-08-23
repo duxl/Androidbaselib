@@ -1,5 +1,7 @@
 package com.duxl.baselib.widget;
 
+import static com.duxl.baselib.utils.DisplayUtil.getMeasureSize;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -195,23 +197,6 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
             height = Math.max(height, mRightView.getMeasuredHeight());
         }
         setMeasuredDimension(width, height);
-    }
-
-    /**
-     * 获取测量尺寸
-     *
-     * @param measureSpace 尺寸和模式
-     * @param contentSize  内容的尺寸
-     * @return
-     */
-    private int getMeasureSize(int measureSpace, int contentSize) {
-        int mode = MeasureSpec.getMode(measureSpace);
-        if (mode == MeasureSpec.EXACTLY) { // 确切的尺寸（match_parent或100dp）
-            return MeasureSpec.getSize(measureSpace);
-        } else if (mode == MeasureSpec.AT_MOST) { // 需要根据内容测量得到尺寸（wrap_content）
-            return contentSize;
-        }
-        return 0;
     }
 
     @Override

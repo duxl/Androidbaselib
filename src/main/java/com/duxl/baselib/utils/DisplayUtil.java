@@ -332,6 +332,23 @@ public class DisplayUtil {
     }
 
     /**
+     * 获取测量尺寸（自定义view时需要测量view尺寸可调用此方法）
+     *
+     * @param measureSpace 尺寸和模式
+     * @param contentSize  内容的尺寸
+     * @return
+     */
+    public static int getMeasureSize(int measureSpace, int contentSize) {
+        int mode = View.MeasureSpec.getMode(measureSpace);
+        if (mode == View.MeasureSpec.EXACTLY) { // 确切的尺寸（match_parent或100dp）
+            return View.MeasureSpec.getSize(measureSpace);
+        } else if (mode == View.MeasureSpec.AT_MOST) { // 需要根据内容测量得到尺寸（wrap_content）
+            return contentSize;
+        }
+        return contentSize;
+    }
+
+    /**
      * 截图，将view转成bitmap
      *
      * @param v
