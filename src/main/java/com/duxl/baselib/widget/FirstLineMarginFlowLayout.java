@@ -111,6 +111,16 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
         requestLayout();
     }
 
+    /**
+     * 测量高宽，并计算总的行数和每行child个数
+     * @param widthMeasureSpec horizontal space requirements as imposed by the parent.
+     *                         The requirements are encoded with
+     *                         {@link android.view.View.MeasureSpec}.
+     * @param heightMeasureSpec vertical space requirements as imposed by the parent.
+     *                         The requirements are encoded with
+     *                         {@link android.view.View.MeasureSpec}.
+     *
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -121,16 +131,16 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
         int height = 0;
         if (childCount > 0) {
             int currentLine = 0; // 当前行
-            int lineMaxHeight = 0; // 当前行的maxHeight
-            int lineTotalWidth = 0; // 当前行的总child宽度
+            int currentLineMaxHeight = 0; // 当前行的maxHeight
+            int currentLineTotalWidth = 0; // 当前行的总child宽度
             for (int i = 0; i < childCount; i++) {
                 if (i == 0) {
-                    lineTotalWidth = mFirstLineMarginLeft + mFirstLineMarginRight;
+                    currentLineTotalWidth = mFirstLineMarginLeft + mFirstLineMarginRight;
                     if (EmptyUtils.isNotNull(mLeftView)) {
-                        lineMaxHeight = Math.max(lineMaxHeight, mLeftView.getMeasuredHeight());
+                        currentLineMaxHeight = Math.max(currentLineMaxHeight, mLeftView.getMeasuredHeight());
                     }
                     if (EmptyUtils.isNotNull(mRightView)) {
-                        lineMaxHeight = Math.max(lineMaxHeight, mRightView.getMeasuredHeight());
+                        currentLineMaxHeight = Math.max(currentLineMaxHeight, mRightView.getMeasuredHeight());
                     }
                 }
 
@@ -141,24 +151,26 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
                 int childWidth = childView.getMeasuredWidth();
                 int childHeight = childView.getMeasuredHeight();
                 if (mLineChildCount.size() == currentLine) {
-                    lineTotalWidth += childWidth;
+                    currentLineTotalWidth += childWidth;
                 } else {
-                    lineTotalWidth += mItemHorizontalSpace + childWidth;
+                    currentLineTotalWidth += mItemHorizontalSpace + childWidth;
                 }
 
-                lineMaxHeight = Math.max(lineMaxHeight, childHeight);
+                currentLineMaxHeight = Math.max(currentLineMaxHeight, childHeight);
 
-                if (lineTotalWidth > width) {
-                    lineTotalWidth = childWidth;
+                if (currentLineTotalWidth > width) {
+                    currentLineTotalWidth = childWidth;
                     if (currentLine == 0) {
-                        height = lineMaxHeight;
+                        height = currentLineMaxHeight;
                     } else {
-                        height += mItemVerticalSpace + lineMaxHeight;
+                        height += currentLineMaxHeight + mItemVerticalSpace;
                     }
 
-                    lineMaxHeight = childHeight;
+                    currentLineMaxHeight = childHeight;
                     currentLine++;
                 }
+
+                // 累加当前行child的个数
                 if (mLineChildCount.size() == currentLine) {
                     mLineChildCount.add(1);
                 } else {
@@ -166,11 +178,11 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
                 }
             }
 
-            if (lineMaxHeight > 0) {
+            if (currentLineMaxHeight > 0) {
                 if (currentLine == 0) {
-                    height = lineMaxHeight;
+                    height = currentLineMaxHeight;
                 } else {
-                    height += mItemVerticalSpace + lineMaxHeight;
+                    height += currentLineMaxHeight + mItemVerticalSpace;
                 }
             }
         }
@@ -215,29 +227,31 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
         int beforeLineY = 0;
         int childIndex = 0;
         int left, top, right, bottom; // 定义上下左右摆放的位置
-        for (int line = 0; line < mLineChildCount.size(); line++) {
-            int beforeLineMaxHeight = 0;
-            if (line == 0) {
+        for (int currentLine = 0; currentLine < mLineChildCount.size(); currentLine++) {
+            int currentLineMaxHeight = 0; // 当前行的最大高度
+            if (currentLine == 0) {
                 if(EmptyUtils.isNotNull(mLeftView)) {
-                    beforeLineMaxHeight = Math.max(beforeLineMaxHeight, mLeftView.getMeasuredHeight());
+                    currentLineMaxHeight = Math.max(currentLineMaxHeight, mLeftView.getMeasuredHeight());
                 }
                 if(EmptyUtils.isNotNull(mRightView)) {
-                    beforeLineMaxHeight = Math.max(beforeLineMaxHeight, mRightView.getMeasuredHeight());
+                    currentLineMaxHeight = Math.max(currentLineMaxHeight, mRightView.getMeasuredHeight());
                 }
             }
 
-            int tempChildIndex = 0;
-            for (int lineChildIndex = 0; lineChildIndex < mLineChildCount.get(line); lineChildIndex++) {
-                View childView = getChildAt(tempChildIndex);
-                beforeLineMaxHeight = Math.max(beforeLineMaxHeight, childView.getMeasuredHeight() + mItemVerticalSpace);
-                tempChildIndex++;
+            // 计算当前行的最大高度view
+            int tempLineChildIndex = 0;
+            for (int lineChildIndex = 0; lineChildIndex < mLineChildCount.get(currentLine); lineChildIndex++) {
+                View childView = getChildAt(childIndex + tempLineChildIndex);
+                currentLineMaxHeight = Math.max(currentLineMaxHeight, childView.getMeasuredHeight());
+                tempLineChildIndex++;
             }
 
+            // 摆放当前行view
             int beforeChildX = 0;
-            for (int lineChildIndex = 0; lineChildIndex < mLineChildCount.get(line); lineChildIndex++) {
+            for (int lineChildIndex = 0; lineChildIndex < mLineChildCount.get(currentLine); lineChildIndex++) {
                 View childView = getChildAt(childIndex);
                 if (lineChildIndex == 0) {
-                    if (line == 0) {
+                    if (currentLine == 0) {
                         left = mFirstLineMarginLeft;
                     } else {
                         left = 0;
@@ -246,15 +260,23 @@ public class FirstLineMarginFlowLayout extends ViewGroup {
                     left = mItemHorizontalSpace + beforeChildX;
                 }
 
-                top = beforeLineY + (beforeLineMaxHeight - childView.getMeasuredHeight()) / 2;
+                top = beforeLineY + (currentLineMaxHeight - childView.getMeasuredHeight()) / 2;
+                if(currentLine > 0) {
+                    top += mItemVerticalSpace;
+                }
+
                 right = left + childView.getMeasuredWidth();
                 bottom = top + childView.getMeasuredHeight();
                 childView.layout(left, top, right, bottom);
+                //System.out.println("childView.layout."+childIndex+"("+left+", "+top+", "+right+", "+bottom+")");
 
                 beforeChildX = right;
                 childIndex++;
             }
-            beforeLineY += beforeLineMaxHeight;
+            beforeLineY += currentLineMaxHeight;
+            if(currentLine > 0) {
+                beforeLineY += mItemVerticalSpace;
+            }
         }
     }
 
