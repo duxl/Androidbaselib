@@ -5,13 +5,18 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.OffsetEdgeTreatment;
 import com.google.android.material.shape.RoundedCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.TriangleEdgeTreatment;
+
+import java.util.ArrayList;
 
 public class MaterialUtils {
 
@@ -40,6 +45,28 @@ public class MaterialUtils {
         drawable.setShadowColor(shadowColor); // 阴影颜色
         drawable.setElevation(elevation); // 阴影的海拔，相当于阴影大小
         drawable.setShadowVerticalOffset(0); // 设置为0表示四周扩散的阴影
+        return drawable;
+    }
+
+
+    /**
+     * 带三角尖的图
+     *
+     * @param fillColor    填充颜色
+     * @param triangleSize 三角尖大小
+     * @param offset       三角尖所在边的偏移量
+     * @param cornerSizes  图圆角大小
+     * @param inside       三角尖是否朝内
+     * @return
+     */
+    public static Drawable getTriangleDrawable(@ColorInt int fillColor, int triangleSize, int offset, float cornerSizes, boolean inside) {
+        ShapeAppearanceModel.Builder builder = ShapeAppearanceModel.builder();
+        builder.setBottomEdge(new OffsetEdgeTreatment(new TriangleEdgeTreatment(triangleSize, inside), offset));
+        builder.setAllCorners(new RoundedCornerTreatment()); // 设置角的样式为圆形
+        builder.setAllCornerSizes(cornerSizes); // 设置圆角大小
+        MaterialShapeDrawable drawable = new MaterialShapeDrawable(builder.build());
+        drawable.setTint(fillColor); // 设置图片颜色
+        drawable.setPaintStyle(Paint.Style.FILL);
         return drawable;
     }
 }
