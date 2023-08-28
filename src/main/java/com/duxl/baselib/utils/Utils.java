@@ -268,6 +268,35 @@ public class Utils {
     }
 
     /**
+     * 根据输入值等比例计算后输出，
+     * 例如normalize(10, 0, 100, 0, 200)=20
+     * 例如normalize(10, 0, 100, 20, 70)=25
+     *
+     * @param inputValue 当前输入值
+     * @param inputMin   可输入的最小值
+     * @param inputMax   可输入的最大值
+     * @param outputMin  输出最小值
+     * @param outputMax  输出最大值
+     * @return
+     */
+    public static float normalize(
+            float inputValue,
+            float inputMin,
+            float inputMax,
+            float outputMin,
+            float outputMax
+    ) {
+        if (inputValue < inputMin) {
+            return outputMin;
+        } else if (inputValue > inputMax) {
+            return outputMax;
+        }
+
+        return outputMin * (1 - (inputValue - inputMin) / (inputMax - inputMin))
+                + outputMax * ((inputValue - inputMin) / (inputMax - inputMin));
+    }
+
+    /**
      * <pre>
      * 将数组转为集合
      * JDK自带有类似方法{@link java.util.Arrays#asList(java.lang.Object[])}
