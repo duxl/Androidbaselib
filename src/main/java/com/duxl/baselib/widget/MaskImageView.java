@@ -19,7 +19,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.duxl.baselib.R;
 
 /**
- * 遮罩ImageView
+ * 遮罩ImageView，使用遮罩实现任意的形状效果
  */
 public class MaskImageView extends AppCompatImageView {
 

@@ -17,7 +17,7 @@ import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 
 /**
- * SmartRecyclerView
+ * SmartRecycler 封装了上拉刷新，下载加载更多，显示各种状态的列表
  * create by duxl 2020/8/16
  */
 public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshContainer, IStatusViewContainer {

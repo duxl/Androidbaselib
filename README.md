@@ -323,6 +323,9 @@ LazyFragment继承至BaseFragment，扩充了懒加载的支持
 
    *算数相关工具类*
 
+- **AnimUtils**
+  *动画工具类*
+
 - **BinaryUtils**
 
    *二进制位运算工具*
@@ -339,13 +342,26 @@ LazyFragment继承至BaseFragment，扩充了懒加载的支持
 
   *双击退出屏幕*
 
+- **Dispatch**
+
+  *任务分发队列（可选择主线程或子线程）*
+
 - **EmptyUtils**
 
   *EmptyUtils，验证传入参数是否为null或者集合是否未空集合，数组是否为空数组。与NullUtils 的区别是，NullUtils 是用于转换，EmptyUtils用于验证判断。   前者着重转换，后者着重判断*
 
+- **FontUtil**
+
+  *FontUtil，获取字体，给TextView设置字体*
+
+
 - **MultiTaskMarkUtil**
 
   *多任务标记工具类，可用于多个异步操作是否都执行完毕的判断举例：多个异步接口调用前显示dialog加载匡，所有接口都调用完毕后取消dialog这个工具类就可以用来记录这些接口是否都调用完毕，哪些已经调用完毕了*
+
+- **MaterialUtils**
+
+  *Google材料设计，提供阴影背景、带三角尖的背景等*
 
 - **NetCheckUtil**
 
@@ -386,3 +402,68 @@ LazyFragment继承至BaseFragment，扩充了懒加载的支持
 - **WindowSoftInputCompat**
 
   *Android全屏／沉浸式状态栏下，键盘挡住输入框解决办法*
+
+## 工具类
+
+- **AlbumUtils**
+
+  *片选择和视频选择*
+
+
+## widget
+
+- **ActionBarView**
+
+  *ActionBarView*
+
+- **CenterLayoutManager**
+
+  *RecyclerView横向列表item滚动居中*
+
+- **ClearEditText**
+
+  *监听输入内容是否为空，不为空显示清除按钮，点击清除按钮清空文本内容*
+
+- **DividerView**
+
+  *分割线，支持虚线*
+
+- **FirstLineMarginFlowLayout**
+
+  *首行可设置水平margin属性的FlowLayout*
+
+
+- **HeartbeatTextView**
+
+  *心跳TextView（可用于倒计时等功能）*
+
+- **InputDigitalTextWatcher**
+
+  *输入数字监听，控制输入数字的最小值，最大值和小数位位数*
+
+- **JustifyTextView**
+
+  *两端分散对齐的TextView（使用本控件前提条件：单行普通文本）*
+
+- **MaskImageView**
+
+  *遮罩ImageView，使用遮罩实现任意的形状效果*
+
+- **NoScrollViewPager**
+
+  *禁用横向滑动的ViewPager*
+
+- **SmartRecyclerView**
+
+  *封装了上拉刷新，下载加载更多，显示各种状态的列表*
+
+
+
+
+
+
+
+
+
+
+
