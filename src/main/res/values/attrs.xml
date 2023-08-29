@@ -99,4 +99,17 @@
         <!-- 启用两端分散对齐，默认禁用 -->
         <attr name="jtv_enableJustify" format="boolean" />
     </declare-styleable>
+
+    <!-- 叠放的Layout，将item从左往右依次排开叠放 -->
+    <declare-styleable name="LayerLayout">
+        <!-- item的宽度 -->
+        <attr name="layer_item_width" format="dimension|reference" />
+        <!-- item的高度 -->
+        <attr name="layer_item_height" format="dimension|reference" />
+        <!-- item与item之间的偏移 -->
+        <attr name="layer_item_offset" format="dimension|reference" />
+        <!-- item是否反转 -->
+        <attr name="layer_item_reverse" format="boolean" />
+
+    </declare-styleable>
 </resources>

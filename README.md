@@ -445,6 +445,10 @@ LazyFragment继承至BaseFragment，扩充了懒加载的支持
 
   *两端分散对齐的TextView（使用本控件前提条件：单行普通文本）*
 
+- **LayerLayout**
+
+  *横向叠放view的Layout(常用显示多个图标或头像，并且有重叠的效果)*
+
 - **MaskImageView**
 
   *遮罩ImageView，使用遮罩实现任意的形状效果*
