@@ -25,8 +25,6 @@ import com.trello.rxlifecycle4.android.RxLifecycleAndroid;
 
 import java.util.Objects;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
@@ -37,7 +35,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     private static final String TAG = "BaseDialogFragment";
 
     private static final float DEFAULT_DIM = 0.5f;
-    private Unbinder mUnbinder;
     private OnDismissListener mOnDismissListener;
 
 
@@ -57,7 +54,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
         Objects.requireNonNull(Objects.requireNonNull(getDialog()).getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(getCancelOutside());
         View view = inflater.inflate(getResId(), container, false);
-        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -84,9 +80,6 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
         if (mOnDismissListener != null) {
             mOnDismissListener.onDismiss(this);
-        }
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
         }
         super.onDestroyView();
     }

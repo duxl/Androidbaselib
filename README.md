@@ -53,7 +53,6 @@ dependencies {
     implementation project(path: ':baselib')
 
     // annotationProcessor 在每个module中都必须配置才起作用
-    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
 }
 ```
@@ -85,10 +84,9 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate5.6.2'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate6.6.0'
    
    // annotationProcessor 在每个module中都必须配置才起作用
-   annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
    ```
 

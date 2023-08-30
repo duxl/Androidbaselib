@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.duxl.baselib.BuildConfig;
 import com.duxl.baselib.R;
 import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
@@ -23,16 +22,11 @@ import com.duxl.baselib.utils.DisplayUtil;
 import com.duxl.baselib.widget.ActionBarView;
 import com.duxl.baselib.widget.XSmartRefreshLayout;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 /**
  * BaseActivity
  * create by duxl 2020/8/15
  */
 public abstract class BaseActivity extends RefreshActivity implements IStatusViewContainer {
-
-    protected Unbinder mUnbinder;
 
     protected View mRootContentView;
     protected View mStateBar;
@@ -63,7 +57,6 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         mStatusView = initStatusView();
         mFlContainer.addView(mStatusView.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        mUnbinder = ButterKnife.bind(this, mContentView);
         initView(mContentView);
     }
 
@@ -269,9 +262,6 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         mFlContainer = null;
         mStatusView = null;
 
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
         super.onDestroy();
     }
 

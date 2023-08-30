@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.duxl.baselib.R;
 
-import butterknife.ButterKnife;
-
 /**
  * <pre>
  *     支持懒加载的Fragment
@@ -149,7 +147,6 @@ public abstract class LazyFragment extends BaseFragment {
             mStatusView = initStatusView();
             mFlContainer.addView(mStatusView.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-            mUnbinder = ButterKnife.bind(this, mContentView);
             initView(mContentView);
 
             mHasInflated = true;

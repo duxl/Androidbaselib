@@ -1,13 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 
 buildscript {
     repositories {
         mavenCentral()
         google()
-    }
-    dependencies {
-        classpath "com.jakewharton:butterknife-gradle-plugin:${rootProject.ext.version['butterknifeSdkVersion']}"
     }
 }
 
@@ -50,9 +46,6 @@ dependencies {
     api rootProject.ext.dependencies["recyclerview"]
     api rootProject.ext.dependencies["flexbox"]
     api rootProject.ext.dependencies["baseviewadapter"]
-
-    api rootProject.ext.dependencies["butterknife"]
-    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 
     api rootProject.ext.dependencies["smart-refreshrefresh-kernel"]
     api rootProject.ext.dependencies["smart-refreshrefresh-header-classics"]
