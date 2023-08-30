@@ -9,6 +9,7 @@ import android.view.Gravity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.OffsetEdgeTreatment;
@@ -48,6 +49,10 @@ public class MaterialUtils {
         return drawable;
     }
 
+    public enum Orientation {
+        LEFT, TOP, RIGHT, BOTTOM
+    }
+
 
     /**
      * 带三角尖的图
@@ -57,11 +62,26 @@ public class MaterialUtils {
      * @param offset       三角尖所在边的偏移量
      * @param cornerSizes  图圆角大小
      * @param inside       三角尖是否朝内
+     * @param orientation  三角尖所在的边
      * @return
      */
-    public static Drawable getTriangleDrawable(@ColorInt int fillColor, int triangleSize, int offset, float cornerSizes, boolean inside) {
+    public static Drawable getTriangleDrawable(@ColorInt int fillColor, int triangleSize, int offset, float cornerSizes, boolean inside, Orientation orientation) {
         ShapeAppearanceModel.Builder builder = ShapeAppearanceModel.builder();
-        builder.setBottomEdge(new OffsetEdgeTreatment(new TriangleEdgeTreatment(triangleSize, inside), offset));
+        OffsetEdgeTreatment triangleEdge = new OffsetEdgeTreatment(new TriangleEdgeTreatment(triangleSize, inside), offset);
+        switch (orientation) {
+            case LEFT:
+                builder.setLeftEdge(triangleEdge);
+                break;
+            case TOP:
+                builder.setTopEdge(triangleEdge);
+                break;
+            case RIGHT:
+                builder.setRightEdge(triangleEdge);
+                break;
+            case BOTTOM:
+                builder.setBottomEdge(triangleEdge);
+                break;
+        }
         builder.setAllCorners(new RoundedCornerTreatment()); // 设置角的样式为圆形
         builder.setAllCornerSizes(cornerSizes); // 设置圆角大小
         MaterialShapeDrawable drawable = new MaterialShapeDrawable(builder.build());
