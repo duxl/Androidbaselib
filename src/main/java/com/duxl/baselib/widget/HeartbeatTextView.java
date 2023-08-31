@@ -57,9 +57,11 @@ public class HeartbeatTextView extends androidx.appcompat.widget.AppCompatTextVi
     public void setInterval(long time, TimeUnit unit) {
         mTimeInterval = time;
         mTimeUnit = unit;
+        start();
     }
 
     private void start() {
+        stop();
         Observable
                 .interval(0, mTimeInterval, mTimeUnit)
                 .take(Long.MAX_VALUE)
@@ -76,6 +78,9 @@ public class HeartbeatTextView extends androidx.appcompat.widget.AppCompatTextVi
                         super.onNext(aLong);
                         if (EmptyUtils.isNotNull(mOnHeartbeatListener)) {
                             mOnHeartbeatListener.onHeartbeat(HeartbeatTextView.this);
+                        }
+                        if (aLong == Long.MAX_VALUE - 1) {
+                            start();
                         }
                     }
                 });
