@@ -110,6 +110,20 @@
         <attr name="layer_item_offset" format="dimension|reference" />
         <!-- item是否反转 -->
         <attr name="layer_item_reverse" format="boolean" />
+    </declare-styleable>
 
+    <declare-styleable name="CoordinatorFollowLayout">
+        <attr name="follow_gravity">
+            <enum name="Left" value="0" />
+            <enum name="Top" value="1" />
+            <enum name="Right" value="2" />
+            <enum name="Bottom" value="3" />
+            <enum name="AlignLeft" value="4" />
+            <enum name="AlignTop" value="5" />
+            <enum name="AlignRight" value="6" />
+            <enum name="AlignBottom" value="7" />
+        </attr>
+        <attr name="follow_center" format="boolean" />
+        <attr name="follow_anchor" format="reference" />
     </declare-styleable>
 </resources>
