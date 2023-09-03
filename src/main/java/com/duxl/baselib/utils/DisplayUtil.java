@@ -349,13 +349,23 @@ public class DisplayUtil {
     }
 
     /**
-     * 截图，将view转成bitmap
+     * 截图，将view转成bitmap(如果v已显示出来，直接调用{@link #cutMeasuredView(View)})
      *
      * @param v
      * @return
      */
     public static Bitmap cutView(View v) {
         measureView(v);
+        return cutMeasuredView(v);
+    }
+
+    /**
+     * 截图，将view转成bitmap，前提是v已经显示到UI上
+     *
+     * @param v
+     * @return
+     */
+    public static Bitmap cutMeasuredView(View v) {
         Bitmap bitmap = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
