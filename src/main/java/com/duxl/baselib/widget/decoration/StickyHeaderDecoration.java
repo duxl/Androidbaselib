@@ -2,6 +2,7 @@ package com.duxl.baselib.widget.decoration;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -74,7 +75,7 @@ public abstract class StickyHeaderDecoration extends RecyclerView.ItemDecoration
                 }
             }
         }
-        c.drawBitmap(bitmap, 0, top, null);
+        c.drawBitmap(bitmap, firstView.getLeft(), top, null);
         bitmap.recycle();
     }
 
