@@ -5,13 +5,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.FloatRange;
+import androidx.annotation.RequiresApi;
 
 import java.lang.reflect.Field;
 
@@ -370,5 +376,40 @@ public class DisplayUtil {
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * 是否存在虚拟导航bar
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isSupportNavBar(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            if (wm == null) return false;
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            Point realSize = new Point();
+            display.getSize(size);
+            display.getRealSize(realSize);
+            return realSize.y != size.y || realSize.x != size.x;
+        }
+        boolean menu = ViewConfiguration.get(context).hasPermanentMenuKey();
+        boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+        return !menu && !back;
+    }
+
+    /**
+     * 设置虚拟导航bar的颜色
+     *
+     * @param activity
+     * @param color
+     */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setNavBarColor(Activity activity, final int color) {
+        if (isSupportNavBar(activity)) {
+            activity.getWindow().setNavigationBarColor(color);
+        }
     }
 }
