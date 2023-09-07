@@ -36,6 +36,20 @@ public class ArithmeticUtils {
     }
 
     /**
+     * 使用java正则表达式去掉多余的.与0
+     *
+     * @param s
+     * @return
+     */
+    public static String formatValid(String s) {
+        if (s.indexOf(".") > 0) {
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
+    }
+
+    /**
      * 数字转换：
      * 例如将人民币153分转换成1.5元，153分到元四舍五入的方式保留一位小数的调用方式如下：
      * convertNum(153, 2, 1, RoundingMode.HALF_UP)
