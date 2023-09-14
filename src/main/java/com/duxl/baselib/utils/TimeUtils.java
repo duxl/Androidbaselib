@@ -89,18 +89,6 @@ public class TimeUtils {
     /**
      * UTC世界标准时间转化为本地时间
      *
-     * @param utcTime   utc世界时间戳（毫秒级）
-     * @param toPattern 转成本地时间的格式
-     * @return
-     */
-    public static String utcFormat(long utcTime, String toPattern) {
-        Date date = new Date(utcTime + TimeZone.getDefault().getRawOffset());
-        return new SimpleDateFormat(toPattern).format(date);
-    }
-
-    /**
-     * UTC世界标准时间转化为本地时间
-     *
      * @param utcTime   utc世界时间，格式例：2023-07-12T06:27:35.000+00:00
      * @param toPattern 转成本地时间的格式
      * @return
@@ -135,12 +123,35 @@ public class TimeUtils {
     }
 
     /**
-     * 获取当前UTC时间戳(毫秒级)
+     * 格式化成指定时区的格式化时间
      *
-     * @return
+     * @param toPattern 格式化后的格式
+     * @param toZone    指定目标时区，eg：美国洛杉矶时区 TimeZone.getTimeZone("America/Los_Angeles")，
+     *                  其它时区可参考：http://worldtimeapi.org/api/timezone
+     * @param time      时间错
+     * @return 成功格式化返回格式化后的时间字符串，否则返回原时间字符串
      */
-    public static long getCurrentUTCTimeMillis() {
-        // 当前时区的时间戳减去时区偏移量就是UTC时间
-        return System.currentTimeMillis() - TimeZone.getDefault().getRawOffset();
+    public static String format(String toPattern, TimeZone toZone, long time) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(toPattern);
+            sdf.setTimeZone(toZone);
+            return sdf.format(time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(time);
+    }
+
+    /**
+     * 格式化成指定时区的格式化时间
+     *
+     * @param toPattern 格式化后的格式
+     * @param toZone    指定目标时区，eg：美国洛杉矶时区 America/Los_Angeles，
+     *                  其它时区可参考：http://worldtimeapi.org/api/timezone
+     * @param time      时间错
+     * @return 成功格式化返回格式化后的时间字符串，否则返回原时间字符串
+     */
+    public static String format(String toPattern, String toZone, long time) {
+        return format(toPattern, TimeZone.getTimeZone(toZone), time);
     }
 }
