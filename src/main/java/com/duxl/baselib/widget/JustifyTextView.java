@@ -134,7 +134,15 @@ public class JustifyTextView extends AppCompatTextView {
         float gapWidth = totalGapWidth / spaceCount;
 
         Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
-        int baseLine = textView.getPaddingTop() - fontMetrics.top;
+        int baseLine = -fontMetrics.top;
+        if ((textView.getGravity() & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.CENTER
+                || (textView.getGravity() & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.CENTER_VERTICAL) {
+            baseLine += (textView.getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2;
+        } else if ((textView.getGravity() & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.BOTTOM) {
+            baseLine += (textView.getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top);
+        } else {
+            baseLine += textView.getPaddingTop();
+        }
 
         int x = textView.getPaddingLeft();
         for (int i = 0; i < text.length(); i++) {
