@@ -70,6 +70,7 @@ dependencies {
 
     api rootProject.ext.dependencies["glide"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    api 'jp.wasabeef:glide-transformations:4.3.0'
 
     api rootProject.ext.dependencies["filedownloader"]
 
