@@ -1,5 +1,7 @@
 package com.duxl.baselib.utils;
 
+import androidx.annotation.FloatRange;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -168,5 +170,58 @@ public class ArithmeticUtils {
             e.printStackTrace();
         }
         return new BigDecimal(0);
+    }
+
+    /**
+     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
+     *
+     * @param from  数值开始值
+     * @param to    数值结束值
+     * @param scale 开始到结束的比例
+     * @return
+     */
+    public static int getRangeValue(int from, int to, @FloatRange(from = 0.0, to = 1.0) float scale) {
+        return (int) getRangeValue(Float.valueOf(from), Float.valueOf(to), scale);
+    }
+
+    /**
+     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
+     *
+     * @param from  数值开始值
+     * @param to    数值结束值
+     * @param scale 开始到结束的比例
+     * @return
+     */
+    public static float getRangeValue(float from, float to, @FloatRange(from = 0.0, to = 1.0) float scale) {
+        return from + (to - from) * scale;
+    }
+
+    /**
+     * 根据输入值等比例计算后输出，
+     * 例如normalize(10, 0, 100, 0, 200)=20
+     * 例如normalize(10, 0, 100, 20, 70)=25
+     *
+     * @param inputValue 当前输入值
+     * @param inputMin   可输入的最小值
+     * @param inputMax   可输入的最大值
+     * @param outputMin  输出最小值
+     * @param outputMax  输出最大值
+     * @return
+     */
+    public static float normalize(
+            float inputValue,
+            float inputMin,
+            float inputMax,
+            float outputMin,
+            float outputMax
+    ) {
+        if (inputValue < inputMin) {
+            return outputMin;
+        } else if (inputValue > inputMax) {
+            return outputMax;
+        }
+
+        return outputMin * (1 - (inputValue - inputMin) / (inputMax - inputMin))
+                + outputMax * ((inputValue - inputMin) / (inputMax - inputMin));
     }
 }

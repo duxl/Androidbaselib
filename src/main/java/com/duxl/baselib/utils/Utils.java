@@ -1,5 +1,7 @@
 package com.duxl.baselib.utils;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ClipData;
@@ -16,10 +18,6 @@ import com.duxl.baselib.BaseApplication;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Context.CLIPBOARD_SERVICE;
-
-import androidx.annotation.FloatRange;
 
 /**
  * <pre>
@@ -219,7 +217,7 @@ public class Utils {
      *
      * @param sortedAll  已排序的所有元素
      * @param sortedDiff 已排序的部分元素
-     * @param e          需要插入的元素，改元素必须是sortedAll中存在，并sortedDiff不存在
+     * @param e          需要插入的元素，该元素必须是sortedAll中存在，并sortedDiff不存在
      * @param <E>        返回插入到sortedDiff的位置，返回-1标识给的元素e不在sortedAll中
      */
     public static <E> int addItemToDiffList(List<E> sortedAll, List<E> sortedDiff, E e) {
@@ -241,59 +239,6 @@ public class Utils {
         } else {
             return -1;
         }
-    }
-
-    /**
-     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
-     *
-     * @param from  数值开始值
-     * @param to    数值结束值
-     * @param scale 开始到结束的比例
-     * @return
-     */
-    public static int getRangeValue(int from, int to, @FloatRange(from = 0.0, to = 1.0) float scale) {
-        return (int) getRangeValue(Float.valueOf(from), Float.valueOf(from), scale);
-    }
-
-    /**
-     * 计算范围数值，比如数字10变化到20，变化比例是0.5，最后得到的值就是15
-     *
-     * @param from  数值开始值
-     * @param to    数值结束值
-     * @param scale 开始到结束的比例
-     * @return
-     */
-    public static float getRangeValue(float from, float to, @FloatRange(from = 0.0, to = 1.0) float scale) {
-        return from + (to - from) * scale;
-    }
-
-    /**
-     * 根据输入值等比例计算后输出，
-     * 例如normalize(10, 0, 100, 0, 200)=20
-     * 例如normalize(10, 0, 100, 20, 70)=25
-     *
-     * @param inputValue 当前输入值
-     * @param inputMin   可输入的最小值
-     * @param inputMax   可输入的最大值
-     * @param outputMin  输出最小值
-     * @param outputMax  输出最大值
-     * @return
-     */
-    public static float normalize(
-            float inputValue,
-            float inputMin,
-            float inputMax,
-            float outputMin,
-            float outputMax
-    ) {
-        if (inputValue < inputMin) {
-            return outputMin;
-        } else if (inputValue > inputMax) {
-            return outputMax;
-        }
-
-        return outputMin * (1 - (inputValue - inputMin) / (inputMax - inputMin))
-                + outputMax * ((inputValue - inputMin) / (inputMax - inputMin));
     }
 
     /**
