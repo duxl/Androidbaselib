@@ -62,34 +62,37 @@ public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extend
         if (root.isSuccess()) {
 
 //            try { // 放在try-catch里面的话，业务代码的异常会被catch掉
-                onSuccess(root);
-                List<T> list = getListData(root);
-                if (list != null) {
-                    if (isFirstPage()) {
-                        mAdapter.setNewInstance(list);
-                    } else {
-                        mAdapter.addData(list);
-                    }
+            onSuccess(root);
+            List<T> list = getListData(root);
+            if (list != null) {
+                if (isFirstPage()) {
+                    mAdapter.setNewInstance(list);
+                } else {
+                    mAdapter.addData(list);
                 }
+            } else if (isFirstPage()) {
+                mAdapter.getData().clear();
+                mAdapter.notifyDataSetChanged();
+            }
 
-                if (EmptyUtils.isEmpty(mAdapter.getData())) {
-                    if (mIStatusViewContainer != null) {
-                        mIStatusViewContainer.getStatusView().showEmpty();
+            if (EmptyUtils.isEmpty(mAdapter.getData())) {
+                if (mIStatusViewContainer != null) {
+                    mIStatusViewContainer.getStatusView().showEmpty();
+                }
+            } else {
+                if (mIStatusViewContainer != null) {
+                    mIStatusViewContainer.getStatusView().showContent();
+                }
+                if (hasMoreData(root)) {
+                    if (mIRefreshContainer != null) {
+                        mIRefreshContainer.resetNoMoreData();
                     }
                 } else {
-                    if (mIStatusViewContainer != null) {
-                        mIStatusViewContainer.getStatusView().showContent();
-                    }
-                    if (hasMoreData(root)) {
-                        if (mIRefreshContainer != null) {
-                            mIRefreshContainer.resetNoMoreData();
-                        }
-                    } else {
-                        if (mIRefreshContainer != null) {
-                            mIRefreshContainer.finishLoadMoreWithNoMoreData();
-                        }
+                    if (mIRefreshContainer != null) {
+                        mIRefreshContainer.finishLoadMoreWithNoMoreData();
                     }
                 }
+            }
 //            } catch (Exception e) {
 //                onError(e);
 //            }
