@@ -243,7 +243,7 @@ public class Utils {
 
     /**
      * <pre>
-     * 将数组转为集合
+     * 将数组转为集合，另见{@link #asList2(Object[])}
      * JDK自带有类似方法{@link java.util.Arrays#asList(java.lang.Object[])}
      * 但如果需要对jdk转换后的集合做非读取操作的话，就会抛{@link java.lang.UnsupportedOperationException}异常
      * 表示不支持请求的操作，这时就只能自己将数据转为集合了，也就是本方法
@@ -253,11 +253,29 @@ public class Utils {
      * @return
      */
     public static <T> List<T> asList(T[] items) {
+        if (items == null) {
+            return null;
+        }
+
         List<T> list = new ArrayList<>();
         for (T item : items) {
             list.add(item);
         }
         return list;
+    }
+
+    /**
+     * 将可变参数转为集合，另见{@link #asList(Object[])}
+     *
+     * @param value
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> asList2(T... value) {
+        if (value == null || (value.length == 1 && value[0] == null)) {
+            return null;
+        }
+        return asList(value);
     }
 
     /**
