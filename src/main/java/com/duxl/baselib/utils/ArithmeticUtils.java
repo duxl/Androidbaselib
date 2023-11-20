@@ -118,8 +118,8 @@ public class ArithmeticUtils {
             newScale = bigDecimal.scale();
             minDigits = true;
         }
-        bigDecimal.setScale(newScale, roundingMode);
-        DecimalFormat fmtEight = new DecimalFormat(",0.#");
+        bigDecimal = bigDecimal.setScale(newScale, roundingMode);
+        DecimalFormat fmtEight = new DecimalFormat(",0.########################################");
         if (minDigits) {
             fmtEight.setMinimumFractionDigits(newScale);
         } else {
