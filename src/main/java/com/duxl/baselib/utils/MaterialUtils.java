@@ -59,9 +59,9 @@ public class MaterialUtils {
      *
      * @param fillColor    填充颜色
      * @param triangleSize 三角尖大小
-     * @param offset       三角尖所在边的偏移量
+     * @param offset       三角尖所在边的偏移量（相对于边的中间偏移）
      * @param cornerSizes  图圆角大小
-     * @param inside       三角尖是否朝内
+     * @param inside       三角尖是否朝内（注意：三角朝外时，需要设置父布局的android:clipChildren=false和android:clipToPadding=false，使其有空间显示三角尖）
      * @param orientation  三角尖所在的边
      * @return
      */
