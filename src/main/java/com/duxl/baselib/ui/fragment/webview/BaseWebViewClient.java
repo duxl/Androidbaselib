@@ -1,22 +1,18 @@
 package com.duxl.baselib.ui.fragment.webview;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.view.View;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import androidx.core.net.UriCompat;
-
-import com.duxl.baselib.ui.activity.BaseActivity;
 import com.duxl.baselib.utils.EmptyUtils;
-import com.duxl.baselib.utils.Utils;
-import com.duxl.baselib.widget.BaseJSInterface;
 
 /**
  * create by duxl 2021/5/18
@@ -81,5 +77,40 @@ public class BaseWebViewClient<T extends BaseWebFragment> extends WebViewClient 
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
         //super.onReceivedSslError(view, handler, error);
         handler.proceed();
+    }
+
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        super.onReceivedError(view, request, error);
+        doError(view, request);
+    }
+
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        super.onReceivedHttpError(view, request, errorResponse);
+        doError(view, request);
+    }
+
+    /**
+     * 加载出错处理
+     *
+     * @param view
+     * @param request
+     */
+    protected void doError(WebView view, WebResourceRequest request) {
+        if (useBlackOnError()) {
+            // 避免出现默认（网页无法打开）的错误界面
+            view.loadUrl("about:blank");
+        }
+    }
+
+    /**
+     * 当加载页面出错是，是否启用about:black页面，避免显示网页无法打开的错误页
+     * ps：开发阶段最好设置成false，不然url加载失败的情况不知为什么
+     *
+     * @return
+     */
+    protected boolean useBlackOnError() {
+        return false;
     }
 }
