@@ -126,4 +126,15 @@
         <attr name="follow_center" format="boolean" />
         <attr name="follow_anchor" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="LockedColumnTableView">
+        <!-- 锁定的表头 -->
+        <attr name="locked_header_layout" format="reference" />
+        <!-- 表头 -->
+        <attr name="header_layout" format="reference" />
+        <!-- 锁定的数据布局 -->
+        <attr name="locked_data_layout" format="reference" />
+        <!-- 数据布局 -->
+        <attr name="data_layout" format="reference" />
+    </declare-styleable>
 </resources>
