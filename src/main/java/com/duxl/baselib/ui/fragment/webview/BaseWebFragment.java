@@ -3,6 +3,7 @@ package com.duxl.baselib.ui.fragment.webview;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -39,6 +40,22 @@ public class BaseWebFragment extends LazyFragment {
     protected String mUrl;
     protected String mContent;
 
+    protected WebChromeClient mWebChromeClient;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initWebChromeClient();
+    }
+
+    protected void initWebChromeClient() {
+        /**
+         * BaseWebChromeClient里面加的拍照和文件选择，使用的是registerForActivityResult方式，需要在Fragment的created之前调用，否则会报下面的错
+         * Fragments must call registerForActivityResult() before they are created (i.e. initialization, onAttach(), or onCreate())
+         */
+        mWebChromeClient = getWebChromeClient();
+    }
+
     @Override
     protected void initView(View v) {
         super.initView(v);
@@ -63,15 +80,18 @@ public class BaseWebFragment extends LazyFragment {
             setTitle(mTitle);
         }
 
-        mWebView.setWebChromeClient(getWebChromeClient());
+        mWebView.setWebChromeClient(mWebChromeClient);
         mWebView.setWebViewClient(getWebViewClient());
 
+        initLoad();
+    }
+
+    protected void initLoad() {
         if (!EmptyUtils.isEmpty(mUrl)) {
             mWebView.loadUrl(mUrl);
         } else {
             mWebView.loadData(mContent, "text/html", "utf-8");
         }
-
     }
 
     public WebView getWebView() {

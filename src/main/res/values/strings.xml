@@ -3,4 +3,7 @@
     <string name="exit_app_confirm_msg">再按退出程序</string>
     <string name="install_apk_failed">安装失败</string>
     <string name="data_loading">数据加载中</string>
+
+    <string name="request_permission_rationale">请允许权限</string>
+    <string name="request_permission_fail">获取权限失败</string>
 </resources>
