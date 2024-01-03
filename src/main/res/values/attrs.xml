@@ -137,4 +137,40 @@
         <!-- 数据布局 -->
         <attr name="data_layout" format="reference" />
     </declare-styleable>
+
+    <!-- 密码输入框 -->
+    <declare-styleable name="PwdEditText">
+        <!-- 输入框之间的间隙 -->
+        <attr name="space" format="dimension" />
+        <!-- 背景色 -->
+        <attr name="backColor" format="color" />
+        <!-- 边框大小 -->
+        <attr name="strokeWidth" format="dimension" />
+        <!-- 未输入的边框色(默认背景色) -->
+        <attr name="defaultBorderColor" format="color" />
+        <!-- 已输入的边框色（默认未输入的边框色） -->
+        <attr name="checkedBorderColor" format="color" />
+        <!-- 正在输入的边框色（默认未输入的边框色） -->
+        <attr name="inputBorderColor" format="color" />
+        <!-- 输入框圆角大小 -->
+        <attr name="round" format="dimension" />
+        <!-- 未输入背景图（设置后覆盖颜色设置） -->
+        <attr name="defaultBackDrawable" format="reference" />
+        <!-- 已输入背景图 -->
+        <attr name="checkedBackDrawable" format="reference" />
+        <!-- 正在输入背景图 -->
+        <attr name="inputBackDrawable" format="reference" />
+        <!-- 输入字符个数（输入框的个数） -->
+        <attr name="textLength" format="integer" />
+        <!-- 文本颜色 -->
+        <attr name="textColor" format="color" />
+        <!-- 显示圆点半径 -->
+        <attr name="circle" format="dimension" />
+        <!-- 密文方式显示（圆点） -->
+        <attr name="isPwd" format="boolean" />
+        <!-- 是否显示等待输入光标 -->
+        <attr name="isWaitInput" format="boolean" />
+        <!-- 等待输入光标颜色 -->
+        <attr name="waitInputColor" format="color" />
+    </declare-styleable>
 </resources>
