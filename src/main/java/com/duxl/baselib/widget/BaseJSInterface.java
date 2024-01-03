@@ -1,7 +1,6 @@
 package com.duxl.baselib.widget;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -278,6 +277,16 @@ public abstract class BaseJSInterface {
                 getWebFragment().hideActionBar();
             }
         });
+    }
+
+    /**
+     * 获取标题栏高度
+     *
+     * @return
+     */
+    @JavascriptInterface
+    public int getTitleBarHeight() {
+        return getWebFragment().getActionBarView().getMeasuredHeight();
     }
 
     /**

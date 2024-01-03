@@ -142,8 +142,12 @@
     <declare-styleable name="PwdEditText">
         <!-- 输入框之间的间隙 -->
         <attr name="space" format="dimension" />
-        <!-- 背景色 -->
-        <attr name="backColor" format="color" />
+        <!-- 背景色(默认) -->
+        <attr name="defaultBackColor" format="color" />
+        <!-- 背景色(已输入) -->
+        <attr name="checkedBackColor" format="color" />
+        <!-- 背景色(正在输入) -->
+        <attr name="inputBackColor" format="color" />
         <!-- 边框大小 -->
         <attr name="strokeWidth" format="dimension" />
         <!-- 未输入的边框色(默认背景色) -->
@@ -162,8 +166,8 @@
         <attr name="inputBackDrawable" format="reference" />
         <!-- 输入字符个数（输入框的个数） -->
         <attr name="textLength" format="integer" />
-        <!-- 文本颜色 -->
-        <attr name="textColor" format="color" />
+        <!-- 内容颜色 -->
+        <attr name="contentColor" format="color" />
         <!-- 显示圆点半径 -->
         <attr name="circle" format="dimension" />
         <!-- 密文方式显示（圆点） -->

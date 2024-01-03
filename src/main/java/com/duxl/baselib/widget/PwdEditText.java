@@ -27,9 +27,11 @@ public class PwdEditText extends AppCompatEditText {
     private String mText;
     private List<RectF> rectFS;
     private int strokeWidth, space;
-    private int checkedBorderColor, defaultBorderColor, inputBorderColor, backColor, textColor, waitInputColor;
+    private int defaultBorderColor, checkedBorderColor, inputBorderColor;
+    private int defaultBackColor, checkedBackColor, inputBackColor;
+    private int contentColor, waitInputColor;
     private int textLength;
-    private int Circle, Round;
+    private int circle, round; // 圆点半径和输入圆角大小
     private boolean isPwd, isWaitInput, showFocus;
     // 设置了背景图后，颜色设置将无效
     private int defaultBackDrawable, checkedBackDrawable, inputBackDrawable;
@@ -58,18 +60,20 @@ public class PwdEditText extends AppCompatEditText {
             textLength = t.getInt(R.styleable.PwdEditText_textLength, 6);
             space = t.getDimensionPixelSize(R.styleable.PwdEditText_space, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics()));
             strokeWidth = t.getDimensionPixelSize(R.styleable.PwdEditText_strokeWidth, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
-            Round = t.getDimensionPixelSize(R.styleable.PwdEditText_round, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics()));
-            Circle = t.getDimensionPixelSize(R.styleable.PwdEditText_circle, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, getResources().getDisplayMetrics()));
+            round = t.getDimensionPixelSize(R.styleable.PwdEditText_round, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics()));
+            circle = t.getDimensionPixelSize(R.styleable.PwdEditText_circle, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 7, getResources().getDisplayMetrics()));
             // 背景色
-            backColor = t.getColor(R.styleable.PwdEditText_backColor, 0xfff1f1f1);
+            defaultBackColor = t.getColor(R.styleable.PwdEditText_defaultBackColor, 0xfff1f1f1);
+            checkedBackColor = t.getColor(R.styleable.PwdEditText_checkedBackColor, defaultBackColor);
+            inputBackColor = t.getColor(R.styleable.PwdEditText_inputBackColor, defaultBackColor);
             // 默认边框色（未输入边框色）
-            defaultBorderColor = t.getColor(R.styleable.PwdEditText_defaultBorderColor, backColor);
+            defaultBorderColor = t.getColor(R.styleable.PwdEditText_defaultBorderColor, defaultBackColor);
             // 已输入边框色（默认未输入的边框色）
             checkedBorderColor = t.getColor(R.styleable.PwdEditText_checkedBorderColor, defaultBorderColor);
             // 正在输入边框色（默认未输入的边框色）
             inputBorderColor = t.getColor(R.styleable.PwdEditText_inputBorderColor, defaultBorderColor);
-            // 文本颜色
-            textColor = t.getColor(R.styleable.PwdEditText_textColor, 0xFF444444);
+            // 内容颜色
+            contentColor = t.getColor(R.styleable.PwdEditText_contentColor, 0xFF444444);
             waitInputColor = t.getColor(R.styleable.PwdEditText_waitInputColor, 0xFF444444);
             isPwd = t.getBoolean(R.styleable.PwdEditText_isPwd, true);
             // 是否显示等待输入的光标
@@ -161,25 +165,17 @@ public class PwdEditText extends AppCompatEditText {
         borderPaint.setColor(defaultBorderColor);
         //背景色画笔
         backPaint.setStyle(Paint.Style.FILL);
-        backPaint.setColor(backColor);
+        backPaint.setColor(defaultBackColor);
         //文字的画笔
         textPaint.setTextSize(getTextSize());
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setColor(textColor);
+        textPaint.setColor(contentColor);
 
         int itemWidth = (getMeasuredWidth() - space * textLength) / textLength;
         int itemHeight = getMeasuredHeight();
 
         rectFS.clear();
         for (int i = 0; i < textLength; i++) {
-            //区分已输入和未输入的边框颜色
-            if (inputState(i) == 1) {
-                borderPaint.setColor(checkedBorderColor);
-            } else if (inputState(i) == 0) {
-                borderPaint.setColor(inputBorderColor);
-            } else {
-                borderPaint.setColor(defaultBorderColor);
-            }
 
             //RectF的参数(left,  top,  right,  bottom); 画出每个矩形框并设置间距，间距其实是增加左边框距离，缩小上下右边框距离；
             int left = i * (itemWidth + space) + strokeWidth / 2;
@@ -202,8 +198,18 @@ public class PwdEditText extends AppCompatEditText {
                 drawable.draw(canvas);
                 canvas.restore();
             } else {
-                canvas.drawRoundRect(rect, Round, Round, backPaint); //绘制背景色
-                canvas.drawRoundRect(rect, Round, Round, borderPaint); //绘制边框
+                if (inputState(i) == 1) {
+                    borderPaint.setColor(checkedBorderColor);
+                    backPaint.setColor(checkedBackColor);
+                } else if (inputState(i) == 0) {
+                    borderPaint.setColor(inputBorderColor);
+                    backPaint.setColor(inputBackColor);
+                } else {
+                    borderPaint.setColor(defaultBorderColor);
+                    backPaint.setColor(defaultBackColor);
+                }
+                canvas.drawRoundRect(rect, round, round, backPaint); //绘制背景色
+                canvas.drawRoundRect(rect, round, round, borderPaint); //绘制边框
             }
             rectFS.add(rect);
 
@@ -231,7 +237,7 @@ public class PwdEditText extends AppCompatEditText {
         float textBaseLine = (itemHeight - (fontMetrics.bottom - fontMetrics.top)) / 2 - fontMetrics.top;
         for (int j = 0; j < mText.length(); j++) {
             if (isPwd) {
-                canvas.drawCircle(rectFS.get(j).centerX(), rectFS.get(j).centerY(), Circle, textPaint);
+                canvas.drawCircle(rectFS.get(j).centerX(), rectFS.get(j).centerY(), circle, textPaint);
             } else {
                 String c = mText.substring(j, j + 1);
                 float cWidth = textPaint.measureText(c);
@@ -274,145 +280,148 @@ public class PwdEditText extends AppCompatEditText {
         //setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
     }
 
-    /**
-     * 设置输入框间距
-     */
-    public void setSpace(int space) {
-        this.space = space;
-    }
-
-    /**
-     * 设置密码框个数
-     */
-    public void setTextLength(int textLength) {
-        this.textLength = textLength;
-    }
-
-    /**
-     * 获得密码框个数
-     */
-    public int getTextLength() {
-        return this.textLength;
-    }
-
-    /**
-     * 设置已输入密码框颜色
-     */
-    public void setCheckedColorColor(int checkedColor) {
-        this.checkedBorderColor = checkedColor;
-    }
-
-    /**
-     * 设置未输入密码框颜色
-     */
-    public void setDefaultColorColor(int defaultColor) {
-        this.defaultBorderColor = defaultColor;
-    }
-
-    /**
-     * 设置密码框背景色
-     */
-    public void setBackColor(int backColor) {
-        this.backColor = backColor;
-    }
-
-    /**
-     * 设置密码圆点的颜色
-     */
-    public void setPwdTextColor(int textColor) {
-        this.textColor = textColor;
-    }
-
-    /**
-     * 设置密码框 边框的宽度
-     */
-    public void setStrokeWidth(int width) {
-        strokeWidth = width;
-    }
-
-    /**
-     * 密码的圆点大小
-     */
-    public void setCircle(int Circle) {
-        this.Circle = Circle;
-    }
-
-    /**
-     * 密码边框的圆角大小
-     */
-    public void setRound(int Round) {
-        this.Round = Round;
-    }
-
     public int getStrokeWidth() {
         return strokeWidth;
+    }
+
+    public void setStrokeWidth(int strokeWidth) {
+        this.strokeWidth = strokeWidth;
     }
 
     public int getSpace() {
         return space;
     }
 
-    public int getCheckedBorderColor() {
-        return checkedBorderColor;
+    public void setSpace(int space) {
+        this.space = space;
     }
 
     public int getDefaultBorderColor() {
         return defaultBorderColor;
     }
 
-    public int getBackColor() {
-        return backColor;
+    public void setDefaultBorderColor(int defaultBorderColor) {
+        this.defaultBorderColor = defaultBorderColor;
     }
 
-    public int getTextColor() {
-        return textColor;
+    public int getCheckedBorderColor() {
+        return checkedBorderColor;
     }
 
-    public int getCircle() {
-        return Circle;
+    public void setCheckedBorderColor(int checkedBorderColor) {
+        this.checkedBorderColor = checkedBorderColor;
     }
 
-    public int getRound() {
-        return Round;
+    public int getInputBorderColor() {
+        return inputBorderColor;
     }
 
-    public boolean isPwd() {
-        return isPwd;
+    public void setInputBorderColor(int inputBorderColor) {
+        this.inputBorderColor = inputBorderColor;
     }
 
-    /**
-     * 是否密文输入
-     *
-     * @param pwd
-     */
-    public void setPwd(boolean pwd) {
-        isPwd = pwd;
+    public int getDefaultBackColor() {
+        return defaultBackColor;
+    }
+
+    public void setDefaultBackColor(int defaultBackColor) {
+        this.defaultBackColor = defaultBackColor;
+    }
+
+    public int getCheckedBackColor() {
+        return checkedBackColor;
+    }
+
+    public void setCheckedBackColor(int checkedBackColor) {
+        this.checkedBackColor = checkedBackColor;
+    }
+
+    public int getInputBackColor() {
+        return inputBackColor;
+    }
+
+    public void setInputBackColor(int inputBackColor) {
+        this.inputBackColor = inputBackColor;
+    }
+
+    public int getContentColor() {
+        return contentColor;
+    }
+
+    public void setContentColor(int contentColor) {
+        this.contentColor = contentColor;
     }
 
     public int getWaitInputColor() {
         return waitInputColor;
     }
 
-    /**
-     * 待输入线的颜色
-     *
-     * @param waitInputColor
-     */
     public void setWaitInputColor(int waitInputColor) {
         this.waitInputColor = waitInputColor;
+    }
+
+    public int getTextLength() {
+        return textLength;
+    }
+
+    public void setTextLength(int textLength) {
+        this.textLength = textLength;
+    }
+
+    public int getCircle() {
+        return circle;
+    }
+
+    public void setCircle(int circle) {
+        this.circle = circle;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public boolean isPwd() {
+        return isPwd;
+    }
+
+    public void setPwd(boolean pwd) {
+        isPwd = pwd;
     }
 
     public boolean isWaitInput() {
         return isWaitInput;
     }
 
-    /**
-     * 是否显示待输入的线
-     *
-     * @param waitInput
-     */
     public void setWaitInput(boolean waitInput) {
         isWaitInput = waitInput;
+    }
+
+    public int getDefaultBackDrawable() {
+        return defaultBackDrawable;
+    }
+
+    public void setDefaultBackDrawable(int defaultBackDrawable) {
+        this.defaultBackDrawable = defaultBackDrawable;
+    }
+
+    public int getCheckedBackDrawable() {
+        return checkedBackDrawable;
+    }
+
+    public void setCheckedBackDrawable(int checkedBackDrawable) {
+        this.checkedBackDrawable = checkedBackDrawable;
+    }
+
+    public int getInputBackDrawable() {
+        return inputBackDrawable;
+    }
+
+    public void setInputBackDrawable(int inputBackDrawable) {
+        this.inputBackDrawable = inputBackDrawable;
     }
 
 }
