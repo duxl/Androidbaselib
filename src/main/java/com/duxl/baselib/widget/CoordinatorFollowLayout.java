@@ -17,7 +17,7 @@ import com.google.android.material.appbar.AppBarLayout;
  * 跟随布局
  * ps：参考AppBarLayout代码
  */
-public class CoordinatorFlowLayout extends FrameLayout implements CoordinatorLayout.AttachedBehavior {
+public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorLayout.AttachedBehavior {
 
     public enum Gravity {
         Left, Top, Right, Bottom,
@@ -54,19 +54,19 @@ public class CoordinatorFlowLayout extends FrameLayout implements CoordinatorLay
         this.mFlowAnchor = anchor;
     }
 
-    public CoordinatorFlowLayout(@NonNull Context context) {
+    public CoordinatorFollowLayout(@NonNull Context context) {
         this(context, null);
     }
 
-    public CoordinatorFlowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CoordinatorFollowLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CoordinatorFlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CoordinatorFollowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public CoordinatorFlowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CoordinatorFollowLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CoordinatorFollowLayout);
         if (typedArray != null) {
@@ -91,7 +91,7 @@ public class CoordinatorFlowLayout extends FrameLayout implements CoordinatorLay
      * 给view设置FlowBehavior，并指定一个锚点
      * create by duxl 2023/8/27
      */
-    public static class Behavior extends CoordinatorLayout.Behavior<CoordinatorFlowLayout> {
+    public static class Behavior extends CoordinatorLayout.Behavior<CoordinatorFollowLayout> {
 
         public Behavior() {
 
@@ -102,7 +102,7 @@ public class CoordinatorFlowLayout extends FrameLayout implements CoordinatorLay
         }
 
         @Override
-        public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFlowLayout child, @NonNull View dependency) {
+        public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, @NonNull View dependency) {
             if (dependency instanceof AppBarLayout) {
                 return true;
             }
@@ -110,7 +110,7 @@ public class CoordinatorFlowLayout extends FrameLayout implements CoordinatorLay
         }
 
         @Override
-        public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFlowLayout child, @NonNull View dependency) {
+        public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, @NonNull View dependency) {
             if (child.getFlowAnchor() == View.NO_ID) {
                 return super.onDependentViewChanged(parent, child, dependency);
             }
