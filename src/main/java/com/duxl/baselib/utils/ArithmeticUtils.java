@@ -224,4 +224,34 @@ public class ArithmeticUtils {
         return outputMin * (1 - (inputValue - inputMin) / (inputMax - inputMin))
                 + outputMax * ((inputValue - inputMin) / (inputMax - inputMin));
     }
+
+    /**
+     * 根据角度算正弦sin值
+     *
+     * @param angle 输入角度，比如30
+     * @return
+     */
+    public static double sinAngle(float angle) {
+        return Math.sin(Math.PI / 180 * angle);
+    }
+
+    /**
+     * 根据角度算余弦cos值
+     *
+     * @param angle 输入角度，比如30
+     * @return
+     */
+    public static double cosAngle(float angle) {
+        return Math.cos(Math.PI / 180 * angle);
+    }
+
+    /**
+     * 根据角度算正切tan值
+     *
+     * @param angle 输入角度，比如30
+     * @return
+     */
+    public static double tanAngle(float angle) {
+        return Math.tan(Math.PI / 180 * angle);
+    }
 }
