@@ -226,13 +226,23 @@ public class ArithmeticUtils {
     }
 
     /**
-     * 根据角度算正弦sin值
+     * 根据角度算正弦sin值（角度转幅度可用Math.toRadians()，幅度转角度可用Math.toDegrees()）
      *
      * @param angle 输入角度，比如30
      * @return
      */
     public static double sinAngle(float angle) {
         return Math.sin(Math.PI / 180 * angle);
+    }
+
+    /**
+     * 通过正弦值算角度
+     *
+     * @param value 正弦值
+     * @return
+     */
+    public static double sinRevert(double value) {
+        return Math.toDegrees(Math.asin(value));
     }
 
     /**
@@ -246,6 +256,16 @@ public class ArithmeticUtils {
     }
 
     /**
+     * 通过余弦值算角度
+     *
+     * @param value 余弦值
+     * @return
+     */
+    public static double cosRevert(double value) {
+        return Math.toDegrees(Math.acos(value));
+    }
+
+    /**
      * 根据角度算正切tan值
      *
      * @param angle 输入角度，比如30
@@ -253,5 +273,15 @@ public class ArithmeticUtils {
      */
     public static double tanAngle(float angle) {
         return Math.tan(Math.PI / 180 * angle);
+    }
+
+    /**
+     * 通过正切值算角度
+     *
+     * @param value 正切值
+     * @return
+     */
+    public static double tanRevert(double value) {
+        return Math.toDegrees(Math.atan(value));
     }
 }
