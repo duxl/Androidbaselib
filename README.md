@@ -84,7 +84,7 @@ dependencies {
 2. **在app下的build.gradle添加引用**
 
    ```groovy
-   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate6.6.0'
+   implementation 'com.github.duxl:AndroidQuicklib:v1.0.0_bate7.4.1'
    
    // annotationProcessor 在每个module中都必须配置才起作用
    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
