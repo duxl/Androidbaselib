@@ -177,4 +177,40 @@
         <!-- 等待输入光标颜色 -->
         <attr name="waitInputColor" format="color" />
     </declare-styleable>
+
+    <!-- 滑块Tab组件 -->
+    <declare-styleable name="SegmentedControlView">
+        <!-- 内外边框的弧度 -->
+        <attr name="segCornersRadius" format="dimension|reference" />
+        <!-- 背景颜色 -->
+        <attr name="segBackgroundColor" format="color" />
+        <!-- 移动Item的颜色 -->
+        <attr name="segSelectedItemBackgroundColor" format="color" />
+        <!-- 字体颜色 -->
+        <attr name="segTextColor" format="color" />
+        <attr name="segSelectedItemTextColor" format="color" />
+        <!-- 字体大小 -->
+        <attr name="segTextSize" format="dimension" />
+        <attr name="segSelectedTextSize" format="dimension" />
+        <!-- 字体 -->
+        <attr name="segTypeface" format="reference" />
+        <attr name="segSelectedItemTypeface" format="reference" />
+        <!-- 移动Item距离边框的左外间距 -->
+        <attr name="segItemHorizontalMargin" format="dimension|reference" />
+        <!-- 移动Item距离边框的上外间距 -->
+        <attr name="segItemVerticalMargin" format="dimension|reference" />
+        <!-- 设置选中位置 -->
+        <attr name="segSelectedItem" format="integer" />
+        <!-- 设置Item左右内边距 -->
+        <attr name="segItemPadding" format="dimension|reference" />
+        <!-- 设置是否支持滑动选择 -->
+        <attr name="segScrollSelectEnabled" format="boolean" />
+        <!-- 设置模式 -->
+        <attr name="segCornersMode">
+            <enum name="Round" value="0" />
+            <enum name="Circle" value="1" />
+        </attr>
+        <!-- 滑块items，array字符串资源id -->
+        <attr name="segItemsId" format="reference" />
+    </declare-styleable>
 </resources>
