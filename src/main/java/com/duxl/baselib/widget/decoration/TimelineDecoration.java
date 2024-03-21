@@ -29,6 +29,21 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
     private int mExcludeStartCount; // 排除前面N个item不绘制圆点
     private int mExcludeEndCount; // 排除最后N个item不绘制圆点
 
+    // 完全自定义
+    private DrawCallback mDrawCallback; // 绘制回调，如何设置了此回调，所有item装饰交给用户自己绘制
+    private Paint mDrawCallbackPaint;
+
+    /**
+     * @param context
+     * @param outLeft      需要列表左边留空的间距
+     * @param drawCallback 绘制回调
+     */
+    public TimelineDecoration(Context context, int outLeft, DrawCallback drawCallback) {
+        this.mOutLeft = outLeft;
+        this.mDrawCallback = drawCallback;
+        this.mDrawCallbackPaint = new Paint();
+    }
+
     /**
      * @param context
      * @param outLeft 需要列表左边留空的间距
@@ -69,7 +84,7 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 排除前面N个item不会只圆点和线条
+     * 排除前面N个item不绘制圆点和线条
      *
      * @param count
      */
@@ -78,7 +93,7 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 排除最后N个item不会只圆点和线条
+     * 排除最后N个item不绘制圆点和线条
      *
      * @param count
      */
@@ -96,6 +111,15 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
         super.onDrawOver(c, parent, state);
         int childCount = parent.getChildCount();
         if (childCount == 0) {
+            return;
+        }
+
+        if (mDrawCallback != null) {
+            for (int i = 0; i < childCount; i++) {
+                View childView = parent.getChildAt(i);
+                int childAdapterPosition = parent.getChildAdapterPosition(childView);
+                mDrawCallback.drawItem(c, mDrawCallbackPaint, parent, childView, childAdapterPosition);
+            }
             return;
         }
 
@@ -222,6 +246,20 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
      */
     public void setLineColor(@ColorInt int color) {
         mLinePaint.setColor(color);
+    }
+
+    // 绘制回调
+    public interface DrawCallback {
+        /**
+         * 绘制每个item
+         *
+         * @param canvas   画布
+         * @param parent 列表
+         * @param paint    画笔，每个item都会回调drawItem方法，使用此画笔可以减少paint重复创建
+         * @param child    item对应的view
+         * @param position 数据所在adapter中的位置
+         */
+        void drawItem(@NonNull Canvas canvas, @NonNull Paint paint, @NonNull RecyclerView parent, @NonNull View child, int position);
     }
 
 }
