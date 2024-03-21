@@ -115,11 +115,13 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
         }
 
         if (mDrawCallback != null) {
+            mDrawCallback.beforeDrawItem(c, mDrawCallbackPaint, parent);
             for (int i = 0; i < childCount; i++) {
                 View childView = parent.getChildAt(i);
                 int childAdapterPosition = parent.getChildAdapterPosition(childView);
                 mDrawCallback.drawItem(c, mDrawCallbackPaint, parent, childView, childAdapterPosition);
             }
+            mDrawCallback.afterDrawItem(c, mDrawCallbackPaint, parent);
             return;
         }
 
@@ -254,12 +256,33 @@ public class TimelineDecoration extends RecyclerView.ItemDecoration {
          * 绘制每个item
          *
          * @param canvas   画布
-         * @param parent 列表
+         * @param parent   列表
          * @param paint    画笔，每个item都会回调drawItem方法，使用此画笔可以减少paint重复创建
          * @param child    item对应的view
          * @param position 数据所在adapter中的位置
          */
         void drawItem(@NonNull Canvas canvas, @NonNull Paint paint, @NonNull RecyclerView parent, @NonNull View child, int position);
+
+
+        /**
+         * 对整个recycler（非单个item）进行装饰可重新此方法，次方法调用在drawItem之前
+         *
+         * @param canvas
+         * @param paint
+         * @param parent
+         */
+        default void beforeDrawItem(@NonNull Canvas canvas, @NonNull Paint paint, @NonNull RecyclerView parent) {
+        }
+
+        /**
+         * 对整个recycler（非单个item）进行装饰可重新此方法，次方法调用在drawItem之后
+         *
+         * @param canvas
+         * @param paint
+         * @param parent
+         */
+        default void afterDrawItem(@NonNull Canvas canvas, @NonNull Paint paint, @NonNull RecyclerView parent) {
+        }
     }
 
 }

@@ -362,12 +362,10 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         }
         mTextPaint.setXfermode(null);
         for (int i = 0; i < getCount(); i++) {
-            if (i != getSelectedItem()) {
-                int start = itemHorizontalMargin + i * mItemWidth;
-                float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
-                float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
-                canvas.drawText(getName(i), x, y, mTextPaint);
-            }
+            int start = itemHorizontalMargin + i * mItemWidth;
+            float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
+            float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
+            canvas.drawText(getName(i), x, y, mTextPaint);
         }
     }
 
@@ -392,12 +390,10 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         int end = (begin + 2) < getCount() ? begin + 2 : getCount();
 
         for (int i = begin; i < end; i++) {
-            if (i == getSelectedItem()) {
-                int start = itemHorizontalMargin + i * mItemWidth;
-                float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
-                float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
-                canvas.drawText(getName(i), x, y, mTextPaint);
-            }
+            int start = itemHorizontalMargin + i * mItemWidth;
+            float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
+            float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
+            canvas.drawText(getName(i), x, y, mTextPaint);
         }
         canvas.restore();
     }
@@ -485,6 +481,8 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
             mStart = mScroller.getCurrX();
+            postInvalidate();
+        } else {
             postInvalidate();
         }
     }
