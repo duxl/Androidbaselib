@@ -316,8 +316,8 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         if (isItemZero()) return;
 
         drawBackgroundRect(canvas);
-        drawSelectedItem(canvas);
         drawUnselectedItemsText(canvas);
+        drawSelectedItem(canvas);
         drawSelectedItemsText(canvas);
     }
 
@@ -361,12 +361,24 @@ public class SegmentedControlView extends View implements ISegmentedControl {
             mTextPaint.setTypeface(null);
         }
         mTextPaint.setXfermode(null);
+
+        canvas.saveLayer(0, 0, mStart, getHeight(), null, Canvas.ALL_SAVE_FLAG);
         for (int i = 0; i < getCount(); i++) {
             int start = itemHorizontalMargin + i * mItemWidth;
             float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
             float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
             canvas.drawText(getName(i), x, y, mTextPaint);
         }
+        canvas.restore();
+
+        canvas.saveLayer(mStart + mItemWidth, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        for (int i = 0; i < getCount(); i++) {
+            int start = itemHorizontalMargin + i * mItemWidth;
+            float x = start + (mItemWidth >> 1) - mTextPaint.measureText(getName(i)) / 2;
+            float y = (getHeight() >> 1) - (mTextPaint.ascent() + mTextPaint.descent()) / 2;
+            canvas.drawText(getName(i), x, y, mTextPaint);
+        }
+        canvas.restore();
     }
 
     /**
