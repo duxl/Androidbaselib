@@ -75,9 +75,62 @@ public class BaseWebViewClient<T extends BaseWebFragment> extends WebViewClient 
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        //super.onReceivedSslError(view, handler, error);
-        handler.proceed();
+        super.onReceivedSslError(view, handler, error);
+        // webView加载的不是https的地址可能会报错，加载失败，如果要想正常加载http
+        // 需要重写此方法，并屏蔽掉super.onReceivedSslError调用，直接调用handler.proceed()即可
+
+        // google上架审核不允许简单粗暴的直接调用handler.proceed()，详见https://support.google.com/faqs/answer/7071387
+        // google的意思可以handler.cancel();，如果要handler.proceed()需要根据不同情况做处理，可参考（https://www.nhooo.com/note/qad7b6.html）
+
     }
+
+    /*
+    根据不同情况做处理参考代码
+    public void onReceivedSslError(WebView view,final SslErrorHandler handler,
+                                   SslError error) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(WebViewActivity.this);
+        String message = "SSL Certificate error.";
+        switch (error.getPrimaryError()) {
+            case SslError.SSL_UNTRUSTED:
+                message = "The certificate authority is not trusted.";
+                break;
+            case SslError.SSL_EXPIRED:
+                message = "The certificate has expired.";
+                break;
+            case SslError.SSL_IDMISMATCH:
+                message = "The certificate Hostname mismatch.";
+                break;
+            case SslError.SSL_NOTYETVALID:
+                message = "The certificate is not yet valid.";
+                break;
+            case SslError.SSL_DATE_INVALID:
+                message = "The date of the certificate is invalid";
+                break;
+            case SslError.SSL_INVALID:
+            default:
+                message = "A generic error occurred";
+                break;
+        }
+        message += " Do you want to continue anyway?";
+
+        builder.setTitle("SSL Certificate Error");
+        builder.setMessage(message);
+
+        builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handler.proceed();
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handler.cancel();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+    }*/
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {

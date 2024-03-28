@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
 import com.duxl.baselib.R;
@@ -31,7 +32,7 @@ import java.util.List;
 public class BaseWebChromeClient extends WebChromeClient {
 
     private BaseFragment mFragment;
-    private ProgressBar mProgressBar;
+    private @Nullable ProgressBar mProgressBar;
     protected ValueCallback<Uri[]> mFilePathCallback = null;
     protected Uri mTakeCaptureUri = null;
 
@@ -42,7 +43,16 @@ public class BaseWebChromeClient extends WebChromeClient {
     // 单选
     protected ActivityResultLauncher<String> mGetContentLauncher;
 
-    public BaseWebChromeClient(BaseFragment fragment, ProgressBar progressBar) {
+    public void setProgressBar(@Nullable ProgressBar progressBar) {
+        this.mProgressBar = progressBar;
+    }
+
+    /**
+     *
+     * @param fragment
+     * @param progressBar 实例化时还没有ProgressBar，可以之后调用setProgressBar设置
+     */
+    public BaseWebChromeClient(BaseFragment fragment, @Nullable ProgressBar progressBar) {
         this.mFragment = fragment;
         this.mProgressBar = progressBar;
 
