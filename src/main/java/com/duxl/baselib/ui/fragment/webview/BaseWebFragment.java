@@ -80,6 +80,10 @@ public class BaseWebFragment extends LazyFragment {
             setTitle(mTitle);
         }
 
+        if (mWebChromeClient instanceof BaseWebChromeClient) {
+            ((BaseWebChromeClient) mWebChromeClient).setProgressBar(mProgressBar);
+        }
+
         mWebView.setWebChromeClient(mWebChromeClient);
         mWebView.setWebViewClient(getWebViewClient());
 
