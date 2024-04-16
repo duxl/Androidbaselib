@@ -72,6 +72,10 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
             layoutParams.gravity = getGravity();
             layoutParams.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
             window.setAttributes(layoutParams);
+
+            if (clearDimBehind()) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
         }
     }
 
@@ -82,6 +86,16 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
             mOnDismissListener.onDismiss(this);
         }
         super.onDestroyView();
+    }
+
+    /**
+     * 清除dimBehind后，dialog显示时状态栏的颜色不会发生改变
+     * （ps：默认dialog显示时底层被半透明遮盖住的，所以通知栏会自动变为白色）
+     *
+     * @return
+     */
+    public boolean clearDimBehind() {
+        return false;
     }
 
     public int getGravity() {
