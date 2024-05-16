@@ -50,12 +50,15 @@ public abstract class StickyHeaderDecoration extends RecyclerView.ItemDecoration
     @Override
     public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         super.onDrawOver(c, parent, state);
+        if (parent.getChildCount() == 0) {
+            return;
+        }
         View firstView = parent.getChildAt(0);
         int position = parent.getChildAdapterPosition(firstView);
 
         View headerView = getHeaderView(position);
         /**headerView.setPressed();
-        headerView.setEnabled();*/
+         headerView.setEnabled();*/
         if (isHeader(position)) {
             mHeaderHeight = firstView.getHeight();
             mHeaderWidth = firstView.getWidth();
