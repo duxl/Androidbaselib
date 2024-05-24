@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.duxl.baselib.ui.status.SimpleStatusView"
+    tools:parentTag="android.widget.LinearLayout">
 
     <View
         android:layout_width="match_parent"
