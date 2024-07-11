@@ -109,7 +109,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-##### 新建高版本的项目，运行gradle可能会报找下面的错误，可以尝试添加`jcenter()`仓库解决
+##### 新建高版本的项目，运行gradle可能会报找下面的错误，可以尝试添加`jcenter()`仓库解决，或者 `maven(url = "https://jcenter.bintray.com/")`
 
 ```groovy
 > Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
