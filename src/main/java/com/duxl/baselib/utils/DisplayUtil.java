@@ -1,5 +1,6 @@
 package com.duxl.baselib.utils;
 
+import android.animation.ArgbEvaluator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -334,6 +335,18 @@ public class DisplayUtil {
                 Color.green(originalColor),
                 Color.blue(originalColor)
         );
+    }
+
+    /**
+     * 从一个颜色切换到另一个颜色
+     *
+     * @param fromColor 起始颜色
+     * @param toColor   结束颜色
+     * @param fraction  过度阀值，介于 0 到 1 之间的值
+     * @return 返回指定阀值的颜色
+     */
+    public static int progressColor(int fromColor, int toColor, float fraction) {
+        return (int) new ArgbEvaluator().evaluate(fraction, fromColor, toColor);
     }
 
     /**
