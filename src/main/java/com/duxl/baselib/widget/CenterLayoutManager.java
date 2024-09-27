@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * 2、centerLayoutManager.smoothScrollToPositionCenter(position)
  *
  * ps：滑动自动居中可使用 new LinearSnapHelper().attachToRecyclerView(recyclerView)
+ * ps：ViewPager效果可使用 new PagerSnapHelper().attachToRecyclerView(recyclerView)
  * </pre>
  */
 public class CenterLayoutManager extends LinearLayoutManager {
