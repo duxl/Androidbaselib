@@ -109,7 +109,7 @@ android.useAndroidX=true
 android.enableJetifier=true
 ```
 
-##### 新建高版本的项目，运行gradle可能会报找下面的错误，可以尝试添加`jcenter()`仓库解决，或者 `maven(url = "https://jcenter.bintray.com/")`
+##### ~~新建高版本的项目，运行gradle可能会报找下面的错误，可以尝试添加`jcenter()`仓库解决，或者 `maven(url = "https://jcenter.bintray.com/")`~~
 
 ```groovy
 > Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
@@ -118,6 +118,11 @@ android.enableJetifier=true
        - https://dl.google.com/dl/android/maven2/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
        - https://repo.maven.apache.org/maven2/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
        - https://jitpack.io/com/scwang/smart/refresh-layout-kernel/2.0.1/refresh-layout-kernel-2.0.1.pom
+```
+
+#### jcenter()仓库已停止服务，请使用google()、mavenCentral()或者[aliyun镜像](https://developer.aliyun.com/mvn/guide)，如果依赖库不能下载并报错如下错，可尝试升级gradle版本
+```groovy
+> The server may not support the client's requested TLS protocol versions: (TLSv1.2, TLSv1.3).
 ```
 
 
