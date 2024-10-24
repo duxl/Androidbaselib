@@ -188,8 +188,8 @@ public class BaseWebFragment extends LazyFragment {
         webSettings.setSupportZoom(false);
         webSettings.setBuiltInZoomControls(false);
         webSettings.setDisplayZoomControls(false);
-        // 设置WebView是否使用预览模式加载界面。(神州专车登录无法跳转，会出现白板页面)
-//        webSettings.setLoadWithOverviewMode(true);
+        // 设置WebView是否使用预览模式加载界面。(神州专车登录无法跳转，会出现白板页面),有些页面自适应也需要设置这个
+        webSettings.setLoadWithOverviewMode(true);
 
         //设置可以访问文件
         webSettings.setAllowFileAccess(true);
