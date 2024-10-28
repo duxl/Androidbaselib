@@ -41,6 +41,9 @@ public class ImageUtils {
      * @return
      */
     public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+        }
         int w = drawable.getMinimumWidth();
         int h = drawable.getMinimumHeight();
         Bitmap.Config config = null;
