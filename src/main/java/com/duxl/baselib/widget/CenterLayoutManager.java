@@ -25,7 +25,7 @@ public class CenterLayoutManager extends LinearLayoutManager {
     public CenterLayoutManager(RecyclerView recyclerView, int orientation, boolean reverseLayout) {
         super(recyclerView.getContext(), orientation, reverseLayout);
         mRecyclerView = recyclerView;
-        mSmoothScroller = new CenterSmoothScroller(mRecyclerView.getContext(), 100, 0);
+        mSmoothScroller = new CenterSmoothScroller(mRecyclerView.getContext(), 150, 0);
         mSmoothScroller.setTargetPosition(0);
     }
 
@@ -37,7 +37,7 @@ public class CenterLayoutManager extends LinearLayoutManager {
     }
 
     public void smoothScrollToPositionCenter(int position) {
-        smoothScrollToPositionCenter(position, 100);
+        smoothScrollToPositionCenter(position, 150);
     }
 
     public static class CenterSmoothScroller extends LinearSmoothScroller {

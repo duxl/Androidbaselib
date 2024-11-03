@@ -9,5 +9,11 @@ public interface OnItemClickListener<E, R> {
         onItemClickR(item);
     }
 
-    R onItemClickR(E item);
+    default R onItemClickR(E item) {
+        return null;
+    }
+
+    default R onItemClick(E item, int position) {
+        return null;
+    }
 }
