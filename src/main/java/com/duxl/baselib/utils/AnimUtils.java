@@ -49,6 +49,9 @@ public class AnimUtils {
         if (itemAnimator != null) {
             // //设置更新动画duration为0，其他的你也可以设置。
             itemAnimator.setChangeDuration(0);
+            itemAnimator.setAddDuration(0);
+            itemAnimator.setMoveDuration(0);
+            itemAnimator.setRemoveDuration(0);
             if (itemAnimator instanceof DefaultItemAnimator) {
                 //取消动画
                 ((DefaultItemAnimator) itemAnimator).setSupportsChangeAnimations(false);

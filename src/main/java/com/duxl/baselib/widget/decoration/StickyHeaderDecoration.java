@@ -170,9 +170,11 @@ public abstract class StickyHeaderDecoration extends RecyclerView.ItemDecoration
          headerView.setEnabled();*/
 
         //c.drawBitmap(bitmap, firstView.getLeft(), top, null);
-        Bitmap bitmap = getTitleBitmap(headerView);
-        canvas.drawBitmap(bitmap, 0, top, null);
-        bitmap.recycle();
+        if (headerView != null) {
+            Bitmap bitmap = getTitleBitmap(headerView);
+            canvas.drawBitmap(bitmap, 0, top, null);
+            bitmap.recycle();
+        }
     }
 
     protected Bitmap getTitleBitmap(View v) {
