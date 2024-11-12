@@ -213,4 +213,9 @@
         <!-- 滑块items，array字符串资源id -->
         <attr name="segItemsId" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="MaxSizeFrameLayout">
+        <attr name="msflMaxHeight" format="dimension|reference" />
+        <attr name="msflMaxWidth" format="dimension|reference" />
+    </declare-styleable>
 </resources>
