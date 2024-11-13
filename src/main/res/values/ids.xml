@@ -22,4 +22,16 @@
     <item name="iv_status_view" type="id" />
     <item name="tv_status_view" type="id" />
     <item name="btn_status_view" type="id" />
+
+    <!-- other tag -->
+    <item name="tag001" type="id" />
+    <item name="tag002" type="id" />
+    <item name="tag003" type="id" />
+    <item name="tag004" type="id" />
+    <item name="tag005" type="id" />
+    <item name="tag006" type="id" />
+    <item name="tag007" type="id" />
+    <item name="tag008" type="id" />
+    <item name="tag009" type="id" />
+    <item name="tagKeyboardVisible" type="id" />
 </resources>

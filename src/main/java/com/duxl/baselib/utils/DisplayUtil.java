@@ -16,13 +16,19 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.duxl.baselib.R;
+import com.duxl.baselib.widget.DataRunnable;
 
 import java.lang.reflect.Field;
-
-import javax.security.auth.Destroyable;
+import java.util.Objects;
 
 /**
  * dp、sp 转换为 px 的工具类
@@ -158,12 +164,55 @@ public class DisplayUtil {
     /**
      * 软键盘是否显示
      *
-     * @param mContext
+     * @param context
      * @return
      */
-    public static boolean isKeyboardShow(Context mContext) {
-        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static boolean isKeyboardShow(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         return imm.isActive();
+    }
+
+    /**
+     * 软键盘是否作用与某个控件
+     *
+     * @param context
+     * @param view    当前焦点所在的视图
+     * @return
+     */
+    public static boolean isKeyboardShow(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        return imm.isActive(view);
+    }
+
+    /**
+     * 输入法（软键盘）是否正在接收输入文本，通常用来检测软键盘是否处于激活状态并准备接受用户输入
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isKeyboardAcceptingText(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        return imm.isAcceptingText();
+    }
+
+    /**
+     * 观察软键盘显示状态
+     *
+     * @param v
+     * @param onKeyboardVisibleChanged
+     */
+    public static void observerKeyboardVisibleChanged(@NonNull View v, DataRunnable<Boolean> onKeyboardVisibleChanged) {
+        Objects.requireNonNull(v);
+        ViewCompat.setOnApplyWindowInsetsListener(v, (v1, insets) -> {
+            if (onKeyboardVisibleChanged != null) {
+                boolean keyboardVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+                if (v1.getTag(R.id.tagKeyboardVisible) == null || ((Boolean) v1.getTag(R.id.tagKeyboardVisible) != keyboardVisible)) {
+                    v1.setTag(R.id.tagKeyboardVisible, keyboardVisible);
+                    onKeyboardVisibleChanged.run(keyboardVisible);
+                }
+            }
+            return insets;
+        });
     }
 
     /**
