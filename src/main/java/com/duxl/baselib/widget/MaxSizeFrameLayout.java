@@ -58,7 +58,7 @@ public class MaxSizeFrameLayout extends FrameLayout {
 
     protected int makeMeasureSpec(int measureSpec, int maxSize, boolean isHeight) {
         int size = MeasureSpec.getSize(measureSpec);
-        if (size < 0) {
+        if (size <= 0) {
             if (isHeight) {
                 size = getMeasuredHeight();
             } else {
