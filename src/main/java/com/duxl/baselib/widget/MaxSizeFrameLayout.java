@@ -45,8 +45,8 @@ public class MaxSizeFrameLayout extends FrameLayout {
     protected void init(Context context, @Nullable AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MaxSizeFrameLayout);
-            mMaxWidth = typedArray.getDimensionPixelSize(R.styleable.MaxSizeFrameLayout_msflMaxWidth, -1);
-            mMaxHeight = typedArray.getDimensionPixelSize(R.styleable.MaxSizeFrameLayout_msflMaxHeight, -1);
+            mMaxWidth = typedArray.getDimensionPixelSize(R.styleable.MaxSizeFrameLayout_msflMaxWidth, Integer.MIN_VALUE);
+            mMaxHeight = typedArray.getDimensionPixelSize(R.styleable.MaxSizeFrameLayout_msflMaxHeight, Integer.MIN_VALUE);
             typedArray.recycle();
         }
     }
@@ -57,6 +57,10 @@ public class MaxSizeFrameLayout extends FrameLayout {
     }
 
     protected int makeMeasureSpec(int measureSpec, int maxSize, boolean isHeight) {
+        if (maxSize == Integer.MIN_VALUE) {
+            return measureSpec;
+        }
+
         int size = MeasureSpec.getSize(measureSpec);
         if (size <= 0) {
             if (isHeight) {
