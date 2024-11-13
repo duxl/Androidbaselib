@@ -19,6 +19,10 @@ public class MaxSizeFrameLayout extends FrameLayout {
     private int mMaxWidth;
     private int mMaxHeight;
 
+    public void setMaxWidth(int maxWidth) {
+        this.mMaxWidth = maxWidth;
+    }
+
     public void setMaxHeight(int maxHeight) {
         this.mMaxHeight = maxHeight;
     }
@@ -49,18 +53,25 @@ public class MaxSizeFrameLayout extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        if (mMaxWidth > 0 && width > mMaxWidth) {
-            width = mMaxWidth;
+        super.onMeasure(makeMeasureSpec(widthMeasureSpec, mMaxWidth, false), makeMeasureSpec(heightMeasureSpec, mMaxHeight, true));
+    }
+
+    protected int makeMeasureSpec(int measureSpec, int maxSize, boolean isHeight) {
+        int size = MeasureSpec.getSize(measureSpec);
+        if (size < 0) {
+            if (isHeight) {
+                size = getMeasuredHeight();
+            } else {
+                size = getMeasuredWidth();
+            }
         }
 
-        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        if (mMaxHeight > 0 && height > mMaxHeight) {
-            height = mMaxHeight;
+        if (size < maxSize) {
+            // 没超过尺寸使用原始当前尺寸
+            return measureSpec;
+        } else {
+            // 超过尺寸使用最大尺寸
+            return MeasureSpec.makeMeasureSpec(maxSize, MeasureSpec.EXACTLY);
         }
-
-        super.onMeasure(MeasureSpec.makeMeasureSpec(width, modeWidth), MeasureSpec.makeMeasureSpec(height, modeHeight));
     }
 }
