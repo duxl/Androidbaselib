@@ -55,7 +55,10 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
         if (args != null) {
             return args;
         }
-        return new Bundle();
+        args = new Bundle();
+        setArguments(args);
+
+        return args;
     }
 
     @Nullable
