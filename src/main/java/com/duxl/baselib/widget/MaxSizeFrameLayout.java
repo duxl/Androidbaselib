@@ -74,8 +74,8 @@ public class MaxSizeFrameLayout extends FrameLayout {
             // 没超过尺寸使用原始当前尺寸
             return measureSpec;
         } else {
-            // 超过尺寸使用最大尺寸
-            return MeasureSpec.makeMeasureSpec(maxSize, MeasureSpec.EXACTLY);
+            // 表示子视图的最大尺寸不能超过父视图提供的值，具体尺寸由子视图的内容决定
+            return MeasureSpec.makeMeasureSpec(maxSize, MeasureSpec.AT_MOST);
         }
     }
 }
