@@ -218,4 +218,66 @@
         <attr name="msflMaxHeight" format="dimension|reference" />
         <attr name="msflMaxWidth" format="dimension|reference" />
     </declare-styleable>
+
+    <declare-styleable name="SimpleStatusView">
+        <attr name="sv_layoutResId" format="reference" />
+
+        <attr name="sv_loading_text" format="reference|string" />
+        <attr name="sv_loading_img_res" format="reference" />
+        <attr name="sv_loading_button_text" format="reference|string" />
+        <attr name="sv_loading_text_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_loading_img_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_loading_btn_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+
+        <attr name="sv_error_text" format="reference|string" />
+        <attr name="sv_error_img_res" format="reference" />
+        <attr name="sv_error_button_text" format="reference|string" />
+        <attr name="sv_error_text_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_error_img_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_error_btn_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+
+        <attr name="sv_empty_text" format="reference|string" />
+        <attr name="sv_empty_img_res" format="reference" />
+        <attr name="sv_empty_button_text" format="reference|string" />
+        <attr name="sv_empty_text_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_empty_img_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+        <attr name="sv_empty_btn_visibility">
+            <enum name="visible" value="1" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />
+        </attr>
+
+    </declare-styleable>
 </resources>

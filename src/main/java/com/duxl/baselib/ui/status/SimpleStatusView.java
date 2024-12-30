@@ -1,13 +1,16 @@
 package com.duxl.baselib.ui.status;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.duxl.baselib.R;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
@@ -26,7 +29,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
     private IRefreshContainer mRefreshContainer;
 
-    protected int mLayoutResId;
+    protected int mLayoutResId = R.layout.layout_simple_status_view;
 
     protected String loadingText;
     protected int loadingImgRes;
@@ -49,6 +52,15 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     protected int emptyImgVisibility;
     protected int emptyBtnVisibility;
 
+    public SimpleStatusView(Context context, @Nullable AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public SimpleStatusView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initView(context, attrs);
+    }
+
     public SimpleStatusView(IRefreshContainer refreshContainer) {
         this(refreshContainer, R.layout.layout_simple_status_view);
     }
@@ -58,15 +70,72 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         this.mRefreshContainer = refreshContainer;
         this.mLayoutResId = layoutResId;
 
+        initView(refreshContainer.getContext(), null);
+    }
+
+    public void setRefreshContainer(IRefreshContainer refreshContainer) {
+        this.mRefreshContainer = refreshContainer;
+    }
+
+    protected void initView(Context context, AttributeSet attrs) {
         setBackground(getResources().getDrawable(R.drawable.style_simple_status_view_bg));
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER_HORIZONTAL);
         setVisibility(View.GONE);
-        initView(refreshContainer.getContext());
-    }
 
-    protected void initView(Context context) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleStatusView);
+        // 确定布局文件
+        mLayoutResId = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_layoutResId, mLayoutResId);
         LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        mIvStatus = findViewById(R.id.iv_status_view);
+        mTvStatus = findViewById(R.id.tv_status_view);
+        mBtnStatus = findViewById(R.id.btn_status_view);
+
+        // loading设置
+        loadingText = typedArray.getString(R.styleable.SimpleStatusView_sv_loading_text);
+        if (loadingText == null) {
+            loadingText = context.getString(R.string.style_simple_status_loading_text);
+        }
+        loadingImgRes = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_loading_img_res, R.drawable.style_simple_status_loading_img_res);
+        loadingBtnText = typedArray.getString(R.styleable.SimpleStatusView_sv_loading_button_text);
+        if (loadingBtnText == null) {
+            loadingBtnText = context.getString(R.string.style_simple_status_loading_button_text);
+        }
+        loadingTextVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_loading_text_visibility, getResources().getInteger(R.integer.loadingTextVisibility));
+        loadingImgVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_loading_img_visibility, getResources().getInteger(R.integer.loadingImgVisibility));
+        loadingBtnVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_loading_btn_visibility, getResources().getInteger(R.integer.loadingBtnVisibility));
+
+        // error设置
+        errorText = typedArray.getString(R.styleable.SimpleStatusView_sv_error_text);
+        if (errorText == null) {
+            errorText = context.getString(R.string.style_simple_status_error_text);
+        }
+        errorImgRes = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_loading_img_res, R.drawable.style_simple_status_error_res);
+        errorBtnText = typedArray.getString(R.styleable.SimpleStatusView_sv_error_button_text);
+        if (errorBtnText == null) {
+            errorBtnText = context.getString(R.string.style_simple_status_error_button_text);
+        }
+        errorTextVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_error_text_visibility, getResources().getInteger(R.integer.errorTextVisibility));
+        errorImgVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_error_img_visibility, getResources().getInteger(R.integer.errorImgVisibility));
+        errorBtnVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_error_btn_visibility, getResources().getInteger(R.integer.errorBtnVisibility));
+
+        // empty设置
+        emptyText = typedArray.getString(R.styleable.SimpleStatusView_sv_empty_text);
+        if (emptyText == null) {
+            emptyText = context.getString(R.string.style_simple_status_empty_text);
+        }
+        emptyImgRes = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_empty_img_res, R.drawable.style_simple_status_empty_res);
+        emptyBtnText = typedArray.getString(R.styleable.SimpleStatusView_sv_empty_button_text);
+        if (emptyBtnText == null) {
+            emptyBtnText = context.getString(R.string.style_simple_status_empty_button_text);
+        }
+        emptyTextVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_empty_text_visibility, getResources().getInteger(R.integer.emptyTextVisibility));
+        emptyImgVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_empty_img_visibility, getResources().getInteger(R.integer.emptyImgVisibility));
+        emptyBtnVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_empty_btn_visibility, getResources().getInteger(R.integer.emptyBtnVisibility));
+
+        typedArray.recycle();
+
+        /*LayoutInflater.from(context).inflate(mLayoutResId, this, true);
         mIvStatus = findViewById(R.id.iv_status_view);
         mTvStatus = findViewById(R.id.tv_status_view);
         mBtnStatus = findViewById(R.id.btn_status_view);
@@ -90,7 +159,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         emptyBtnText = context.getString(R.string.style_simple_status_empty_button_text);
         emptyTextVisibility = getResources().getInteger(R.integer.emptyTextVisibility);
         emptyImgVisibility = getResources().getInteger(R.integer.emptyImgVisibility);
-        emptyBtnVisibility = getResources().getInteger(R.integer.emptyBtnVisibility);
+        emptyBtnVisibility = getResources().getInteger(R.integer.emptyBtnVisibility);*/
     }
 
     @Override
@@ -163,7 +232,9 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     public void showContent() {
         mStatus = Status.None;
         setVisibility(View.GONE);
-        getRefreshContainer().getContentView().setVisibility(View.VISIBLE);
+        if(getRefreshContainer() != null) {
+            getRefreshContainer().getContentView().setVisibility(View.VISIBLE);
+        }
         loadComplete();
     }
 
@@ -182,7 +253,9 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
         setClickListenerIfNotNull(mBtnStatus);
 
-        getRefreshContainer().getContentView().setVisibility(View.GONE);
+        if (getRefreshContainer() != null) {
+            getRefreshContainer().getContentView().setVisibility(View.GONE);
+        }
         requestImageViewLayout();
     }
 
@@ -202,7 +275,9 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
         setClickListenerIfNotNull(mBtnStatus);
 
-        getRefreshContainer().getContentView().setVisibility(View.GONE);
+        if (getRefreshContainer() != null) {
+            getRefreshContainer().getContentView().setVisibility(View.GONE);
+        }
         loadComplete();
         requestImageViewLayout();
     }
@@ -223,8 +298,10 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         setClickListenerIfNotNull(mBtnStatus);
 
         loadComplete();
-        getRefreshContainer().getContentView().setVisibility(View.GONE);
-        getRefreshContainer().finishLoadMoreWithNoMoreData();
+        if (getRefreshContainer() != null) {
+            getRefreshContainer().getContentView().setVisibility(View.GONE);
+            getRefreshContainer().finishLoadMoreWithNoMoreData();
+        }
         requestImageViewLayout();
     }
 
@@ -263,16 +340,16 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         }
 
         view.setOnClickListener(v -> {
-            if (mRefreshContainer.getRefreshLayout().getOnLoadListener() == null) {
+            if (getRefreshContainer() == null || getRefreshContainer().getRefreshLayout().getOnLoadListener() == null) {
                 return;
             }
 
             if (getStatus() == Status.Loading) {
-                mRefreshContainer.getRefreshLayout().getOnLoadListener().onLoadingClick();
+                getRefreshContainer().getRefreshLayout().getOnLoadListener().onLoadingClick();
             } else if (getStatus() == Status.Empty) {
-                mRefreshContainer.getRefreshLayout().getOnLoadListener().onEmptyClick();
+                getRefreshContainer().getRefreshLayout().getOnLoadListener().onEmptyClick();
             } else if (getStatus() == Status.Error) {
-                mRefreshContainer.getRefreshLayout().getOnLoadListener().onErrorClick(mErrCode);
+                getRefreshContainer().getRefreshLayout().getOnLoadListener().onErrorClick(mErrCode);
             }
         });
     }
@@ -296,12 +373,14 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
     @Override
     public void loadComplete() {
-        if (getRefreshContainer().getRefreshLayout().getState() == RefreshState.Refreshing) {
-            getRefreshContainer().finishRefresh();
-        }
+        if (getRefreshContainer() != null) {
+            if (getRefreshContainer().getRefreshLayout().getState() == RefreshState.Refreshing) {
+                getRefreshContainer().finishRefresh();
+            }
 
-        if (getRefreshContainer().getRefreshLayout().getState() == RefreshState.Loading) {
-            getRefreshContainer().finishLoadMore();
+            if (getRefreshContainer().getRefreshLayout().getState() == RefreshState.Loading) {
+                getRefreshContainer().finishLoadMore();
+            }
         }
     }
 

@@ -25,7 +25,7 @@
         <item name="android:padding">10dp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">20dp</item>
-        <item name="backgroundColor">#999999</item>
+        <item name="android:background">#999999</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
