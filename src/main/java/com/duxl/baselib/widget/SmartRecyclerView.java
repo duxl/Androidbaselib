@@ -52,7 +52,9 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
     }
 
     protected IStatusView initStatusView() {
-        return new SimpleStatusView(this);
+        SimpleStatusView simpleStatusView = new SimpleStatusView(mRecyclerView.getContext(), null);
+        simpleStatusView.setRefreshContainer(this);
+        return simpleStatusView;
     }
 
     @Override

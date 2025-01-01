@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.duxl.baselib.R;
+import com.duxl.baselib.widget.OnLoadListener;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
 
 /**
@@ -20,6 +22,9 @@ import com.scwang.smart.refresh.layout.constant.RefreshState;
  * create by duxl 2020/8/15
  */
 public class SimpleStatusView extends LinearLayout implements IStatusView {
+
+    protected Context context;
+    protected OnLoadListener mOnLoadListener;
 
     protected Status mStatus = Status.None;
     protected int mErrCode;
@@ -45,7 +50,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     protected int errorImgVisibility;
     protected int errorBtnVisibility;
 
-    protected String emptyText = "空空如也";
+    protected String emptyText = "什么都没有";
     protected int emptyImgRes;
     protected String emptyBtnText = "再试一次";
     protected int emptyTextVisibility;
@@ -61,24 +66,31 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         initView(context, attrs);
     }
 
-    public SimpleStatusView(IRefreshContainer refreshContainer) {
-        this(refreshContainer, R.layout.layout_simple_status_view);
-    }
-
-    public SimpleStatusView(IRefreshContainer refreshContainer, int layoutResId) {
-        super(refreshContainer.getContext());
-        this.mRefreshContainer = refreshContainer;
-        this.mLayoutResId = layoutResId;
-
-        initView(refreshContainer.getContext(), null);
-    }
-
     public void setRefreshContainer(IRefreshContainer refreshContainer) {
         this.mRefreshContainer = refreshContainer;
+        if (refreshContainer != null && refreshContainer.getRefreshLayout() != null) {
+            mOnLoadListener = refreshContainer.getRefreshLayout().getOnLoadListener();
+        }
+    }
+
+    public void setLayoutResId(int mLayoutResId) {
+        this.mLayoutResId = mLayoutResId;
+        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        mIvStatus = findViewById(R.id.iv_status_view);
+        mTvStatus = findViewById(R.id.tv_status_view);
+        mBtnStatus = findViewById(R.id.btn_status_view);
+    }
+
+    public void setOnLoadListener(OnLoadListener listener) {
+        this.mOnLoadListener = listener;
+        if (getRefreshContainer() != null && getRefreshContainer().getRefreshLayout() != null) {
+            getRefreshContainer().getRefreshLayout().setOnLoadListener(mOnLoadListener);
+        }
     }
 
     protected void initView(Context context, AttributeSet attrs) {
-        setBackground(getResources().getDrawable(R.drawable.style_simple_status_view_bg));
+        this.context = context;
+        setBackground(ContextCompat.getDrawable(context, R.drawable.style_simple_status_view_bg));
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER_HORIZONTAL);
         setVisibility(View.GONE);
@@ -86,10 +98,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleStatusView);
         // 确定布局文件
         mLayoutResId = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_layoutResId, mLayoutResId);
-        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
-        mIvStatus = findViewById(R.id.iv_status_view);
-        mTvStatus = findViewById(R.id.tv_status_view);
-        mBtnStatus = findViewById(R.id.btn_status_view);
+        setLayoutResId(mLayoutResId);
 
         // loading设置
         loadingText = typedArray.getString(R.styleable.SimpleStatusView_sv_loading_text);
@@ -232,7 +241,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     public void showContent() {
         mStatus = Status.None;
         setVisibility(View.GONE);
-        if(getRefreshContainer() != null) {
+        if (getRefreshContainer() != null) {
             getRefreshContainer().getContentView().setVisibility(View.VISIBLE);
         }
         loadComplete();
@@ -340,16 +349,22 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         }
 
         view.setOnClickListener(v -> {
-            if (getRefreshContainer() == null || getRefreshContainer().getRefreshLayout().getOnLoadListener() == null) {
-                return;
+            if (mOnLoadListener == null) {
+                if (getRefreshContainer() != null && getRefreshContainer().getRefreshLayout() != null) {
+                    mOnLoadListener = getRefreshContainer().getRefreshLayout().getOnLoadListener();
+                }
+
+                if (mOnLoadListener == null) {
+                    return;
+                }
             }
 
             if (getStatus() == Status.Loading) {
-                getRefreshContainer().getRefreshLayout().getOnLoadListener().onLoadingClick();
+                mOnLoadListener.onLoadingClick();
             } else if (getStatus() == Status.Empty) {
-                getRefreshContainer().getRefreshLayout().getOnLoadListener().onEmptyClick();
+                mOnLoadListener.onEmptyClick();
             } else if (getStatus() == Status.Error) {
-                getRefreshContainer().getRefreshLayout().getOnLoadListener().onErrorClick(mErrCode);
+                mOnLoadListener.onErrorClick(mErrCode);
             }
         });
     }

@@ -225,7 +225,9 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     }
 
     protected IStatusView initStatusView() {
-        return new SimpleStatusView(this);
+        SimpleStatusView simpleStatusView = new SimpleStatusView(this, null);
+        simpleStatusView.setRefreshContainer(this);
+        return simpleStatusView;
     }
 
     @Override

@@ -202,7 +202,9 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     protected IStatusView initStatusView() {
-        return new SimpleStatusView(this);
+        SimpleStatusView simpleStatusView = new SimpleStatusView(requireContext(), null);
+        simpleStatusView.setRefreshContainer(this);
+        return simpleStatusView;
     }
 
     @Override
