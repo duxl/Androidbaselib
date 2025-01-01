@@ -63,43 +63,12 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
     public SimpleStatusView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context, attrs);
-    }
-
-    public void setRefreshContainer(IRefreshContainer refreshContainer) {
-        this.mRefreshContainer = refreshContainer;
-        if (refreshContainer != null && refreshContainer.getRefreshLayout() != null) {
-            mOnLoadListener = refreshContainer.getRefreshLayout().getOnLoadListener();
-        }
-    }
-
-    public void setLayoutResId(int mLayoutResId) {
-        this.mLayoutResId = mLayoutResId;
-        removeAllViews();
-        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
-        mIvStatus = findViewById(R.id.iv_status_view);
-        mTvStatus = findViewById(R.id.tv_status_view);
-        mBtnStatus = findViewById(R.id.btn_status_view);
-    }
-
-    public void setOnLoadListener(OnLoadListener listener) {
-        this.mOnLoadListener = listener;
-        if (getRefreshContainer() != null && getRefreshContainer().getRefreshLayout() != null) {
-            getRefreshContainer().getRefreshLayout().setOnLoadListener(mOnLoadListener);
-        }
-    }
-
-    protected void initView(Context context, AttributeSet attrs) {
         this.context = context;
-        setBackground(ContextCompat.getDrawable(context, R.drawable.style_simple_status_view_bg));
-        setOrientation(VERTICAL);
-        setGravity(Gravity.CENTER_HORIZONTAL);
-        setVisibility(View.GONE);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleStatusView);
-        // 确定布局文件
+        // 布局文件
         mLayoutResId = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_layoutResId, mLayoutResId);
-        setLayoutResId(mLayoutResId);
+        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
 
         // loading设置
         loadingText = typedArray.getString(R.styleable.SimpleStatusView_sv_loading_text);
@@ -143,33 +112,59 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         emptyImgVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_empty_img_visibility, getResources().getInteger(R.integer.emptyImgVisibility));
         emptyBtnVisibility = typedArray.getInteger(R.styleable.SimpleStatusView_sv_empty_btn_visibility, getResources().getInteger(R.integer.emptyBtnVisibility));
 
+        int statusOrdinal = typedArray.getInteger(R.styleable.SimpleStatusView_sv_status, Status.None.ordinal());
+        mStatus = Status.values()[statusOrdinal];
+
         typedArray.recycle();
 
-        /*LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        initView(context);
+    }
+
+    public void setRefreshContainer(IRefreshContainer refreshContainer) {
+        this.mRefreshContainer = refreshContainer;
+        if (refreshContainer != null && refreshContainer.getRefreshLayout() != null) {
+            mOnLoadListener = refreshContainer.getRefreshLayout().getOnLoadListener();
+        }
+    }
+
+    public void setLayoutResId(int mLayoutResId) {
+        this.mLayoutResId = mLayoutResId;
+        removeAllViews();
+        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        initView(context);
+    }
+
+    public void setOnLoadListener(OnLoadListener listener) {
+        this.mOnLoadListener = listener;
+        if (getRefreshContainer() != null && getRefreshContainer().getRefreshLayout() != null) {
+            getRefreshContainer().getRefreshLayout().setOnLoadListener(mOnLoadListener);
+        }
+    }
+
+    protected void initView(Context context) {
+        setBackground(ContextCompat.getDrawable(context, R.drawable.style_simple_status_view_bg));
+        setOrientation(VERTICAL);
+        setGravity(Gravity.CENTER_HORIZONTAL);
+        setVisibility(View.GONE);
+
         mIvStatus = findViewById(R.id.iv_status_view);
         mTvStatus = findViewById(R.id.tv_status_view);
         mBtnStatus = findViewById(R.id.btn_status_view);
 
-        loadingText = context.getString(R.string.style_simple_status_loading_text);
-        loadingImgRes = R.drawable.style_simple_status_loading_img_res;
-        loadingBtnText = context.getString(R.string.style_simple_status_loading_button_text);
-        loadingTextVisibility = getResources().getInteger(R.integer.loadingTextVisibility);
-        loadingImgVisibility = getResources().getInteger(R.integer.loadingImgVisibility);
-        loadingBtnVisibility = getResources().getInteger(R.integer.loadingBtnVisibility);
-
-        errorText = context.getString(R.string.style_simple_status_error_text);
-        errorImgRes = R.drawable.style_simple_status_error_res;
-        errorBtnText = context.getString(R.string.style_simple_status_error_button_text);
-        errorTextVisibility = getResources().getInteger(R.integer.errorTextVisibility);
-        errorImgVisibility = getResources().getInteger(R.integer.errorImgVisibility);
-        errorBtnVisibility = getResources().getInteger(R.integer.errorBtnVisibility);
-
-        emptyText = context.getString(R.string.style_simple_status_empty_text);
-        emptyImgRes = R.drawable.style_simple_status_empty_res;
-        emptyBtnText = context.getString(R.string.style_simple_status_empty_button_text);
-        emptyTextVisibility = getResources().getInteger(R.integer.emptyTextVisibility);
-        emptyImgVisibility = getResources().getInteger(R.integer.emptyImgVisibility);
-        emptyBtnVisibility = getResources().getInteger(R.integer.emptyBtnVisibility);*/
+        switch (mStatus) {
+            case Loading:
+                showLoading();
+                break;
+            case Empty:
+                showEmpty();
+                break;
+            case Error:
+                showError(30000);
+                break;
+            default:
+                showContent();
+                break;
+        }
     }
 
     @Override
