@@ -75,6 +75,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
 
     public void setLayoutResId(int mLayoutResId) {
         this.mLayoutResId = mLayoutResId;
+        removeAllViews();
         LayoutInflater.from(context).inflate(mLayoutResId, this, true);
         mIvStatus = findViewById(R.id.iv_status_view);
         mTvStatus = findViewById(R.id.tv_status_view);
