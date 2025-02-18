@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.duxl.baselib.R;
+import com.duxl.baselib.utils.EmptyUtils;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -27,15 +26,50 @@ import java.util.List;
  */
 public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.GroupItemEntity<C>, C> extends BaseQuickAdapter<G, BaseExpandableAdapter.ExpandViewHolder> {
 
+    private static final class ChildChangePayload {
+        private enum TYPE {
+            DataSetChanged,
+
+            ItemChanged,
+            ItemRangeChanged,
+
+            ItemInserted,
+            ItemRangeInserted,
+
+            ItemRemoved,
+            ItemRangeRemoved,
+
+            ItemMoved
+        }
+
+        TYPE type;
+        int position = -1;
+        int positionStart = -1;
+        int itemCount = -1;
+        int fromPosition = -1;
+        int toPosition = -1;
+        Object payload = null;
+
+        public ChildChangePayload(TYPE type) {
+            this.type = type;
+        }
+    }
+
     private int mGroupLayoutResId;
     private int mChildLayoutResId;
 
+    // Child的item长按事件(ps:分组的item长按事件已有)
+    private OnChildItemLongClickListener mOnChildItemLongClickListener;
+    // Child的子view长按事件(ps:分组的item长按事件已有)
+    private OnChildItemChildLongClickListener mOnChildItemChildLongClickListener;
     // Child的item点击事件(ps:分组的item点击事件已有)
     private OnChildItemClickListener mOnChildItemClickListener;
     // Child的子view点击事件(ps:分组的子view点击事件已有)
     private OnChildItemChildClickListener mOnChildItemChildClickListener;
     // 用于保存需要设置点击事件的Child的子view
     private LinkedHashSet<Integer> mChildItemChildClickViewIds = new LinkedHashSet<>();
+    // 用于保存需要设置长按事件的Child的子view
+    private LinkedHashSet<Integer> mChildItemChildLongClickViewIds = new LinkedHashSet<>();
 
     /**
      * @param groupLayoutResId 组布局
@@ -45,6 +79,24 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         super(R.layout.adapter_base_expandable_item);
         this.mGroupLayoutResId = groupLayoutResId;
         this.mChildLayoutResId = childLayoutResId;
+    }
+
+    /**
+     * 设置Child的item长按事件
+     *
+     * @param listener
+     */
+    public void setOnChildItemLongClickListener(OnChildItemLongClickListener listener) {
+        this.mOnChildItemLongClickListener = listener;
+    }
+
+    /**
+     * 设置Child的子View长按事件
+     *
+     * @param listener
+     */
+    public void setOnChildItemChildLongClickListener(OnChildItemChildLongClickListener listener) {
+        this.mOnChildItemChildLongClickListener = listener;
     }
 
     /**
@@ -76,6 +128,17 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         }
     }
 
+    /**
+     * 设置子Child的哪些子view可长按
+     *
+     * @param ids
+     */
+    public void addChildItemChildLongClickViewIds(int... ids) {
+        for (int id : ids) {
+            mChildItemChildLongClickViewIds.add(id);
+        }
+    }
+
     @NonNull
     @Override
     protected ExpandViewHolder createBaseViewHolder(@NonNull View view) {
@@ -84,6 +147,49 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         flGroupContainer.removeAllViews();
         flGroupContainer.addView(vGroup);
         return new ExpandViewHolder(view);
+    }
+
+    @Override
+    protected void convert(@NonNull ExpandViewHolder holder, G item, @NonNull List<?> payloads) {
+        super.convert(holder, item, payloads);
+        if (EmptyUtils.isNotEmpty(payloads)) {
+            Object payload = payloads.get(0);
+            if (payload instanceof ChildChangePayload) {
+                ChildChangePayload childPayload = (ChildChangePayload) payload;
+                RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
+                if (recyclerChildren != null) {
+                    RecyclerView.Adapter childAdapter = recyclerChildren.getAdapter();
+                    if (childAdapter != null) {
+                        switch (childPayload.type) {
+                            case DataSetChanged:
+                                childAdapter.notifyDataSetChanged();
+                                break;
+                            case ItemChanged:
+                                childAdapter.notifyItemChanged(childPayload.position, childPayload.payload);
+                                break;
+                            case ItemRangeChanged:
+                                childAdapter.notifyItemRangeChanged(childPayload.positionStart, childPayload.itemCount, childPayload.payload);
+                                break;
+                            case ItemInserted:
+                                childAdapter.notifyItemInserted(childPayload.position);
+                                break;
+                            case ItemRangeInserted:
+                                childAdapter.notifyItemRangeInserted(childPayload.positionStart, childPayload.itemCount);
+                                break;
+                            case ItemRemoved:
+                                childAdapter.notifyItemRemoved(childPayload.position);
+                                break;
+                            case ItemRangeRemoved:
+                                childAdapter.notifyItemRangeRemoved(childPayload.positionStart, childPayload.itemCount);
+                                break;
+                            case ItemMoved:
+                                childAdapter.notifyItemMoved(childPayload.fromPosition, childPayload.toPosition);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -169,6 +275,27 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
             childrenAdapter.addChildClickViewIds(childChildId);
         }
 
+        // 添加哪些子view可长按
+        for (Integer childChildId : mChildItemChildLongClickViewIds) {
+            childrenAdapter.addChildLongClickViewIds(childChildId);
+        }
+
+        // 设置item长按事件
+        childrenAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            if (mOnChildItemLongClickListener != null) {
+                return mOnChildItemLongClickListener.onChildItemLongClick(adapter, view, position, positionGroup);
+            }
+            return false;
+        });
+
+        // 设置item的子View长按事件
+        childrenAdapter.setOnItemChildLongClickListener((adapter, view, position) -> {
+            if (mOnChildItemChildLongClickListener != null) {
+                return mOnChildItemChildLongClickListener.onChildItemLongClick(adapter, view, position, positionGroup);
+            }
+            return false;
+        });
+
         // 设置item点击事件
         childrenAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (mOnChildItemClickListener != null) {
@@ -213,6 +340,64 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      */
     protected abstract void bindChild(@NonNull RecyclerView recyclerChildren, @NonNull View childView, G dataGroup, int positionGroup, C dataChild, int positionChild);
 
+    protected void notifyChildDataSetChanged(int groupPosition) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.DataSetChanged);
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemChanged(int groupPosition, int childPosition) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
+        payload.position = childPosition;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemRangeChanged(int groupPosition, int childStart, int childCount) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
+        payload.positionStart = childStart;
+        payload.itemCount = childCount;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemRangeChanged(int groupPosition, int childStartPosition, int childCount, Object childPayload) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
+        payload.positionStart = childStartPosition;
+        payload.itemCount = childCount;
+        payload.payload = childPayload;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemInserted(int groupPosition, int childPosition) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemInserted);
+        payload.position = childPosition;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemRangeInserted(int groupPosition, int childStart, int childCount) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeInserted);
+        payload.positionStart = childStart;
+        payload.itemCount = childCount;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemRemoved(int groupPosition, int childPosition) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRemoved);
+        payload.position = childPosition;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemRangeRemoved(int groupPosition, int childStart, int childCount) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeRemoved);
+        payload.positionStart = childStart;
+        payload.itemCount = childCount;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    protected void notifyChildItemMoved(int groupPosition, int fromChildPosition, int toChildPosition) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemMoved);
+        payload.fromPosition = fromChildPosition;
+        payload.toPosition = toChildPosition;
+        notifyItemChanged(groupPosition, payload);
+    }
 
     public interface GroupItemEntity<T> {
 
@@ -250,5 +435,13 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     public interface OnChildItemChildClickListener {
         void onItemChildClick(BaseQuickAdapter adapterChildren, @NonNull View childChildView, int positionChild, int positionGroup);
+    }
+
+    public interface OnChildItemLongClickListener {
+        boolean onChildItemLongClick(BaseQuickAdapter adapterChildren, @NonNull View childView, int positionChild, int positionGroup);
+    }
+
+    public interface OnChildItemChildLongClickListener {
+        boolean onChildItemLongClick(BaseQuickAdapter adapterChildren, @NonNull View childChildView, int positionChild, int positionGroup);
     }
 }
