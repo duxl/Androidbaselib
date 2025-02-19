@@ -340,25 +340,25 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      */
     protected abstract void bindChild(@NonNull RecyclerView recyclerChildren, @NonNull View childView, G dataGroup, int positionGroup, C dataChild, int positionChild);
 
-    protected void notifyChildDataSetChanged(int groupPosition) {
+    public void notifyChildDataSetChanged(int groupPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.DataSetChanged);
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemChanged(int groupPosition, int childPosition) {
+    public void notifyChildItemChanged(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemRangeChanged(int groupPosition, int childStart, int childCount) {
+    public void notifyChildItemRangeChanged(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
         payload.positionStart = childStart;
         payload.itemCount = childCount;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemRangeChanged(int groupPosition, int childStartPosition, int childCount, Object childPayload) {
+    public void notifyChildItemRangeChanged(int groupPosition, int childStartPosition, int childCount, Object childPayload) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
         payload.positionStart = childStartPosition;
         payload.itemCount = childCount;
@@ -366,33 +366,33 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemInserted(int groupPosition, int childPosition) {
+    public void notifyChildItemInserted(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemInserted);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemRangeInserted(int groupPosition, int childStart, int childCount) {
+    public void notifyChildItemRangeInserted(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeInserted);
         payload.positionStart = childStart;
         payload.itemCount = childCount;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemRemoved(int groupPosition, int childPosition) {
+    public void notifyChildItemRemoved(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRemoved);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemRangeRemoved(int groupPosition, int childStart, int childCount) {
+    public void notifyChildItemRangeRemoved(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeRemoved);
         payload.positionStart = childStart;
         payload.itemCount = childCount;
         notifyItemChanged(groupPosition, payload);
     }
 
-    protected void notifyChildItemMoved(int groupPosition, int fromChildPosition, int toChildPosition) {
+    public void notifyChildItemMoved(int groupPosition, int fromChildPosition, int toChildPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemMoved);
         payload.fromPosition = fromChildPosition;
         payload.toPosition = toChildPosition;
