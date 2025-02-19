@@ -202,7 +202,8 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
             }
         }
 
-        bindGroup(recyclerChildren, dataGroup, groupPosition, payloads);
+        FrameLayout flGroup = holder.getView(R.id.fl_group_container);
+        bindGroup(flGroup.getChildAt(0), dataGroup, groupPosition, payloads);
     }
 
     @Override
@@ -210,7 +211,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         int groupPosition = getItemPosition(dataGroup);
         // 处理Group组
         FrameLayout flGroup = holder.getView(R.id.fl_group_container);
-        bindGroup(flGroup.getChildAt(0), dataGroup, getItemPosition(dataGroup));
+        bindGroup(flGroup.getChildAt(0), dataGroup, groupPosition);
 
         // 处理Children
         RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
