@@ -229,8 +229,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      */
     protected View onCreateGroupView(ViewGroup parent, int groupLayoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View vGroup = inflater.inflate(groupLayoutResId, parent, false);
-        return vGroup;
+        return inflater.inflate(groupLayoutResId, parent, false);
     }
 
     /**
@@ -242,8 +241,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      */
     protected View onCreateChildView(ViewGroup parent, int childLayoutResId) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View vChild = inflater.inflate(childLayoutResId, parent, false);
-        return vChild;
+        return inflater.inflate(childLayoutResId, parent, false);
     }
 
     protected RecyclerView.LayoutManager getChildrenLayoutManger(RecyclerView childrenView, G dataGroup, int positionGroup) {
