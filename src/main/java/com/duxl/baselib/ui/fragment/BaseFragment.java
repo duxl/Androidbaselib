@@ -64,6 +64,10 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         return mRootContentView;
     }
 
+    public float dip2px(float dipValue) {
+        return DisplayUtil.dip2px(requireContext(), dipValue);
+    }
+
     protected abstract int getLayoutResId();
 
     protected void initParams(Bundle args) {

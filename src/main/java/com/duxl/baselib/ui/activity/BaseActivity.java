@@ -60,6 +60,10 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         initView(mContentView);
     }
 
+    public float dip2px(float dipValue) {
+        return DisplayUtil.dip2px(this, dipValue);
+    }
+
     @Override
     public void setContentView(int layoutResID) {
         View rootView = getLayoutInflater().inflate(layoutResID, null);
