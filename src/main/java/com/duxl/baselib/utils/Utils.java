@@ -32,7 +32,7 @@ public class Utils {
     private static SoftReference<BaseApplication> mAppReference;
 
     private Utils() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
+        throw new UnsupportedOperationException("you can't instantiate me...");
     }
 
     /**

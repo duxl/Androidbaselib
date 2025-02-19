@@ -153,6 +153,14 @@ public abstract class LazyFragment extends BaseFragment {
         }
     }
 
+    public boolean isLazyVisible() {
+        return isVisible;
+    }
+
+    public boolean isLazyFirstVisible() {
+        return isFirstVisible;
+    }
+
     /**
      * 可见状态改变处理函数
      *
