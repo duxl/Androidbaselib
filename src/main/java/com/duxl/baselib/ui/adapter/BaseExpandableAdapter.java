@@ -153,12 +153,12 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
     protected void convert(@NonNull ExpandViewHolder holder, G dataGroup, @NonNull List<? extends Object> payloads) {
         super.convert(holder, dataGroup, payloads);
         int groupPosition = getItemPosition(dataGroup);
-        RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
 
         if (EmptyUtils.isNotEmpty(payloads)) {
             Object payload = payloads.get(0);
             if (payload instanceof ChildChangePayload) {
                 ChildChangePayload childPayload = (ChildChangePayload) payload;
+                RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
                 if (recyclerChildren != null) {
                     RecyclerView.Adapter childAdapter = recyclerChildren.getAdapter();
                     if (childAdapter != null) {
