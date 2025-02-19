@@ -150,7 +150,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
     }
 
     @Override
-    protected void convert(@NonNull ExpandViewHolder holder, G item, @NonNull List<?> payloads) {
+    protected void convert(@NonNull ExpandViewHolder holder, G item, @NonNull List<? extends Object> payloads) {
         super.convert(holder, item, payloads);
         if (EmptyUtils.isNotEmpty(payloads)) {
             Object payload = payloads.get(0);
