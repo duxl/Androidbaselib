@@ -267,6 +267,11 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         BaseQuickAdapter childrenAdapter;
         recyclerChildren.setAdapter(childrenAdapter = new BaseQuickAdapter<C, ExpandViewHolder>(mChildLayoutResId, dataGroup.getChildren()) {
             @Override
+            protected void convert(@NonNull ExpandViewHolder viewHolder, C dataChild, @NonNull List<? extends Object> payloads) {
+                bindChild(recyclerChildren, viewHolder.getRoot(), dataGroup, positionGroup, dataChild, getItemPosition(dataChild), payloads);
+            }
+
+            @Override
             protected void convert(@NonNull ExpandViewHolder viewHolder, C dataChild) {
                 bindChild(recyclerChildren, viewHolder.getRoot(), dataGroup, positionGroup, dataChild, getItemPosition(dataChild));
             }
@@ -334,6 +339,10 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         } else {
             layoutParams.height = 0;
         }
+    }
+
+    protected void bindChild(@NonNull RecyclerView recyclerChildren, @NonNull View childView, G dataGroup, int positionGroup, C dataChild, int positionChild, @NonNull List<? extends Object> payloads) {
+
     }
 
     /**
