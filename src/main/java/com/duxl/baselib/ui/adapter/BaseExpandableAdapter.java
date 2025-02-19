@@ -274,8 +274,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         recyclerChildren.setHasFixedSize(true);
         recyclerChildren.setNestedScrollingEnabled(false);
         recyclerChildren.setLayoutManager(getChildrenLayoutManger(recyclerChildren, dataGroup, positionGroup));
-        BaseQuickAdapter childrenAdapter;
-        recyclerChildren.setAdapter(childrenAdapter = new BaseQuickAdapter<C, ExpandViewHolder>(mChildLayoutResId, dataGroup.getChildren()) {
+        BaseQuickAdapter<C, ExpandViewHolder> childrenAdapter = new BaseQuickAdapter<C, ExpandViewHolder>(mChildLayoutResId, dataGroup.getChildren()) {
             @Override
             protected void convert(@NonNull ExpandViewHolder viewHolder, C dataChild, @NonNull List<? extends Object> payloads) {
                 bindChild(recyclerChildren, viewHolder.getRoot(), dataGroup, positionGroup, dataChild, getItemPosition(dataChild), payloads);
@@ -291,7 +290,8 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
             protected ExpandViewHolder onCreateDefViewHolder(@NonNull ViewGroup parent, int viewType) {
                 return new ExpandViewHolder(onCreateChildView(parent, mChildLayoutResId));
             }
-        });
+        };
+        recyclerChildren.setAdapter(childrenAdapter);
 
         // 添加哪些子view可点击
         for (Integer childChildId : mChildItemChildClickViewIds) {
