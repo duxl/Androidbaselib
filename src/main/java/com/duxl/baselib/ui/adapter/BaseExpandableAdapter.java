@@ -367,17 +367,35 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      */
     protected abstract void bindChild(@NonNull RecyclerView recyclerChildren, @NonNull View childView, G dataGroup, int positionGroup, C dataChild, int positionChild);
 
+    /**
+     * 子列表更新
+     *
+     * @param groupPosition
+     */
     public void notifyChildDataSetChanged(int groupPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.DataSetChanged);
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item更新
+     *
+     * @param groupPosition
+     * @param childPosition
+     */
     public void notifyChildItemChanged(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item更新
+     *
+     * @param groupPosition
+     * @param childPosition
+     * @param childPayload
+     */
     public void notifyChildItemChanged(int groupPosition, int childPosition, Object childPayload) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
         payload.position = childPosition;
@@ -385,6 +403,13 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item更新
+     *
+     * @param groupPosition
+     * @param childStart
+     * @param childCount
+     */
     public void notifyChildItemRangeChanged(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
         payload.positionStart = childStart;
@@ -392,6 +417,14 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item更新
+     *
+     * @param groupPosition
+     * @param childStartPosition
+     * @param childCount
+     * @param childPayload
+     */
     public void notifyChildItemRangeChanged(int groupPosition, int childStartPosition, int childCount, Object childPayload) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeChanged);
         payload.positionStart = childStartPosition;
@@ -400,12 +433,25 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item增加
+     *
+     * @param groupPosition
+     * @param childPosition
+     */
     public void notifyChildItemInserted(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemInserted);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item增加
+     *
+     * @param groupPosition
+     * @param childStart
+     * @param childCount
+     */
     public void notifyChildItemRangeInserted(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeInserted);
         payload.positionStart = childStart;
@@ -413,12 +459,25 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item移除
+     *
+     * @param groupPosition
+     * @param childPosition
+     */
     public void notifyChildItemRemoved(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRemoved);
         payload.position = childPosition;
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item移除
+     *
+     * @param groupPosition
+     * @param childStart
+     * @param childCount
+     */
     public void notifyChildItemRangeRemoved(int groupPosition, int childStart, int childCount) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemRangeRemoved);
         payload.positionStart = childStart;
@@ -426,6 +485,13 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         notifyItemChanged(groupPosition, payload);
     }
 
+    /**
+     * 子列表item交换位置
+     *
+     * @param groupPosition
+     * @param fromChildPosition
+     * @param toChildPosition
+     */
     public void notifyChildItemMoved(int groupPosition, int fromChildPosition, int toChildPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemMoved);
         payload.fromPosition = fromChildPosition;
