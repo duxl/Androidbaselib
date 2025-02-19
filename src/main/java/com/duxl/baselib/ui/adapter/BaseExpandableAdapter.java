@@ -165,10 +165,18 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
                                 childAdapter.notifyDataSetChanged();
                                 break;
                             case ItemChanged:
-                                childAdapter.notifyItemChanged(childPayload.position, childPayload.payload);
+                                if (childPayload.payload != null) {
+                                    childAdapter.notifyItemChanged(childPayload.position, childPayload.payload);
+                                } else {
+                                    childAdapter.notifyItemChanged(childPayload.position);
+                                }
                                 break;
                             case ItemRangeChanged:
-                                childAdapter.notifyItemRangeChanged(childPayload.positionStart, childPayload.itemCount, childPayload.payload);
+                                if (childPayload.payload != null) {
+                                    childAdapter.notifyItemRangeChanged(childPayload.positionStart, childPayload.itemCount, childPayload.payload);
+                                } else {
+                                    childAdapter.notifyItemRangeChanged(childPayload.positionStart, childPayload.itemCount);
+                                }
                                 break;
                             case ItemInserted:
                                 childAdapter.notifyItemInserted(childPayload.position);
@@ -348,6 +356,13 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
     public void notifyChildItemChanged(int groupPosition, int childPosition) {
         ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
         payload.position = childPosition;
+        notifyItemChanged(groupPosition, payload);
+    }
+
+    public void notifyChildItemChanged(int groupPosition, int childPosition, Object childPayload) {
+        ChildChangePayload payload = new ChildChangePayload(ChildChangePayload.TYPE.ItemChanged);
+        payload.position = childPosition;
+        payload.payload = childPayload;
         notifyItemChanged(groupPosition, payload);
     }
 
