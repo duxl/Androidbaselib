@@ -215,7 +215,9 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
         // 处理Children
         RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
-        onBindChildren(recyclerChildren, dataGroup, groupPosition);
+        if (recyclerChildren != null) {
+            onBindChildren(recyclerChildren, dataGroup, groupPosition);
+        }
     }
 
     /**
