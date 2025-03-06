@@ -63,23 +63,6 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     private int mGroupLayoutResId;
     private int mChildLayoutResId;
-    private boolean expandAnimEnabled = true;
-
-    private RecyclerView mRecyclerView;
-
-    public void setExpandAnimEnabled(boolean enabled) {
-        expandAnimEnabled = enabled;
-        if (mRecyclerView != null) {
-            //AnimUtils.setRecyclerAnimEnable(mRecyclerView, enabled);
-        }
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mRecyclerView = recyclerView;
-        //AnimUtils.setRecyclerAnimEnable(mRecyclerView, expandAnimEnabled);
-    }
 
     // Child的item长按事件(ps:分组的item长按事件已有)
     private OnChildItemLongClickListener mOnChildItemLongClickListener;

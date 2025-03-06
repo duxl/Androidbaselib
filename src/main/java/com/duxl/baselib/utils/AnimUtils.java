@@ -1,11 +1,14 @@
 package com.duxl.baselib.utils;
 
 import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +41,29 @@ public class AnimUtils {
         }
         v.clearAnimation();
         v.startAnimation(animation);
+    }
+
+    public static void startRotationAnim(View v, float from, float to) {
+        startRotationAnim(v, from, to, 200, null);
+    }
+
+    /**
+     * 启动旋转动画
+     *
+     * @param v
+     * @param from         旋转的开始角度
+     * @param to           旋转的结束角度
+     * @param duration     动画时长
+     * @param interpolator 差值器
+     */
+    public static void startRotationAnim(View v, float from, float to, long duration, @Nullable TimeInterpolator interpolator) {
+        v.clearAnimation();
+        ObjectAnimator anim = ObjectAnimator.ofFloat(v, "rotation", from, to);
+        anim.setDuration(duration);
+        if (interpolator != null) {
+            anim.setInterpolator(interpolator);
+        }
+        anim.start();
     }
 
     /**
