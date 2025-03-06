@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.duxl.baselib.R;
+import com.duxl.baselib.utils.AnimUtils;
 import com.duxl.baselib.utils.EmptyUtils;
 
 import java.util.LinkedHashSet;
@@ -25,6 +26,11 @@ import java.util.List;
  * @param <C> 分组下的Child数据类型
  */
 public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.GroupItemEntity<C>, C> extends BaseQuickAdapter<G, BaseExpandableAdapter.ExpandViewHolder> {
+
+    /**
+     * 折叠状态改变
+     */
+    public static final int PAYLOAD_EXPAND_CHANGED = 3000;
 
     private static final class ChildChangePayload {
         private enum TYPE {
@@ -57,6 +63,23 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     private int mGroupLayoutResId;
     private int mChildLayoutResId;
+    private boolean expandAnimEnabled = true;
+
+    private RecyclerView mRecyclerView;
+
+    public void setExpandAnimEnabled(boolean enabled) {
+        expandAnimEnabled = enabled;
+        if (mRecyclerView != null) {
+            //AnimUtils.setRecyclerAnimEnable(mRecyclerView, enabled);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
+        //AnimUtils.setRecyclerAnimEnable(mRecyclerView, expandAnimEnabled);
+    }
 
     // Child的item长按事件(ps:分组的item长按事件已有)
     private OnChildItemLongClickListener mOnChildItemLongClickListener;
@@ -70,6 +93,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
     private LinkedHashSet<Integer> mChildItemChildClickViewIds = new LinkedHashSet<>();
     // 用于保存需要设置长按事件的Child的子view
     private LinkedHashSet<Integer> mChildItemChildLongClickViewIds = new LinkedHashSet<>();
+
 
     /**
      * @param groupLayoutResId 组布局
@@ -199,6 +223,11 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
                     }
                 }
                 return;
+            } else if (payload instanceof Integer && Integer.parseInt(payload.toString()) == PAYLOAD_EXPAND_CHANGED) {
+                // 处理组展开和折叠
+                RecyclerView recyclerChildren = holder.findView(R.id.recyclerview_children);
+                expandChildren(recyclerChildren, dataGroup);
+                return;
             }
         }
 
@@ -208,6 +237,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     @Override
     protected void convert(@NonNull ExpandViewHolder holder, G dataGroup) {
+        //AnimUtils.setLayoutAnimateChangesEnable((ViewGroup) holder.root, expandAnimEnabled);
         int groupPosition = getItemPosition(dataGroup);
         // 处理Group组
         FrameLayout flGroup = holder.getView(R.id.fl_group_container);
@@ -271,6 +301,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      * @param positionGroup    分组所在位置
      */
     protected void onBindChildren(RecyclerView recyclerChildren, G dataGroup, int positionGroup) {
+        AnimUtils.setRecyclerAnimEnable(recyclerChildren, false);
         recyclerChildren.setHasFixedSize(true);
         recyclerChildren.setNestedScrollingEnabled(false);
         recyclerChildren.setLayoutManager(getChildrenLayoutManger(recyclerChildren, dataGroup, positionGroup));
@@ -343,11 +374,17 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      * @param dataGroup
      */
     protected void expandChildren(RecyclerView recyclerView, G dataGroup) {
-        ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+        /*ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
         if (dataGroup.isExpand()) {
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         } else {
             layoutParams.height = 0;
+        }
+        recyclerView.setLayoutParams(layoutParams);*/
+        if (dataGroup.isExpand()) {
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.GONE);
         }
     }
 
@@ -366,6 +403,15 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
      * @param positionChild    child所在group中的position
      */
     protected abstract void bindChild(@NonNull RecyclerView recyclerChildren, @NonNull View childView, G dataGroup, int positionGroup, C dataChild, int positionChild);
+
+    /**
+     * 通知分组折叠状态改变
+     *
+     * @param groupPosition
+     */
+    public void notifyItemExpandChanged(int groupPosition) {
+        notifyItemChanged(groupPosition, PAYLOAD_EXPAND_CHANGED);
+    }
 
     /**
      * 子列表更新
