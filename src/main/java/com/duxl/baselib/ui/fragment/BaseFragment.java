@@ -8,15 +8,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.duxl.baselib.R;
+import com.duxl.baselib.ui.activity.BaseActivity;
 import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
 import com.duxl.baselib.ui.status.SimpleStatusView;
 import com.duxl.baselib.utils.DisplayUtil;
+import com.duxl.baselib.utils.ToastUtils;
 import com.duxl.baselib.widget.ActionBarView;
 import com.duxl.baselib.widget.XSmartRefreshLayout;
 
@@ -33,11 +36,30 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     protected View mContentView;
     protected FrameLayout mFlContainer;
     protected IStatusView mStatusView;
+    protected OnBackPressedCallback mOnBackPressedCallback;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initParams(getArguments());
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initOnBackPressedDispatcher();
+    }
+
+    protected void initOnBackPressedDispatcher() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), mOnBackPressedCallback = new OnBackPressedCallback(true) {
+            //requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), mOnBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                BaseFragment.this.handleOnBackPressed();
+                //mOnBackPressedCallback.setEnabled(BaseFragment.this.handleOnBackPressed());
+                //mOnBackPressedCallback.setEnabled(true);
+            }
+        });
     }
 
     @Nullable
@@ -241,5 +263,14 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
         mStatusView = null;
 
         super.onDestroyView();
+    }
+
+    /**
+     * 处理返回事件
+     *
+     * @return 返回true表示已消耗返回事件，false表示需要parentFragment或parentActivity处理
+     */
+    protected boolean handleOnBackPressed() {
+        return false;
     }
 }

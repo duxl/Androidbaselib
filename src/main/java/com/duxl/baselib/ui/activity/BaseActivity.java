@@ -11,6 +11,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -35,6 +37,7 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
     protected View mContentView;
     protected FrameLayout mFlContainer;
     protected IStatusView mStatusView;
+    protected OnBackPressedCallback mOnBackPressedCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +61,17 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
         mFlContainer.addView(mStatusView.getView(), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         initView(mContentView);
+
+        initOnBackPressedDispatcher();
+    }
+
+    protected void initOnBackPressedDispatcher() {
+        getOnBackPressedDispatcher().addCallback(this, mOnBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                BaseActivity.this.handleOnBackPressed();
+            }
+        });
     }
 
     public float dip2px(float dipValue) {
@@ -296,5 +310,16 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * <pre>
+     * 处理返回事件（替代 onBackPressed()）
+     * 注意，要使用此方法，不要重写onBackPressed()把super.onBackPressed()注释掉
+     * api=33以上可以在 manifest的application标签下配置android:enableOnBackInvokedCallback="false"禁用此功能
+     * </pre>
+     */
+    public void handleOnBackPressed() {
+
     }
 }
