@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface ISupportComponentResult {
+
+    Context getContext();
 
     /**
      * 启动Activity
