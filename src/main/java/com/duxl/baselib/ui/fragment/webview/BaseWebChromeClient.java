@@ -1,6 +1,5 @@
 package com.duxl.baselib.ui.fragment.webview;
 
-import android.Manifest;
 import android.net.Uri;
 import android.view.View;
 import android.webkit.ValueCallback;
@@ -14,13 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
-import com.duxl.baselib.R;
-import com.duxl.baselib.rx.SimpleObserver;
 import com.duxl.baselib.ui.fragment.BaseFragment;
 import com.duxl.baselib.utils.EmptyUtils;
-import com.duxl.baselib.utils.ToastUtils;
-import com.tbruyelle.rxpermissions3.Permission;
-import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +42,6 @@ public class BaseWebChromeClient extends WebChromeClient {
     }
 
     /**
-     *
      * @param fragment
      * @param progressBar 实例化时还没有ProgressBar，可以之后调用setProgressBar设置
      */
@@ -144,22 +137,9 @@ public class BaseWebChromeClient extends WebChromeClient {
      * 拍照（需要在Manifests添加android.permission.CAMERA权限）
      */
     protected void takeCapture() {
-        new RxPermissions(mFragment)
-                .requestEachCombined(Manifest.permission.CAMERA)
-                .subscribe(new SimpleObserver<Permission>() {
-                    @Override
-                    public void onNext(Permission p) {
-                        super.onNext(p);
-                        if (p.granted) {
-                            File file = new File(mFragment.requireContext().getExternalCacheDir(), "capture-" + System.currentTimeMillis() + ".jpg");
-                            mTakeCaptureUri = FileProvider.getUriForFile(mFragment.requireContext(), mFragment.requireContext().getPackageName() + ".fileprovider", file);
-                            mTakePictureLauncher.launch(mTakeCaptureUri);
-
-                        } else {
-                            requestPermissionFail(p);
-                        }
-                    }
-                });
+        File file = new File(mFragment.requireContext().getExternalCacheDir(), "capture-" + System.currentTimeMillis() + ".jpg");
+        mTakeCaptureUri = FileProvider.getUriForFile(mFragment.requireContext(), mFragment.requireContext().getPackageName() + ".fileprovider", file);
+        mTakePictureLauncher.launch(mTakeCaptureUri);
     }
 
     /**
@@ -180,19 +160,6 @@ public class BaseWebChromeClient extends WebChromeClient {
             }
         } else {
             callbackReceiveFile(null);
-        }
-    }
-
-    /**
-     * 获取权限失败
-     *
-     * @param permission
-     */
-    protected void requestPermissionFail(Permission permission) {
-        if (permission.shouldShowRequestPermissionRationale) {
-            ToastUtils.show(R.string.request_permission_rationale);
-        } else {
-            ToastUtils.show(R.string.request_permission_fail);
         }
     }
 

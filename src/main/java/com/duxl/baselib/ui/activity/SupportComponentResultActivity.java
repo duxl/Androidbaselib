@@ -25,7 +25,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onActivityResult != null) {
             _onActivityResult.run(activityResult);
         }
-        _onActivityResult = null;
     });
 
     /**
@@ -45,7 +44,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_openFileResult != null && result != null) {
             _openFileResult.run(result);
         }
-        _openFileResult = null;
     });
 
     /**
@@ -65,7 +63,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onOpenDocumentResult != null && result != null) {
             _onOpenDocumentResult.run(result);
         }
-        _onOpenDocumentResult = null;
     });
 
     /**
@@ -85,7 +82,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onLaunchOpenDocuments != null && EmptyUtils.isNotEmpty(result)) {
             _onLaunchOpenDocuments.run(result);
         }
-        _onLaunchOpenDocuments = null;
     });
 
     /**
@@ -105,7 +101,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onOpenCamera != null) {
             _onOpenCamera.run(result);
         }
-        _onOpenCamera = null;
     });
 
     /**
@@ -125,7 +120,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_launchOpenCameraBitmap != null && result != null) {
             _launchOpenCameraBitmap.run(result);
         }
-        _launchOpenCameraBitmap = null;
     });
 
     /**
@@ -145,7 +139,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_recordVideoResult != null) {
             _recordVideoResult.run(result);
         }
-        _recordVideoResult = null;
     });
 
     /**
@@ -165,7 +158,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onRequestPermission != null) {
             _onRequestPermission.run(result);
         }
-        _onRequestPermission = null;
     });
 
     /**
@@ -186,7 +178,6 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         if (_onRequestPermissions != null) {
             _onRequestPermissions.run(map);
         }
-        _onRequestPermissions = null;
     });
 
     /**

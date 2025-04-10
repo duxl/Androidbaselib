@@ -65,7 +65,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
 
-    api rootProject.ext.dependencies["rxpermissions"]
     api rootProject.ext.dependencies["matisse"]
 
     api rootProject.ext.dependencies["glide"]
