@@ -320,6 +320,6 @@ public abstract class BaseActivity extends RefreshActivity implements IStatusVie
      * </pre>
      */
     public void handleOnBackPressed() {
-
+        finish();
     }
 }

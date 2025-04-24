@@ -172,8 +172,18 @@ public abstract class LazyFragment extends BaseFragment {
             if (isVisible && isFirstVisible) {
                 innerInflateLayout();
             }
+            resetOnBackPressedDispatcher(isVisible);
             onLazyHiddenChanged(isVisible, isFirstVisible);
             isFirstVisible = false;
+        }
+    }
+
+    protected void resetOnBackPressedDispatcher(boolean visible) {
+        if (mOnBackPressedCallback != null) {
+            mOnBackPressedCallback.setEnabled(false);
+        }
+        if (visible) {
+            initOnBackPressedDispatcher();
         }
     }
 

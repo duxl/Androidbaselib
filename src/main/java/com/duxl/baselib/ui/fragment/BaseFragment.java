@@ -14,12 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.duxl.baselib.R;
-import com.duxl.baselib.ui.activity.BaseActivity;
 import com.duxl.baselib.ui.status.IStatusView;
 import com.duxl.baselib.ui.status.IStatusViewContainer;
 import com.duxl.baselib.ui.status.SimpleStatusView;
 import com.duxl.baselib.utils.DisplayUtil;
-import com.duxl.baselib.utils.ToastUtils;
 import com.duxl.baselib.widget.ActionBarView;
 import com.duxl.baselib.widget.XSmartRefreshLayout;
 
@@ -45,19 +43,31 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onResume() {
+        super.onResume();
         initOnBackPressedDispatcher();
     }
 
+    /**
+     * fragment中使用OnBackPressedDispatcher需要注意以下几个问题：
+     * 1、LifecycleOwner传viewLifecycleOwner时，从手机桌面回到fragment，之前add的Callback将失效，即使mOnBackPressedCallback.setEnabled(true)也没用，需要重新addCallback
+     * 2、fragment结合ViewPager中，需要主页ViewPager相邻fragment的生命周期问题，LazyFragment已处理此问题可忽略
+     */
     protected void initOnBackPressedDispatcher() {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), mOnBackPressedCallback = new OnBackPressedCallback(true) {
             //requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), mOnBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                BaseFragment.this.handleOnBackPressed();
-                //mOnBackPressedCallback.setEnabled(BaseFragment.this.handleOnBackPressed());
-                //mOnBackPressedCallback.setEnabled(true);
+                boolean isConsumed = BaseFragment.this.handleOnBackPressed();
+                if (!isConsumed) { // 没有消耗事件
+                    // 将返回事件交给上层fragment或Activity处理，需要将本Fragment返回拦截暂时禁用（设置成false再次触发返回事件才会传递到上层）
+                    mOnBackPressedCallback.setEnabled(false);
+                    // 继续事件传递（这里其实是再次触发返回事件）
+                    requireActivity().onBackPressed();
+                    // 继续启用下次返回事件的拦截（这里post方法，利用Handler的消息队列原理，
+                    // 需上面的requireActivity().onBackPressed()处理完毕后，才会执行post里面的逻辑）
+                    mContentView.post(() -> mOnBackPressedCallback.setEnabled(true));
+                }
             }
         });
     }
@@ -211,13 +221,17 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
 
     protected void onClickActionBack(View v) {
         if (v.getId() == R.id.iv_action_back) {
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().getOnBackPressedDispatcher().onBackPressed();
+            }
         }
     }
 
     protected void onClickActionClose(View v) {
         if (v.getId() == R.id.iv_action_close) {
-            getActivity().finish();
+            if (getActivity() != null) {
+                getActivity().getOnBackPressedDispatcher().onBackPressed();
+            }
         }
     }
 
