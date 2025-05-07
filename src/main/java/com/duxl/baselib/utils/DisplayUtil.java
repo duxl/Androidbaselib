@@ -399,6 +399,16 @@ public class DisplayUtil {
     }
 
     /**
+     * 将int类型的color转为#AARRGGBB 字符串
+     *
+     * @param color
+     * @return
+     */
+    public static String colorIntToHex(int color) {
+        return String.format("#%08X", color);
+    }
+
+    /**
      * 测量view，一般通过LayoutInflater.inflate()加载的布局，
      * 在没有绘制到屏幕上是拿不到view的高宽的，调用此方法测量view
      * 后即可获取高宽
