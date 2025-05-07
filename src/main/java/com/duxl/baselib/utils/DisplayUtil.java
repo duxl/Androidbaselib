@@ -399,13 +399,23 @@ public class DisplayUtil {
     }
 
     /**
-     * 将int类型的color转为#AARRGGBB 字符串
+     * 将int类型的color转为#AARRGGBB 字符串（带透明度）
      *
      * @param color
      * @return
      */
-    public static String colorIntToHex(int color) {
+    public static String colorIntToARGB(int color) {
         return String.format("#%08X", color);
+    }
+
+    /**
+     * 将int类型的color转为#RRGGBB 字符串(不带透明度)
+     *
+     * @param color
+     * @return
+     */
+    public static String colorIntToRGB(int color) {
+        return String.format("#%06X", 0xFFFFFF & color);
     }
 
     /**
