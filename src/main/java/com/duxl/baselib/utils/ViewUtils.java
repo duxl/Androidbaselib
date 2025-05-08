@@ -8,7 +8,14 @@ import com.google.android.material.tabs.TabLayout;
 public class ViewUtils {
 
     /**
+     * <pre>
      * 清除tabLayout长按Toast提示
+     * ps：
+     * 1、如果是在代码中动态添加的tab，需要在添加完tab后调用clearTabToast
+     * 2、如果要去掉tab按压的水波纹效果，请按如下设置属性
+     * app:tabBackground="@android:color/transparent"
+     * app:tabRippleColor="@null"
+     * </pre>
      *
      * @param tabLayout
      */
