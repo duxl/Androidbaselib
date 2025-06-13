@@ -15,6 +15,9 @@ public class ViewUtils {
      * 2、如果要去掉tab按压的水波纹效果，请按如下设置属性
      * app:tabBackground="@android:color/transparent"
      * app:tabRippleColor="@null"
+     * 3、如果自定义tab的布局文件，最好添如下设置属性
+     * app:tabMinWidth="0dp"
+     *
      * </pre>
      *
      * @param tabLayout
