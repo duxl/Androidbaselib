@@ -1,9 +1,11 @@
 package com.duxl.baselib.ui.dialog;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.duxl.baselib.utils.DisplayUtil;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -38,6 +39,7 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
     private static final String TAG = "BaseBottomSheetDialogFragment";
 
+    private OnShowListener mOnShowListener;
     private OnDismissListener mOnDismissListener;
 
     @LayoutRes
@@ -46,7 +48,6 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, DialogFragment.STYLE_NO_FRAME);
         lifecycleSubject.onNext(FragmentEvent.CREATE);
     }
 
@@ -70,20 +71,34 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
         if (navigationBarColor != -1) {
             setNavigationBarColor(navigationBarColor);
         }
-        setWindowBackgroundColor(getSafeArguments().getInt("windowBackgroundColor", Color.parseColor("#80000000")));
-        getDialog().setCanceledOnTouchOutside(getCancelOutside());
-        if (useHalfHeight()) {
-            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-            int height = DisplayUtil.getScreenHeight(getContext()) * 2 / 3;
-            if (layoutParams == null) {
-                layoutParams = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        height
-                );
-            } else {
-                layoutParams.height = height;
-            }
-            view.setLayoutParams(layoutParams);
+
+        int windowBackgroundColor = getSafeArguments().getInt("windowBackgroundColor", -1);
+        if (windowBackgroundColor != -1) {
+            setWindowBackgroundColor(windowBackgroundColor);
+        }
+
+        int dialogHeight = getSafeArguments().getInt("dialogHeight", -1);
+        if (dialogHeight != -1) {
+            setDialogHeight(dialogHeight);
+        }
+
+        int amount = getSafeArguments().getInt("dimAmount", -1);
+        if (amount != -1) {
+            setDimAmount(amount);
+        }
+
+
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCanceledOnTouchOutside(getCancelOutside());
+            dialog.setOnShowListener(dialog2 -> {
+                // 设置背景透明有助于圆角正常显示
+                dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet).setBackgroundColor(Color.TRANSPARENT);
+
+                if (mOnShowListener != null) {
+                    mOnShowListener.onShowListener(BaseBottomSheetDialogFragment.this, dialog);
+                }
+            });
 
         }
         return view;
@@ -94,13 +109,31 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     }
 
     /**
-     * 使用屏幕的一半高度
-     * 弹框的高度不管内容多少，这里启用后都设置成屏幕额2/3高度
+     * 设置Dialog的固定高度
      *
-     * @return
+     * @param height
      */
-    protected boolean useHalfHeight() {
-        return true;
+    protected BaseBottomSheetDialogFragment setDialogHeight(int height) {
+        try {
+            getSafeArguments().putInt("dialogHeight", height);
+            View view = getView();
+            if (view != null) {
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams == null) {
+                    layoutParams = new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            height
+                    );
+                } else {
+                    layoutParams.height = height;
+                }
+                view.setLayoutParams(layoutParams);
+            }
+        } catch (Exception e) {
+            Log.e("BottomSheetDialog", e.getMessage(), e);
+        }
+
+        return this;
     }
 
     /**
@@ -117,7 +150,7 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
      *
      * @return
      */
-    protected BottomSheetBehavior getBehavior() {
+    protected BottomSheetBehavior<?> getBehavior() {
         Dialog baseDialog = getDialog();
         if (baseDialog instanceof BottomSheetDialog) {
             BottomSheetDialog dialog = (BottomSheetDialog) baseDialog;
@@ -136,12 +169,12 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     public BaseBottomSheetDialogFragment setSlideEnabled(boolean enabled) {
         try {
             getSafeArguments().putBoolean("slideEnabled", enabled);
-            BottomSheetBehavior behavior = getBehavior();
+            BottomSheetBehavior<?> behavior = getBehavior();
             if (behavior != null) {
                 behavior.setHideable(enabled);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("BottomSheetDialog", e.getMessage(), e);
         }
         return this;
     }
@@ -154,7 +187,7 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
      */
     public BaseBottomSheetDialogFragment setSheetState(int state) {
         getSafeArguments().putInt("sheetState", state);
-        BottomSheetBehavior behavior = getBehavior();
+        BottomSheetBehavior<?> behavior = getBehavior();
         if (behavior != null) {
             behavior.setState(state);
         }
@@ -171,11 +204,11 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
         try {
             getSafeArguments().putInt("navigationBarColor", color);
             Dialog dialog = getDialog();
-            if (dialog != null) {
+            if (dialog != null && dialog.getWindow() != null) {
                 dialog.getWindow().setNavigationBarColor(color);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("BottomSheetDialog", e.getMessage(), e);
         }
         return this;
     }
@@ -190,11 +223,30 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
         try {
             getSafeArguments().putInt("windowBackgroundColor", color);
             Dialog dialog = getDialog();
-            if (dialog != null) {
+            if (dialog != null && dialog.getWindow() != null) {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(color));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("BottomSheetDialog", e.getMessage(), e);
+        }
+        return this;
+    }
+
+    /**
+     * 设置dialog遮罩暗淡值
+     *
+     * @param amount 新的调光量，从0表示无调光到1表示完全调光。
+     * @return
+     */
+    public BaseBottomSheetDialogFragment setDimAmount(float amount) {
+        try {
+            getSafeArguments().putFloat("dimAmount", amount);
+            Dialog dialog = getDialog();
+            if (dialog != null && dialog.getWindow() != null) {
+                dialog.getWindow().setDimAmount(amount);
+            }
+        } catch (Exception e) {
+            Log.e("BottomSheetDialog", e.getMessage(), e);
         }
         return this;
     }
@@ -249,6 +301,19 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
 
     public BaseBottomSheetDialogFragment setOnDismissListener(OnDismissListener listener) {
         this.mOnDismissListener = listener;
+        Dialog dialog = getDialog();
+        if (dialog != null && mOnDismissListener != null) {
+            dialog.setOnDismissListener(dialog1 -> mOnDismissListener.onDismiss(BaseBottomSheetDialogFragment.this));
+        }
+        return this;
+    }
+
+    public interface OnShowListener {
+        void onShowListener(BaseBottomSheetDialogFragment dialogFragment, Dialog dialog);
+    }
+
+    public BaseBottomSheetDialogFragment setOnShowListener(OnShowListener listener) {
+        this.mOnShowListener = listener;
         return this;
     }
 
@@ -324,9 +389,6 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     @Override
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
-        if (mOnDismissListener != null) {
-            mOnDismissListener.onDismiss(this);
-        }
         super.onDestroyView();
     }
 }
