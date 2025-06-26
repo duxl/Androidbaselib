@@ -162,8 +162,8 @@ public class DisplayUtil {
     }
 
     /**
-     * 软键盘是否显示
-     *
+     * 软键盘是否显示<br/>
+     * 已过时建议使用 {@link DisplayUtil#observerKeyboardVisibleChanged observerKeyboardVisibleChanged} 方法
      * @param context
      * @return
      */
@@ -173,7 +173,8 @@ public class DisplayUtil {
     }
 
     /**
-     * 软键盘是否作用与某个控件
+     * 软键盘是否作用与某个控件。<br/>
+     * 已过时建议使用 {@link DisplayUtil#observerKeyboardVisibleChanged observerKeyboardVisibleChanged} 方法
      *
      * @param context
      * @param view    当前焦点所在的视图
