@@ -289,4 +289,11 @@
         </attr>
 
     </declare-styleable>
+
+    <declare-styleable name="SmartRecyclerView">
+        <!-- 预览时的布局文件 -->
+        <attr name="srv_preview_listitem" format="reference" />
+        <!-- 预览时的item数量 -->
+        <attr name="srv_preview_itemCount" format="integer" />
+    </declare-styleable>
 </resources>

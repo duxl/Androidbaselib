@@ -1,10 +1,14 @@
 package com.duxl.baselib.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +36,17 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
     public SmartRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SmartRecyclerView);
+        if (isInEditMode()) {
+            int itemResId = typedArray.getResourceId(R.styleable.SmartRecyclerView_srv_preview_listitem, -1);
+            int itemCount = typedArray.getInt(R.styleable.SmartRecyclerView_srv_preview_itemCount, -1);
+            if (itemResId > 0 && itemCount > 0) {
+                showPreview(itemResId, itemCount);
+            }
+        }
+
+
+        typedArray.recycle();
     }
 
     private void initView(Context context) {
@@ -90,5 +105,32 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
     @Override
     public XSmartRefreshLayout getRefreshLayout() {
         return this;
+    }
+
+    /**
+     * 显示预览效果
+     *
+     * @param itemResId 预览的布局id
+     * @param itemCount 预览item数量
+     */
+    protected void showPreview(int itemResId, int itemCount) {
+        mRecyclerView.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new RecyclerView.ViewHolder(LayoutInflater.from(getContext()).inflate(itemResId, null)) {
+                };
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return itemCount;
+            }
+        });
     }
 }
