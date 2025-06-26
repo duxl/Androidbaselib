@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,24 +67,24 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = createView(inflater, container);
         setSlideEnabled(getSafeArguments().getBoolean("slideEnabled", true));
-        int navigationBarColor = getSafeArguments().getInt("navigationBarColor", -1);
-        if (navigationBarColor != -1) {
-            setNavigationBarColor(navigationBarColor);
+        if (getSafeArguments().containsKey("navigationBarColor")) {
+            setNavigationBarColor(getSafeArguments().getInt("navigationBarColor"));
         }
 
-        int windowBackgroundColor = getSafeArguments().getInt("windowBackgroundColor", -1);
-        if (windowBackgroundColor != -1) {
-            setWindowBackgroundColor(windowBackgroundColor);
+        if (getSafeArguments().containsKey("navigationContrastEnforced")) {
+            setNavigationBarContrastEnforced(getSafeArguments().getBoolean("navigationContrastEnforced"));
         }
 
-        int dialogHeight = getSafeArguments().getInt("dialogHeight", -1);
-        if (dialogHeight != -1) {
-            setDialogHeight(dialogHeight);
+        if (getSafeArguments().containsKey("windowBackgroundColor")) {
+            setWindowBackgroundColor(getSafeArguments().getInt("windowBackgroundColor"));
         }
 
-        int amount = getSafeArguments().getInt("dimAmount", -1);
-        if (amount != -1) {
-            setDimAmount(amount);
+        if (getSafeArguments().containsKey("dialogHeight")) {
+            setDialogHeight(getSafeArguments().getInt("dialogHeight"));
+        }
+
+        if (getSafeArguments().containsKey("dimAmount")) {
+            setDimAmount(getSafeArguments().getFloat("dimAmount"));
         }
 
 
@@ -194,9 +195,32 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
     }
 
     /**
-     * 设置底部虚拟导航bar颜色
+     * 设置是否开启NavigationBar的对比度增强<br/>
+     * 当系统底部为三点导航时，设置为透明还是有一个颜色遮罩，如果要彻底取消遮罩，调用此方法将对比度设置为false
      *
-     * @param color
+     * @param contrastEnforced 是否启用对比度强度
+     * @return
+     */
+    public BaseBottomSheetDialogFragment setNavigationBarContrastEnforced(boolean contrastEnforced) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getSafeArguments().putBoolean("navigationContrastEnforced", contrastEnforced);
+                Dialog dialog = getDialog();
+                if (dialog != null && dialog.getWindow() != null) {
+                    dialog.getWindow().setNavigationBarContrastEnforced(contrastEnforced);
+                }
+            }
+        } catch (Exception e) {
+            Log.e("BottomSheetDialog", e.getMessage(), e);
+        }
+        return this;
+    }
+
+    /**
+     * 设置底部虚拟导航bar颜色，当系统底部为三点导航时，设置为透明还是有一个颜色遮罩，
+     * 这时还需要设置setNavigationBarContrastEnforced(false)
+     *
+     * @param color 颜色值
      * @return
      */
     public BaseBottomSheetDialogFragment setNavigationBarColor(@ColorInt int color) {

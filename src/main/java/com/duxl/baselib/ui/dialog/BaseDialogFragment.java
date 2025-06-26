@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.dialog;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -36,6 +37,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     private static final String TAG = "BaseDialogFragment";
 
     private static final float DEFAULT_DIM = 0.5f;
+    private OnShowListener mOnShowListener;
     private OnDismissListener mOnDismissListener;
 
 
@@ -51,11 +53,19 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Objects.requireNonNull(Objects.requireNonNull(getDialog()).getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(getCancelOutside());
-        View view = inflater.inflate(getResId(), container, false);
-        return view;
+        getDialog().setOnShowListener(dialog -> {
+            if (mOnShowListener != null) {
+                mOnShowListener.onShowListener(BaseDialogFragment.this, getDialog());
+            }
+        });
+        return createView(inflater, container);
+    }
+
+    protected View createView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(getResId(), container, false);
     }
 
     @Override
@@ -65,7 +75,7 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
         //设置背景为透明
         if (window != null) {
             window.setBackgroundDrawableResource(android.R.color.transparent);
-            //设置弹窗大小为会屏
+            //设置弹窗大小
             window.setLayout(getWidth(), getHeight());
             //去除阴影
             WindowManager.LayoutParams layoutParams = window.getAttributes();
@@ -147,6 +157,15 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
                 .beginTransaction()
                 .add(this, tag)
                 .commitAllowingStateLoss();
+    }
+
+    public interface OnShowListener {
+        void onShowListener(BaseDialogFragment dialogFragment, Dialog dialog);
+    }
+
+    public BaseDialogFragment setOnShowListener(BaseDialogFragment.OnShowListener listener) {
+        this.mOnShowListener = listener;
+        return this;
     }
 
     public void dismissDialog() {
