@@ -1,5 +1,6 @@
 package com.duxl.baselib.ui.dialog;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,10 +83,15 @@ public abstract class BaseDialogFragment extends AppCompatDialogFragment impleme
     @Override
     public void onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
         if (mOnDismissListener != null) {
             mOnDismissListener.onDismiss(this);
         }
-        super.onDestroyView();
     }
 
     /**

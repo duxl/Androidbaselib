@@ -15,7 +15,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -301,11 +300,15 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
 
     public BaseBottomSheetDialogFragment setOnDismissListener(OnDismissListener listener) {
         this.mOnDismissListener = listener;
-        Dialog dialog = getDialog();
-        if (dialog != null && mOnDismissListener != null) {
-            dialog.setOnDismissListener(dialog1 -> mOnDismissListener.onDismiss(BaseBottomSheetDialogFragment.this));
-        }
         return this;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(this);
+        }
     }
 
     public interface OnShowListener {
