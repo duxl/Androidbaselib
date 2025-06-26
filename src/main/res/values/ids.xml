@@ -19,6 +19,7 @@
     <item name="bottom_action_line" type="id" />
 
     <!-- status view -->
+    <item name="guide_status_line" type="id" />
     <item name="iv_status_view" type="id" />
     <item name="tv_status_view" type="id" />
     <item name="btn_status_view" type="id" />

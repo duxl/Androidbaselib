@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/style_simple_status_view_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context="com.duxl.baselib.ui.status.SimpleStatusView"
     tools:parentTag="android.widget.LinearLayout">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@id/guide_status_line"
+        style="@style/style_simple_status_view_guideline" />
 
     <ImageView
         android:id="@id/iv_status_view"
@@ -30,9 +30,4 @@
         style="@style/style_simple_status_view_button"
         tools:text="按钮" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2" />
-
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

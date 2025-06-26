@@ -3,15 +3,15 @@ package com.duxl.baselib.ui.status;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.Guideline;
 
 import com.duxl.baselib.R;
 import com.duxl.baselib.widget.OnLoadListener;
@@ -21,13 +21,14 @@ import com.scwang.smart.refresh.layout.constant.RefreshState;
  * SimpleStatusView
  * create by duxl 2020/8/15
  */
-public class SimpleStatusView extends LinearLayout implements IStatusView {
+public class SimpleStatusView extends FrameLayout implements IStatusView {
 
     protected Context context;
     protected OnLoadListener mOnLoadListener;
 
     protected Status mStatus = Status.None;
     protected int mErrCode;
+    protected Guideline mGuideLine;
     protected ImageView mIvStatus;
     protected TextView mTvStatus;
     protected TextView mBtnStatus;
@@ -35,6 +36,7 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     private IRefreshContainer mRefreshContainer;
 
     protected int mLayoutResId = R.layout.layout_simple_status_view;
+    protected float guidelinePercent = 0.4f;
 
     protected String loadingText;
     protected int loadingImgRes;
@@ -69,6 +71,8 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         // 布局文件
         mLayoutResId = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_layoutResId, mLayoutResId);
         LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+
+        guidelinePercent = typedArray.getFloat(R.styleable.SimpleStatusView_sv_guideline_percent, guidelinePercent);
 
         // loading设置
         loadingText = typedArray.getString(R.styleable.SimpleStatusView_sv_loading_text);
@@ -120,6 +124,15 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
         initView(context);
     }
 
+    /**
+     * 设置状态View内容垂直方向的位置百分比
+     */
+    public void setVerticalPercent(@FloatRange(from = 0.0, to = 1.0) Float ratio) {
+        if (mGuideLine != null) {
+            mGuideLine.setGuidelinePercent(ratio);
+        }
+    }
+
     public void setRefreshContainer(IRefreshContainer refreshContainer) {
         this.mRefreshContainer = refreshContainer;
         if (refreshContainer != null && refreshContainer.getRefreshLayout() != null) {
@@ -142,14 +155,14 @@ public class SimpleStatusView extends LinearLayout implements IStatusView {
     }
 
     protected void initView(Context context) {
-        setBackground(ContextCompat.getDrawable(context, R.drawable.style_simple_status_view_bg));
-        setOrientation(VERTICAL);
-        setGravity(Gravity.CENTER_HORIZONTAL);
         setVisibility(View.GONE);
 
+        mGuideLine = findViewById(R.id.guide_status_line);
         mIvStatus = findViewById(R.id.iv_status_view);
         mTvStatus = findViewById(R.id.tv_status_view);
         mBtnStatus = findViewById(R.id.btn_status_view);
+
+        setVerticalPercent(guidelinePercent);
 
         switch (mStatus) {
             case Loading:

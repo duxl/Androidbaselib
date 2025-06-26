@@ -222,6 +222,8 @@
     <declare-styleable name="SimpleStatusView">
         <attr name="sv_layoutResId" format="reference" />
 
+        <attr name="sv_guideline_percent" format="float" />
+
         <attr name="sv_loading_text" format="reference|string" />
         <attr name="sv_loading_img_res" format="reference" />
         <attr name="sv_loading_button_text" format="reference|string" />

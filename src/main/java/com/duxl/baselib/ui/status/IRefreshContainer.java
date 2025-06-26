@@ -35,7 +35,7 @@ public interface IRefreshContainer {
     Context getContext();
 
     /**
-     * 真正的更布局
+     * 真正的根布局
      * @return
      */
     View getRootContentView();
