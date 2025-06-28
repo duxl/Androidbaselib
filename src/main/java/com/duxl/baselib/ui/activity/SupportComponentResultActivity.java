@@ -190,4 +190,18 @@ public abstract class SupportComponentResultActivity extends BaseActivity implem
         _onRequestPermissions = onResult;
         mPermissionsLauncher.launch(permissions);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        _onActivityResult = null;
+        _openFileResult = null;
+        _onOpenDocumentResult = null;
+        _onLaunchOpenDocuments = null;
+        _onOpenCamera = null;
+        _launchOpenCameraBitmap = null;
+        _recordVideoResult = null;
+        _onRequestPermission = null;
+        _onRequestPermissions = null;
+    }
 }

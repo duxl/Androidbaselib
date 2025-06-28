@@ -14,6 +14,28 @@ import com.duxl.baselib.widget.DataRunnable;
 public class TextExpandUtil {
 
     /**
+     * 获取TextView的文本超过限制被省略的字数,需要设置TextView的android:maxLines和android:ellipsize="end"
+     *
+     * @param tv       文本控件
+     * @param callback 被省略字符数的回调
+     */
+    public static void getEllipsisCount(TextView tv, DataRunnable<Integer> callback) {
+        tv.post(() -> {
+            int ellipsizedCount = 0;
+            Layout layout = tv.getLayout();
+            if (layout != null) {
+                // layout.lineCount 是 TextView 实际计算出来的行数
+                int lineCount = layout.getLineCount();
+                if (lineCount > 0) {
+                    // ellipsizedCount返回的是实际总的省略字符，不仅仅是最后一行省略的字符
+                    ellipsizedCount = layout.getEllipsisCount(lineCount - 1);
+                }
+            }
+            callback.run(ellipsizedCount);
+        });
+    }
+
+    /**
      * 截取文本，调用此方法需要TextView已经将文本绘制到UI，建议在tv.post函数中调用，例如：<br/>
      * 获取多行文本的第1行，getTruncated(tv, 0, 0)<br/>
      * 获取多行文本的第2、3行，getTruncated(tv, 1, 2)<br/>
@@ -65,8 +87,8 @@ public class TextExpandUtil {
             if (endLinesText != null) {
                 // 最后一行文本折叠后的内容, 使用TextUtils.ellipsize函数将连接moreText后的文本，末尾显示不下的使用省略号
                 CharSequence ellipsizedText;
-                if (EmptyUtils.isEmpty(moreAttachText)) {
-                    ellipsizedText = TextUtils.ellipsize(TextUtils.concat(endLinesText,"…"), tv.getPaint(), tv.getMeasuredWidth() - tv.getPaddingStart() - tv.getPaddingEnd(), TextUtils.TruncateAt.END);
+                if (moreAttachText == null) {
+                    ellipsizedText = TextUtils.ellipsize(TextUtils.concat(endLinesText, "…"), tv.getPaint(), tv.getMeasuredWidth() - tv.getPaddingStart() - tv.getPaddingEnd(), TextUtils.TruncateAt.END);
                 } else {
                     CharSequence tmpEllipsizedText = TextUtils.ellipsize(TextUtils.concat(moreAttachText, endLinesText), tv.getPaint(), tv.getMeasuredWidth() - tv.getPaddingStart() - tv.getPaddingEnd(), TextUtils.TruncateAt.END);
                     // 将moreAttachText放置到文本末尾

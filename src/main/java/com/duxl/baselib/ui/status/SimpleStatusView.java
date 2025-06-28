@@ -70,7 +70,7 @@ public class SimpleStatusView extends FrameLayout implements IStatusView {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimpleStatusView);
         // 布局文件
         mLayoutResId = typedArray.getResourceId(R.styleable.SimpleStatusView_sv_layoutResId, mLayoutResId);
-        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        getLayoutInflater(context).inflate(mLayoutResId, this, true);
 
         guidelinePercent = typedArray.getFloat(R.styleable.SimpleStatusView_sv_guideline_percent, guidelinePercent);
 
@@ -140,11 +140,22 @@ public class SimpleStatusView extends FrameLayout implements IStatusView {
         }
     }
 
-    public void setLayoutResId(int mLayoutResId) {
-        this.mLayoutResId = mLayoutResId;
+    public void setLayoutResId(int layoutResId) {
+        this.mLayoutResId = layoutResId;
         removeAllViews();
-        LayoutInflater.from(context).inflate(mLayoutResId, this, true);
+        getLayoutInflater(context).inflate(layoutResId, this, true);
         initView(context);
+    }
+
+    public void setLayout(View v) {
+        mLayoutResId = 0;
+        removeAllViews();
+        addView(v);
+        initView(context);
+    }
+
+    protected LayoutInflater getLayoutInflater(Context context) {
+        return LayoutInflater.from(context);
     }
 
     public void setOnLoadListener(OnLoadListener listener) {

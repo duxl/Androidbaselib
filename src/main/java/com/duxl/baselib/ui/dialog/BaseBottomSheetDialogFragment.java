@@ -196,7 +196,10 @@ public abstract class BaseBottomSheetDialogFragment extends BottomSheetDialogFra
 
     /**
      * 设置是否开启NavigationBar的对比度增强<br/>
-     * 当系统底部为三点导航时，设置为透明还是有一个颜色遮罩，如果要彻底取消遮罩，调用此方法将对比度设置为false
+     * 当系统底部为三点导航时，设置为透明还是有一个颜色遮罩，如果要彻底取消遮罩，调用此方法将对比度设置为false<br/><br/>
+     *
+     * 注意：要使此方法生效，需要使用EdgeToEdge.enable()，也就是Activity内容扩展到系统栏，
+     * 详见文档 https://developer.android.google.cn/design/ui/mobile/guides/foundations/system-bars?hl=zh-cn
      *
      * @param contrastEnforced 是否启用对比度强度
      * @return
