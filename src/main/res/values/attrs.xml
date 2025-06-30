@@ -295,5 +295,7 @@
         <attr name="srv_preview_listitem" format="reference" />
         <!-- 预览时的item数量 -->
         <attr name="srv_preview_itemCount" format="integer" />
+        <attr name="layoutManager" format="string" />
+        <attr name="spanCount" format="integer" />
     </declare-styleable>
 </resources>
