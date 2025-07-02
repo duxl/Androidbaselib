@@ -103,7 +103,7 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
 
         @Override
         public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, @NonNull View dependency) {
-            if (dependency instanceof AppBarLayout) {
+            if (dependency.getId() == child.getFlowAnchor()) {
                 return true;
             }
             return false;
@@ -120,27 +120,27 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
             if (anchorView != null) {
                 switch (child.getFlowGravity()) {
                     case Left:
-                        child.setTranslationX(anchorView.getLeft() - child.getWidth() - marginLayoutParams.rightMargin);
+                        child.setX(anchorView.getX() - child.getWidth() - marginLayoutParams.getMarginEnd());
                         break;
                     case Top:
-                        child.setTranslationY(anchorView.getTop() - child.getHeight() - marginLayoutParams.bottomMargin);
+                        child.setY(anchorView.getY() - child.getHeight() - marginLayoutParams.bottomMargin);
                         break;
                     case Right:
-                        child.setTranslationX(anchorView.getRight());
+                        child.setX(anchorView.getX() + anchorView.getWidth() + marginLayoutParams.getMarginStart());
                         break;
                     case Bottom:
-                        child.setTranslationY(anchorView.getBottom());
+                        child.setY(anchorView.getY() + anchorView.getHeight() + marginLayoutParams.topMargin);
                     case AlignLeft:
-                        child.setTranslationX(anchorView.getLeft());
+                        child.setX(anchorView.getX() + marginLayoutParams.getMarginStart());
                         break;
                     case AlignTop:
-                        child.setTranslationY(anchorView.getTop());
+                        child.setY(anchorView.getY() + marginLayoutParams.topMargin);
                         break;
                     case AlignRight:
-                        child.setTranslationX(anchorView.getRight() - child.getWidth() - marginLayoutParams.rightMargin);
+                        child.setX(anchorView.getX() + anchorView.getWidth() - child.getWidth() - marginLayoutParams.getMarginEnd());
                         break;
                     case AlignBottom:
-                        child.setTranslationY(anchorView.getBottom() - child.getHeight() - marginLayoutParams.bottomMargin);
+                        child.setY(anchorView.getY() + anchorView.getHeight() - child.getHeight() - marginLayoutParams.bottomMargin);
                         break;
                 }
 
@@ -150,13 +150,13 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
                         case AlignLeft:
                         case Right:
                         case AlignRight:
-                            child.setTranslationY(anchorView.getTop() + anchorView.getHeight() / 2 - child.getHeight() / 2);
+                            child.setY(anchorView.getY() + anchorView.getHeight() / 2f - child.getHeight() / 2f);
                             break;
                         case Top:
                         case AlignTop:
                         case Bottom:
                         case AlignBottom:
-                            child.setTranslationX(anchorView.getLeft() + anchorView.getWidth() / 2 - child.getWidth() / 2);
+                            child.setX(anchorView.getX() + anchorView.getWidth() / 2f - child.getWidth() / 2f);
                     }
                 }
             }
