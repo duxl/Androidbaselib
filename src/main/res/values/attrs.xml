@@ -113,18 +113,33 @@
     </declare-styleable>
 
     <declare-styleable name="CoordinatorFollowLayout">
+        <!-- 相对锚点view的对齐方式 -->
         <attr name="follow_gravity">
+            <!-- 在锚点view的左边 -->
             <enum name="Left" value="0" />
+            <!-- 在锚点view的上边 -->
             <enum name="Top" value="1" />
+            <!-- 在锚点view的右边 -->
             <enum name="Right" value="2" />
+            <!-- 在锚点view的下边 -->
             <enum name="Bottom" value="3" />
+            <!-- 左边对齐在锚点view的左边 -->
             <enum name="AlignLeft" value="4" />
+            <!-- 上边对齐在锚点view的上边 -->
             <enum name="AlignTop" value="5" />
+            <!-- 右边对齐在锚点view的右边 -->
             <enum name="AlignRight" value="6" />
+            <!-- 下边对齐在锚点view的下边 -->
             <enum name="AlignBottom" value="7" />
         </attr>
+        <!-- 是否相对锚点view居中 -->
         <attr name="follow_center" format="boolean" />
+        <!-- 锚点view的id-->
         <attr name="follow_anchor" format="reference" />
+        <!-- x轴的偏移量 -->
+        <attr name="follow_offsetX" format="reference|dimension" />
+        <!-- y轴的偏移量 -->
+        <attr name="follow_offsetY" format="reference|dimension" />
     </declare-styleable>
 
     <declare-styleable name="LockedColumnTableView">

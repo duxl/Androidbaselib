@@ -2,6 +2,7 @@ package com.duxl.baselib.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.duxl.baselib.R;
-import com.google.android.material.appbar.AppBarLayout;
 
 /**
  * 跟随布局
@@ -54,6 +54,26 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
         this.mFlowAnchor = anchor;
     }
 
+    private int offsetX;
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
+
+    private int offsetY;
+
+    public int getOffsetY() {
+        return offsetY;
+    }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
+
     public CoordinatorFollowLayout(@NonNull Context context) {
         this(context, null);
     }
@@ -76,6 +96,8 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
             }
             setFlowCenter(typedArray.getBoolean(R.styleable.CoordinatorFollowLayout_follow_center, false));
             setFlowAnchor(typedArray.getResourceId(R.styleable.CoordinatorFollowLayout_follow_anchor, View.NO_ID));
+            setOffsetX(typedArray.getDimensionPixelOffset(R.styleable.CoordinatorFollowLayout_follow_offsetX, 0));
+            setOffsetY(typedArray.getDimensionPixelOffset(R.styleable.CoordinatorFollowLayout_follow_offsetY, 0));
             typedArray.recycle();
         }
     }
@@ -103,65 +125,106 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
 
         @Override
         public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, @NonNull View dependency) {
-            if (dependency.getId() == child.getFlowAnchor()) {
-                return true;
-            }
-            return false;
+            return dependency.getId() == child.getFlowAnchor();
         }
 
+        /**
+         * 锚点发生变化会调用此方法
+         */
         @Override
         public boolean onDependentViewChanged(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, @NonNull View dependency) {
             if (child.getFlowAnchor() == View.NO_ID) {
                 return super.onDependentViewChanged(parent, child, dependency);
             }
 
-            MarginLayoutParams marginLayoutParams = (MarginLayoutParams) child.getLayoutParams();
-            View anchorView = dependency.findViewById(child.getFlowAnchor());
-            if (anchorView != null) {
-                switch (child.getFlowGravity()) {
-                    case Left:
-                        child.setX(anchorView.getX() - child.getWidth() - marginLayoutParams.getMarginEnd());
-                        break;
-                    case Top:
-                        child.setY(anchorView.getY() - child.getHeight() - marginLayoutParams.bottomMargin);
-                        break;
-                    case Right:
-                        child.setX(anchorView.getX() + anchorView.getWidth() + marginLayoutParams.getMarginStart());
-                        break;
-                    case Bottom:
-                        child.setY(anchorView.getY() + anchorView.getHeight() + marginLayoutParams.topMargin);
-                    case AlignLeft:
-                        child.setX(anchorView.getX() + marginLayoutParams.getMarginStart());
-                        break;
-                    case AlignTop:
-                        child.setY(anchorView.getY() + marginLayoutParams.topMargin);
-                        break;
-                    case AlignRight:
-                        child.setX(anchorView.getX() + anchorView.getWidth() - child.getWidth() - marginLayoutParams.getMarginEnd());
-                        break;
-                    case AlignBottom:
-                        child.setY(anchorView.getY() + anchorView.getHeight() - child.getHeight() - marginLayoutParams.bottomMargin);
-                        break;
-                }
+            PointF targetLocation = computerChildLocation(dependency, child);
+            child.setX(targetLocation.x);
+            child.setY(targetLocation.y);
+            return true;
+        }
 
-                if (child.isFlowCenter()) {
-                    switch (child.getFlowGravity()) {
-                        case Left:
-                        case AlignLeft:
-                        case Right:
-                        case AlignRight:
-                            child.setY(anchorView.getY() + anchorView.getHeight() / 2f - child.getHeight() / 2f);
-                            break;
-                        case Top:
-                        case AlignTop:
-                        case Bottom:
-                        case AlignBottom:
-                            child.setX(anchorView.getX() + anchorView.getWidth() / 2f - child.getWidth() / 2f);
-                    }
-                }
+        /**
+         * 重写此方法，「预览看到的位置」和「预览点击位置」才一致。不重写此次方法预览时有问题，运行时正常
+         */
+        @Override
+        public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, int layoutDirection) {
+            View anchorView = parent.findViewById(child.getFlowAnchor());
+            if (anchorView == null) {
+                return super.onLayoutChild(parent, child, layoutDirection);
             }
+            PointF targetLocation = computerChildLocation(anchorView, child);
+            child.layout((int) targetLocation.x, (int) targetLocation.y, (int) targetLocation.x + child.getMeasuredWidth(), (int) targetLocation.y + child.getMeasuredHeight());
 
             return true;
+        }
+
+        /**
+         * 根据锚点View的计算child的位置。<br/>
+         * 几个方法的含义解释：<br/>
+         * 1、getLeft()：返回相对于父容器的“布局位置”	在 layout(left, top, right, bottom) 中写死的 left<br/>
+         * 2、getTranslationX()：返回平移偏移量，在原本left的基础上，视觉平移的像素，不变改getLeft的值<br/>
+         * 3、getX()：返回 布局位置 + 平移偏移，即 getLeft() + getTranslationX()，也就是视觉看到的的位置<br/>
+         *
+         * @param dependency 锚点view
+         * @param child      childView
+         * @return 返回child需要显示的位置
+         */
+        protected PointF computerChildLocation(View dependency, CoordinatorFollowLayout child) {
+            PointF result = new PointF();
+            float anchorViewX = dependency.getX();
+            float anchorViewY = dependency.getY();
+
+            switch (child.getFlowGravity()) {
+                case Left:
+                    result.x = anchorViewX - child.getMeasuredWidth() + child.getOffsetX();
+                    result.y = anchorViewY + child.getOffsetY();
+                    break;
+                case Top:
+                    result.x = anchorViewX + child.getOffsetX();
+                    result.y = anchorViewY - child.getMeasuredHeight() + child.getOffsetY();
+                    break;
+                case Right:
+                    result.x = anchorViewX + dependency.getMeasuredWidth() + child.getOffsetX();
+                    result.y = anchorViewY + child.getOffsetY();
+                    break;
+                case Bottom:
+                    result.x = anchorViewX + child.getOffsetX();
+                    result.y = anchorViewY + dependency.getMeasuredHeight() + child.getOffsetY();
+                    break;
+                case AlignLeft:
+                    result.x = anchorViewX + child.offsetX;
+                    result.y = anchorViewY + child.getOffsetY();
+                    break;
+                case AlignTop:
+                    result.x = anchorViewX + child.getOffsetX();
+                    result.y = anchorViewY + child.getOffsetY();
+                    break;
+                case AlignRight:
+                    result.x = anchorViewX + dependency.getMeasuredWidth() - child.getMeasuredWidth() + child.getOffsetX();
+                    result.y = anchorViewY + child.getOffsetY();
+                    break;
+                case AlignBottom:
+                    result.x = anchorViewX + child.getOffsetX();
+                    result.y = anchorViewY + dependency.getMeasuredHeight() - child.getMeasuredHeight() + child.getOffsetY();
+                    break;
+            }
+
+            if (child.isFlowCenter()) {
+                switch (child.getFlowGravity()) {
+                    case Left:
+                    case AlignLeft:
+                    case Right:
+                    case AlignRight:
+                        result.y = anchorViewY + (dependency.getMeasuredHeight() - child.getMeasuredHeight()) / 2f + child.getOffsetY();
+                        break;
+                    case Top:
+                    case AlignTop:
+                    case Bottom:
+                    case AlignBottom:
+                        result.x = anchorViewX + (dependency.getMeasuredWidth() - child.getMeasuredWidth()) / 2f + child.getOffsetX();
+                }
+            }
+            return result;
         }
     }
 
