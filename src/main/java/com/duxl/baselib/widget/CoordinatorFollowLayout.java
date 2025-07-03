@@ -138,8 +138,8 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
             }
 
             PointF targetLocation = computerChildLocation(dependency, child);
-            child.setX(targetLocation.x);
-            child.setY(targetLocation.y);
+            child.setTranslationX(targetLocation.x - child.getLeft());
+            child.setTranslationY(targetLocation.y - child.getTop());
             return true;
         }
 
@@ -148,14 +148,15 @@ public class CoordinatorFollowLayout extends FrameLayout implements CoordinatorL
          */
         @Override
         public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull CoordinatorFollowLayout child, int layoutDirection) {
-            View anchorView = parent.findViewById(child.getFlowAnchor());
-            if (anchorView == null) {
-                return super.onLayoutChild(parent, child, layoutDirection);
+            if (parent.isInEditMode()) {
+                View anchorView = parent.findViewById(child.getFlowAnchor());
+                if (anchorView != null) {
+                    PointF targetLocation = computerChildLocation(anchorView, child);
+                    child.layout((int) targetLocation.x, (int) targetLocation.y, (int) targetLocation.x + child.getMeasuredWidth(), (int) targetLocation.y + child.getMeasuredHeight());
+                }
+                return true;
             }
-            PointF targetLocation = computerChildLocation(anchorView, child);
-            child.layout((int) targetLocation.x, (int) targetLocation.y, (int) targetLocation.x + child.getMeasuredWidth(), (int) targetLocation.y + child.getMeasuredHeight());
-
-            return true;
+            return super.onLayoutChild(parent, child, layoutDirection);
         }
 
         /**
