@@ -44,7 +44,7 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SmartRecyclerView);
         if (isInEditMode()) {
             int itemResId = typedArray.getResourceId(R.styleable.SmartRecyclerView_srv_preview_listitem, -1);
-            int itemCount = typedArray.getInt(R.styleable.SmartRecyclerView_srv_preview_itemCount, -1);
+            int itemCount = typedArray.getInt(R.styleable.SmartRecyclerView_srv_preview_itemCount, 20);
             if (itemResId > 0 && itemCount > 0) {
                 showPreview(itemResId, itemCount);
             }
@@ -200,7 +200,7 @@ public class SmartRecyclerView extends XSmartRefreshLayout implements IRefreshCo
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new RecyclerView.ViewHolder(LayoutInflater.from(getContext()).inflate(itemResId, null)) {
+                return new RecyclerView.ViewHolder(LayoutInflater.from(getContext()).inflate(itemResId, parent, false)) {
                 };
             }
 
