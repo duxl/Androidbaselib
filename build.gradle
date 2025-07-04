@@ -74,3 +74,10 @@ dependencies {
     api rootProject.ext.dependencies["filedownloader"]
 
 }
+
+configurations.configureEach {
+    // 升级retrofit到3.0.0后报错 Failed to transform error_prone_annotations-2.38.0.jar
+    // error_prone_annotations 只是给 Java 静态代码检查（Error Prone）用的注解库，它本身不包含任何可执行代码，也不会在运行时使用。
+    // 这里直接排除掉
+    exclude group: "com.google.errorprone", module: "error_prone_annotations"
+}
