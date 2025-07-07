@@ -32,7 +32,7 @@ import com.duxl.baselib.R;
 public abstract class LazyFragment extends BaseFragment {
     private boolean isVisibleToUser = true;
     private boolean isVisible; // 是否可见
-    private boolean isFirstVisible = true; // 是否第一次
+    private int _isFirstVisible = -1; // -1表示未设置值，0表示不是第一次不可见，1表示第一次可见
     private boolean isAttach;
 
     private ViewStub mViewStub;
@@ -153,12 +153,22 @@ public abstract class LazyFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 是否可见
+     *
+     * @return
+     */
     public boolean isLazyVisible() {
         return isVisible;
     }
 
+    /**
+     * 是否第一次可见
+     *
+     * @return
+     */
     public boolean isLazyFirstVisible() {
-        return isFirstVisible;
+        return _isFirstVisible == 1;
     }
 
     /**
@@ -169,12 +179,14 @@ public abstract class LazyFragment extends BaseFragment {
     protected void lazyHiddenChanged(boolean visible) {
         if (isVisible != visible) {
             isVisible = visible;
-            if (isVisible && isFirstVisible) {
+            if (isVisible && _isFirstVisible == -1) {
+                _isFirstVisible = 1;
                 innerInflateLayout();
+            } else {
+                _isFirstVisible = 0;
             }
             resetOnBackPressedDispatcher(isVisible);
-            onLazyHiddenChanged(isVisible, isFirstVisible);
-            isFirstVisible = false;
+            onLazyHiddenChanged(isVisible, _isFirstVisible == 1);
         }
     }
 
