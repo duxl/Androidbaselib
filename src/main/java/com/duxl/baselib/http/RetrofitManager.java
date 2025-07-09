@@ -60,11 +60,14 @@ public class RetrofitManager {
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Utils.getApp().getGlobalHttpConfig().getBaseUrl());
 
         // 额外retrofitBuilder配置信息
         Utils.getApp().getGlobalHttpConfig().configurationRetrofit(retrofitBuilder);
+        // 当配置自定义解析器，多个解析器前面的return null，才会执行下一个解析器，抛出异常和进行处理
+        // 不会执行到下一个解析器。所以GsonConverterFactory只能配置到最后，作为兜底
+        // 配置兜底解析器（GsonConverterFactory能对任何数据进行转换，最多转换异常）
+        retrofitBuilder.addConverterFactory(GsonConverterFactory.create());
 
         // 创建Retrofit
         mRetrofit = retrofitBuilder.build();
