@@ -50,17 +50,24 @@ public class RetrofitManager {
         NetworkInterceptor networkInterceptor = new NetworkInterceptor();
         builder.addInterceptor(networkInterceptor);
 
-        // 额外网络配置信息
+        // 额外OKHttp配置信息
         Utils.getApp().getGlobalHttpConfig().configurationOKHttp(builder);
+        // 使用RetrofitUrlManager创建okHttpClient实例，
+        // RetrofitUrlManager可以动态切换baseUrl
+        OkHttpClient okHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
 
-        OkHttpClient build = RetrofitUrlManager.getInstance().with(builder).build();
-        // 创建Retrofit
-        mRetrofit = new Retrofit.Builder()
-                .client(build)
+        // 创建retrofitBuilder
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Utils.getApp().getGlobalHttpConfig().getBaseUrl())
-                .build();
+                .baseUrl(Utils.getApp().getGlobalHttpConfig().getBaseUrl());
+
+        // 额外retrofitBuilder配置信息
+        Utils.getApp().getGlobalHttpConfig().configurationRetrofit(retrofitBuilder);
+
+        // 创建Retrofit
+        mRetrofit = retrofitBuilder.build();
     }
 
     private static class SingletonHolder {
