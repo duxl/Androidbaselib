@@ -42,9 +42,6 @@ public class RetrofitManager {
 
 //        HttpCacheInterceptor httpCacheInterceptor = new HttpCacheInterceptor();
 //        builder.addInterceptor(httpCacheInterceptor);
-        if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
-            builder.addInterceptor(new LogInterceptor());
-        }
 
         // 添加网络连接器
         NetworkInterceptor networkInterceptor = new NetworkInterceptor();
@@ -52,6 +49,12 @@ public class RetrofitManager {
 
         // 额外OKHttp配置信息
         Utils.getApp().getGlobalHttpConfig().configurationOKHttp(builder);
+
+        // 日志拦截器放最后，便于打印其它拦截器修改参数后的日志
+        if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
+            builder.addInterceptor(new LogInterceptor());
+        }
+
         // 使用RetrofitUrlManager创建okHttpClient实例，
         // RetrofitUrlManager可以动态切换baseUrl
         OkHttpClient okHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
