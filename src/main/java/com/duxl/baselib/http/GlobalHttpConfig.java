@@ -1,6 +1,9 @@
 package com.duxl.baselib.http;
 
+import androidx.annotation.NonNull;
+
 import com.duxl.baselib.BuildConfig;
+import com.duxl.baselib.http.interceptor.LogInterceptor;
 import com.duxl.baselib.http.interceptor.NetworkChecker;
 import com.duxl.baselib.utils.NetCheckUtil;
 import com.duxl.baselib.utils.Utils;
@@ -11,7 +14,9 @@ import java.util.HashMap;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 全局Http配置
@@ -93,9 +98,28 @@ public abstract class GlobalHttpConfig {
     /**
      * 对Retrofit配置的额外信息，比如添加自定义Gson
      * addConverterFactory(GsonConverterFactory.create(gson))
+     *
      * @param builder
      */
     public void configurationRetrofit(Retrofit.Builder builder) {
 
+    }
+
+    /**
+     * 默认转换器
+     *
+     * @return
+     */
+    public @NonNull Converter.Factory defaultConverterFactory() {
+        return GsonConverterFactory.create();
+    }
+
+    /**
+     * 日志拦截器
+     *
+     * @return
+     */
+    public Interceptor getLogInterceptor() {
+        return new LogInterceptor();
     }
 }

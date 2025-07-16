@@ -1,7 +1,6 @@
 package com.duxl.baselib.http;
 
 import com.duxl.baselib.http.interceptor.HttpHeaderInterceptor;
-import com.duxl.baselib.http.interceptor.LogInterceptor;
 import com.duxl.baselib.http.interceptor.NetworkInterceptor;
 import com.duxl.baselib.utils.EmptyUtils;
 import com.duxl.baselib.utils.Utils;
@@ -9,10 +8,10 @@ import com.duxl.baselib.utils.Utils;
 import java.util.concurrent.TimeUnit;
 
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * RetrofitManager
@@ -52,11 +51,13 @@ public class RetrofitManager {
 
         // 日志拦截器放最后，便于打印其它拦截器修改参数后的日志
         if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
-            builder.addInterceptor(new LogInterceptor());
+            Interceptor logInterceptor = Utils.getApp().getGlobalHttpConfig().getLogInterceptor();
+            if (logInterceptor != null) {
+                builder.addInterceptor(logInterceptor);
+            }
         }
 
-        // 使用RetrofitUrlManager创建okHttpClient实例，
-        // RetrofitUrlManager可以动态切换baseUrl
+        // 使用RetrofitUrlManager创建okHttpClient实例，RetrofitUrlManager可以动态切换baseUrl
         OkHttpClient okHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
 
         // 创建retrofitBuilder
@@ -70,7 +71,7 @@ public class RetrofitManager {
         // 当配置自定义解析器，多个解析器前面的return null，才会执行下一个解析器，抛出异常和进行处理
         // 不会执行到下一个解析器。所以GsonConverterFactory只能配置到最后，作为兜底
         // 配置兜底解析器（GsonConverterFactory能对任何数据进行转换，最多转换异常）
-        retrofitBuilder.addConverterFactory(GsonConverterFactory.create());
+        retrofitBuilder.addConverterFactory(Utils.getApp().getGlobalHttpConfig().defaultConverterFactory());
 
         // 创建Retrofit
         mRetrofit = retrofitBuilder.build();
