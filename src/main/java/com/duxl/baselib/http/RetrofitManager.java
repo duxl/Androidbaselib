@@ -22,6 +22,7 @@ public class RetrofitManager {
     private static final int DEFAULT_TIME_OUT = 30;//超时时间 5s
     private static final int DEFAULT_READ_TIME_OUT = 30;
     private Retrofit mRetrofit;
+    private OkHttpClient.Builder urlOkHttpClientBuilder;
 
     private RetrofitManager() {
         if (EmptyUtils.isNull(Utils.getApp().getGlobalHttpConfig())
@@ -46,19 +47,20 @@ public class RetrofitManager {
         NetworkInterceptor networkInterceptor = new NetworkInterceptor();
         builder.addInterceptor(networkInterceptor);
 
+        // 使用RetrofitUrlManager创建okHttpClient实例，RetrofitUrlManager可以动态切换baseUrl
+        urlOkHttpClientBuilder = RetrofitUrlManager.getInstance().with(builder);
+
         // 额外OKHttp配置信息
-        Utils.getApp().getGlobalHttpConfig().configurationOKHttp(builder);
+        Utils.getApp().getGlobalHttpConfig().configurationOKHttp(urlOkHttpClientBuilder);
 
         // 日志拦截器放最后，便于打印其它拦截器修改参数后的日志
         if (Utils.getApp().getGlobalHttpConfig().isDEBUG()) {
             Interceptor logInterceptor = Utils.getApp().getGlobalHttpConfig().getLogInterceptor();
             if (logInterceptor != null) {
-                builder.addInterceptor(logInterceptor);
+                urlOkHttpClientBuilder.addInterceptor(logInterceptor);
             }
         }
-
-        // 使用RetrofitUrlManager创建okHttpClient实例，RetrofitUrlManager可以动态切换baseUrl
-        OkHttpClient okHttpClient = RetrofitUrlManager.getInstance().with(builder).build();
+        OkHttpClient okHttpClient = urlOkHttpClientBuilder.build();
 
         // 创建retrofitBuilder
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
@@ -99,6 +101,14 @@ public class RetrofitManager {
      */
     public <T> T create(Class<T> service) {
         return mRetrofit.create(service);
+    }
+
+    public Retrofit getRetrofit() {
+        return mRetrofit;
+    }
+
+    public OkHttpClient.Builder getOkHttpClickBuilder() {
+        return urlOkHttpClientBuilder;
     }
 
 }
