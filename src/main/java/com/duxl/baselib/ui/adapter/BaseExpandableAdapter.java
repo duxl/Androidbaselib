@@ -152,6 +152,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
         ExpandViewHolder viewHolder = super.createBaseViewHolder(view);
         FrameLayout flGroupContainer = viewHolder.getViewOrNull(R.id.fl_group_container);
         if (flGroupContainer != null) {
+            viewHolder.groupView = true;
             View vGroup = onCreateGroupView(flGroupContainer, mGroupLayoutResId);
             flGroupContainer.removeAllViews();
             flGroupContainer.addView(vGroup);
@@ -550,6 +551,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     public static class ExpandViewHolder extends BaseViewHolder {
         private View root;
+        private boolean groupView = false;
 
         public ExpandViewHolder(@NonNull View view) {
             super(view);
@@ -558,6 +560,14 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
         public View getRoot() {
             return root;
+        }
+
+        /**
+         * 是否是分组View
+         * @return
+         */
+        public boolean isGroupView() {
+            return groupView;
         }
     }
 
