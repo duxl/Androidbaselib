@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -252,6 +251,24 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         }
     }
 
+    /**
+     * 设置当前选中项偏移量，适用于与ViewPager左右同步滑动效果。
+     * 例如：viewPager显示了下一个Pager的0.3，这里就设置0.3,
+     * viewPager显示了上一个Pager的0.3，这里就设置-0.3
+     *
+     * @param offset 便宜量：大于0向右（下一个）item偏移，小于0向左（上一个）item偏移
+     */
+    public void setItemOffset(float offset) {
+        if (mScroller.isFinished()) {
+            mStart = (int) (getXByPosition(selectedItem) + mItemWidth * offset);
+            invalidate();
+        }
+    }
+
+    public boolean isScrolling() {
+        return mScroller.isFinished();
+    }
+
     public int getSelectedItem() {
         return selectedItem;
     }
@@ -291,8 +308,11 @@ public class SegmentedControlView extends View implements ISegmentedControl {
     }
 
     public void addItem(@StringRes int id) {
-        SegmentedControlItem item = new SegmentedControlItem(getResources().getString(id));
-        addItem(item);
+        addItem(getResources().getString(id));
+    }
+
+    public void addItem(String item) {
+        addItem(new SegmentedControlItem(item));
     }
 
     public void clearItems() {
@@ -438,7 +458,7 @@ public class SegmentedControlView extends View implements ISegmentedControl {
             }
             return false;
         } else if (action == MotionEvent.ACTION_MOVE) {
-            if (!mScroller.isFinished() || !scrollSelectEnabled) {
+            if (!isScrolling() || !scrollSelectEnabled) {
                 return true;
             }
             float dx = event.getX() - x;
@@ -455,7 +475,7 @@ public class SegmentedControlView extends View implements ISegmentedControl {
             float offset = (mStart - itemHorizontalMargin) % mItemWidth;
             float itemStartPosition = (mStart - itemHorizontalMargin) * 1.0f / mItemWidth;
 
-            if (!mScroller.isFinished() && onClickDownPosition != -1) {
+            if (!isScrolling() && onClickDownPosition != -1) {
                 newSelectedItem = onClickDownPosition;
             } else {
                 if (offset == 0f) {
@@ -557,8 +577,6 @@ public class SegmentedControlView extends View implements ISegmentedControl {
         int specSize = MeasureSpec.getSize(heightMeasureSpec);
 
         int height = (int) (mTextPaint.descent() - mTextPaint.ascent()) + getPaddingTop() + getPaddingBottom() + 2 * itemVerticalMargin;
-
-        Log.i("test", "specMode:" + specMode + ",specSize:" + specSize + ",height:" + height);
 
         if (specMode == MeasureSpec.AT_MOST) {
             return Math.min(height, specSize);
