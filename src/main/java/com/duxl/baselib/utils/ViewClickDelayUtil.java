@@ -13,23 +13,21 @@ public class ViewClickDelayUtil {
 
     /**
      * 延迟控件的点击响应,1000毫秒内不可重复点击（避免快速连续点击）<br/>
-     * 已过时，内部控制clickable为false时点击会点击到底下的view的问题，请使用setListener
+     * 内部控制clickable为false时点击会点击到底下的view的问题，建议使用setListener
      *
      * @param v
      */
-    @Deprecated
     public static void clickDelay(final View v) {
         clickDelay(v, 1000);
     }
 
     /**
      * 延迟控件的点击响应（避免快速连续点击）<br/>
-     * 已过时，内部控制clickable为false时点击会点击到底下的view的问题，请使用setListener
+     * 内部控制clickable为false时点击会点击到底下的view的问题，建议使用setListener
      *
      * @param v
      * @param delayMillis 延迟时间，单位毫秒
      */
-    @Deprecated
     public static void clickDelay(final View v, long delayMillis) {
         if (v != null && v.isClickable()) {
             v.setClickable(false);

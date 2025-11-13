@@ -18,6 +18,7 @@ import com.duxl.baselib.utils.EmptyUtils;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 可折叠分组的适配器
@@ -564,6 +565,7 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
         /**
          * 是否是分组View
+         *
          * @return
          */
         public boolean isGroupView() {
@@ -585,5 +587,40 @@ public abstract class BaseExpandableAdapter<G extends BaseExpandableAdapter.Grou
 
     public interface OnChildItemChildLongClickListener {
         boolean onChildItemLongClick(BaseQuickAdapter adapterChildren, @NonNull View childChildView, int positionChild, int positionGroup);
+    }
+
+    /**
+     * 滚动到指定的child位置
+     *
+     * @param parentPosition 父位置
+     * @param childPosition  子位置
+     * @param offsetY        Y偏移量
+     * @param anim           是否启动动画
+     * @return
+     */
+    public void scrollToChildItem(int parentPosition, int childPosition, int offsetY, boolean anim) {
+        getRecyclerView().scrollToPosition(parentPosition);
+        getRecyclerView().post(() -> {
+            RecyclerView.ViewHolder vh = getRecyclerView().findViewHolderForAdapterPosition(parentPosition);
+            if (vh == null) {
+                return;
+            }
+            View groupV = vh.itemView.findViewById(com.duxl.baselib.R.id.fl_group_container);
+            RecyclerView childRv = vh.itemView.findViewById(R.id.recyclerview_children);
+            View childView = Objects.requireNonNull(childRv.getLayoutManager()).findViewByPosition(childPosition);
+            if (childView != null && groupV != null) {
+                int offset = vh.itemView.getTop() + childView.getTop() + groupV.getMeasuredHeight() + offsetY;
+                if (anim) {
+                    getRecyclerView().smoothScrollBy(0, offset);
+                } else {
+                    getRecyclerView().scrollBy(0, offset);
+                }
+            }/* else {
+                // 子项还没绑定，延迟重试
+                getRecyclerView().postDelayed(() -> {
+                    scrollToChildItem(parentPosition, childPosition, offsetY, anim);
+                }, 50);
+            }*/
+        });
     }
 }
