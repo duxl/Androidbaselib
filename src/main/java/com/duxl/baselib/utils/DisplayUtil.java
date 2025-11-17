@@ -14,15 +14,17 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.duxl.baselib.R;
 import com.duxl.baselib.widget.DataRunnable;
@@ -135,7 +137,7 @@ public class DisplayUtil {
     }
 
     /**
-     * 显示键盘
+     * 显示键盘，建议使用showKeyboard(Window window, View view)
      *
      * @param ctx
      */
@@ -145,7 +147,23 @@ public class DisplayUtil {
     }
 
     /**
-     * 隐藏键盘
+     * 显示软键盘
+     * 不依赖 InputMethodManager 的历史 bug
+     * Android 11+ 完美
+     * AndroidX 兼容性更好
+     *
+     * @param window
+     * @param view
+     */
+    public static void showKeyboard(Window window, View view) {
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, view);
+        if (insetsController != null) {
+            insetsController.show(WindowInsetsCompat.Type.ime());
+        }
+    }
+
+    /**
+     * 隐藏键盘，建议使用hideKeyboard(Window window, View view)
      *
      * @param ctx
      * @return
@@ -156,14 +174,36 @@ public class DisplayUtil {
         return curFocus != null && imm.hideSoftInputFromWindow(curFocus.getWindowToken(), 0);
     }
 
+    /**
+     * 隐藏软键盘，建议使用hideKeyboard(Window window, View view)
+     * @param view
+     * @param mContext
+     */
     public static void hideKeyboard(View view, Context mContext) {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
     }
 
     /**
+     * 隐藏软键盘
+     * 不依赖 InputMethodManager 的历史 bug
+     * Android 11+ 完美
+     * AndroidX 兼容性更好
+     *
+     * @param window
+     * @param view
+     */
+    public static void hideKeyboard(Window window, View view) {
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, view);
+        if (insetsController != null) {
+            insetsController.hide(WindowInsetsCompat.Type.ime());
+        }
+    }
+
+    /**
      * 软键盘是否显示<br/>
      * 已过时建议使用 {@link DisplayUtil#observerKeyboardVisibleChanged observerKeyboardVisibleChanged} 方法
+     *
      * @param context
      * @return
      */
