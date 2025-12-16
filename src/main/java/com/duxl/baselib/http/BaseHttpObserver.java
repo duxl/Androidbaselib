@@ -60,7 +60,7 @@ public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R
         } else {
             onError(root.getCode(), root.getMsg(), root);
         }
-
+        doFinal();
     }
 
     @Override
@@ -70,12 +70,15 @@ public abstract class BaseHttpObserver<R extends BaseRoot> implements Observer<R
         }
         HttpExceptionReason exceptionReason = getReasonByException(e);
         onError(exceptionReason.getCode(), exceptionReason.getMsg(), null);
+        doFinal();
     }
 
     @Override
     public void onComplete() {
 
     }
+
+    protected void doFinal(){}
 
     public abstract void onSuccess(R root);
 

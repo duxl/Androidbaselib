@@ -100,6 +100,7 @@ public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extend
         } else {
             onError(root.getCode(), root.getMsg(), root);
         }
+        doFinal();
     }
 
     @Override
@@ -111,6 +112,10 @@ public abstract class BaseRecyclerViewHttpObserver<R extends BaseRoot, T> extend
                 mIStatusViewContainer.getStatusView().showEmpty();
             }
         }
+        doFinal();
+    }
+
+    protected void doFinal() {
     }
 
     protected void loadComplete() {
