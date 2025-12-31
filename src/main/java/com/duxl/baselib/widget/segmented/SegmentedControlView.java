@@ -188,11 +188,11 @@ public class SegmentedControlView extends View implements ISegmentedControl {
 
         ta.recycle();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setBackground(null);
         } else {
             setBackgroundDrawable(null);
-        }
+        }*/
 
         mScroller = new Scroller(context, new FastOutSlowInInterpolator());
         ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -333,7 +333,7 @@ public class SegmentedControlView extends View implements ISegmentedControl {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if (isItemZero()) return;
+        if (isItemZero() && !isInEditMode()) return;
 
         drawBackgroundRect(canvas);
         drawUnselectedItemsText(canvas);
