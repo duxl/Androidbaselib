@@ -50,10 +50,21 @@ public class WindowSoftInputCompat {
         new WindowSoftInputCompat(activity, listener, false);
     }
 
+    /**
+     * 需要设置WindowCompat.setDecorFitsSystemWindows(window, false)才能生效，
+     * activity使用enableEdgeToEdge()也能达到效果
+     * @param activity
+     */
     public static void assistV2(Activity activity) {
         assistV2(activity, null);
     }
 
+    /**
+     * 需要设置WindowCompat.setDecorFitsSystemWindows(window, false)才能生效，
+     * activity使用enableEdgeToEdge()也能达到效果
+     * @param activity
+     * @param listener
+     */
     public static void assistV2(Activity activity, OnHeightChangeListener listener) {
         new WindowSoftInputCompat(activity, listener, true);
     }
@@ -240,7 +251,7 @@ public class WindowSoftInputCompat {
 
 
         /**
-         * 软键盘变化开始
+         * 软键盘变化开始(使用{@link WindowSoftInputCompat#assistV2(Activity)} 或则 {@link WindowSoftInputCompat#assistV2(Activity, OnHeightChangeListener)}才有此回调)
          *
          * @param targetVisible true表示开始显示软键盘，false表示开始隐藏软键盘
          * @param fullHeight    软键盘完全显示时的高度
@@ -249,7 +260,7 @@ public class WindowSoftInputCompat {
         }
 
         /**
-         * 软键盘变化结束
+         * 软键盘变化结束(使用{@link WindowSoftInputCompat#assistV2(Activity)} 或则 {@link WindowSoftInputCompat#assistV2(Activity, OnHeightChangeListener)}才有此回调)
          *
          * @param isVisible 结束后软键盘是否显示
          */
