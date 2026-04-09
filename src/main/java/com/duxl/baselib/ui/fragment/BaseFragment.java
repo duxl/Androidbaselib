@@ -66,7 +66,11 @@ public abstract class BaseFragment extends RefreshFragment implements IStatusVie
                     requireActivity().onBackPressed();
                     // 继续启用下次返回事件的拦截（这里post方法，利用Handler的消息队列原理，
                     // 需上面的requireActivity().onBackPressed()处理完毕后，才会执行post里面的逻辑）
-                    mContentView.post(() -> mOnBackPressedCallback.setEnabled(true));
+                    mContentView.post(() -> {
+                        if (mOnBackPressedCallback != null) {
+                            mOnBackPressedCallback.setEnabled(true);
+                        }
+                    });
                 }
             }
         });
