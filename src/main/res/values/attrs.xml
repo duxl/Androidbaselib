@@ -94,6 +94,8 @@
     <declare-styleable name="JustifyTextView">
         <!-- 占位文本，用于计算TextView的宽度，例如显示3个字符需要占用4个字符的宽度就设置4个字符，不设置为TextView自己的宽度 -->
         <attr name="jtv_placeWidthText" format="string|reference" />
+        <!-- 第一个字符是否不对齐，例“*姓名”前面的星号与“姓”紧挨着，不需要分散 -->
+        <attr name="jtv_disableFirstChar" format="boolean" />
         <!-- 最后一个字符是否不对齐，例“姓名：”末尾的冒号与“名”紧挨着，不需要分散 -->
         <attr name="jtv_disableLastChar" format="boolean" />
         <!-- 启用两端分散对齐，默认禁用 -->
